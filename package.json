@@ -1,0 +1,16 @@
+{
+  "name": "wholehelp-agent",
+  "private": true,
+  "packageManager": "bun@1.3.0",
+  "workspaces": ["apps/*", "packages/*"],
+  "scripts": {
+    "dev": "turbo run dev",
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "test": "turbo run test"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0",
+    "typescript": "^5.9.3"
+  }
+}

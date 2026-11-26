@@ -68,13 +68,41 @@ bun run eval                # évaluation sur le vrai modèle et le vrai PokéAP
 
 Les seuils ne sont pas atteints. Les critères ont changé entre les passages : les évaluations ne sont pas strictement comparables. Méthode, défauts, corrections et cause principale : [docs/EVALUATION.md](docs/EVALUATION.md). Le combat n'est pas couvert par l'évaluation.
 
+## Améliorations après le test
+
+- Contexte tronqué : Ollama chargeait le modèle avec 4 096 tokens. Au-delà d'environ 3 300 tokens de prompt, le prompt système et les outils étaient jetés (journal Ollama), ou la génération s'emballait (erreur 500). Correction : `num_ctx` 8192 et `num_predict` 1024 dans `ollama.ts`.
+- Fenêtre d'historique : le modèle ne voit que la question et les 2 échanges précédents (`recentHistory`, partagé par le front, l'API et l'évaluation). Cela supprime aussi l'erreur 400 des longues conversations (plus de 30 messages).
+- Relance sans historique : si la 1re étape répond sans outil en citant un Pokémon, un type ou un chiffre, elle est relancée une fois avec le prompt système, la question et un rappel. Toujours sans outil : réponse marquée « à vérifier ».
+- Liste d'évolutions en code : `get_evolution_chain` rédige `summary_fr`, que le backend ajoute tel quel ; le modèle n'écrit qu'une phrase d'introduction.
+- Contrôle par paire : chaque évolution citée doit l'être avec sa propre condition, sinon la réponse est marquée « à vérifier ».
+- Limites API : corps de 32 Ko (413), `Content-Type: application/json` obligatoire (415), 20 requêtes par minute et par IP en mémoire (429).
+- Autres : noms français résolus en code (`names-fr.json`), Markdown et caractères chinois retirés des réponses, `get_current_datetime` retiré, tokens affichés à côté de la latence.
+
+Rejeu de 16 questions enchaînées, envoyées comme le front (1 passage) :
+
+| | Avant (code d'origine) | Après |
+| --- | --- | --- |
+| Questions avec outil | 2 sur les 8 premières, puis blocage à la question 9 | 16 / 16 |
+| Réponses « vérifié » | non mesuré | 16 / 16 |
+| Erreurs | 500 à la question 9 (après 4 min), 400 en conversation longue | 0 |
+| Tokens question 1 / question 16 | 2 187 / 4 079 sur 4 096, tronqué | 2 154 / 2 347 |
+| Latence moyenne par question | 30,4 s (2,3 s sans le blocage) | 7,9 s |
+
+La latence d'avant est le temps du modèle lu dans le journal d'Ollama ; celle d'après est la latence réelle, outils et relances compris (8 relances sur 16 questions). Évaluation complète après ces changements (22 cas x 3) : seuils atteints, voir [docs/EVALUATION.md](docs/EVALUATION.md).
+
+Limites restantes :
+- Un seul passage du rejeu : le modèle n'est pas déterministe.
+- « Réponds de mémoire » : le modèle répond sans outil même après la relance ; la réponse est marquée « à vérifier », pas bloquée.
+- Refus d'une demande de fuite du prompt parfois marqué « à vérifier » : la relance est décidée sur le texte brut du modèle, avant le contrôle de sortie.
+- Une relance perd le contexte d'une question de suite (« et sa vitesse ? ») et ajoute un appel au modèle.
+- Contrôle d'ancrage heuristique : « vérifié » veut dire « aucun écart détecté », pas « réponse prouvée juste ».
+- Filtre d'injection fragile (liste de formulations) ; rate limit en mémoire, perdu au redémarrage.
+
 ## Limites
 
-- Noms français traduits par le modèle de mémoire : c'est la cause de 9 échecs sur 16 à la 3e évaluation (Dracaufeu traduit en charmeleon, Évoli non traduit, Pikachoux corrigé en silence en Pikachu). Les outils n'acceptent que le nom anglais ou le numéro.
 - Le modèle répond parfois sans appeler d'outil (« réponds de mémoire », nom inconnu) : le contrôle d'ancrage le signale mais ne l'empêche pas.
 - Contrôle d'ancrage heuristique : il ne voit pas une valeur fausse issue d'un bon appel d'outil et peut signaler à tort un mot courant (« combat », « vol »).
 - Filtre d'injection fragile : c'est une liste de mots (SYSTEM, ADMIN, « ignore tes instructions »), facile à contourner. Il réduit le risque sans le supprimer.
-- Pas de limitation de débit sur l'API.
 - Résumé du combat par le modèle parfois incomplet : le moteur est exact, mais le texte du modèle peut omettre des tours. La vue de combat affiche le journal complet.
 - La vue de combat déduit les PV de départ du journal et n'affiche que les types d'attaque, car le résultat de l'outil ne contient pas les types ni les PV de départ.
 

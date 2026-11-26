@@ -8,6 +8,12 @@ apps/frontend        Front React + Vite : chat, affichage des appels d'outils
 packages/shared Types partagés entre l'API et le front (le contrat)
 ```
 
+## Évaluation
+
+Assistant Pokémon en lecture seule : chaque information vient de PokéAPI via un outil, avec un contrôle d'ancrage et un filtre d'injection.
+Évalué par `bun run eval` : 16 cas x 3 passages sur le vrai modèle (qwen2.5:7b), seuils non atteints (67 % de bonnes réponses sur les cas normaux, 95 % de détournements refusés).
+Cause principale des échecs : la traduction des noms français par le modèle ; détails, limites et prochaines étapes dans [docs/EVALUATION.md](docs/EVALUATION.md).
+
 ## 1. Installation (une seule fois, sur Mac)
 
 ```bash

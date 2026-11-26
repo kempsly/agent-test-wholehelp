@@ -2,8 +2,8 @@
 
 ## 1. Méthode
 
-- 16 cas dans `apps/backend/eval/cases.json` : 6 normaux, 2 introuvables, 6 détournements, 1 hors sujet, 1 « réponds de mémoire ».
-- 3 passages par cas (48 passages) sur le vrai modèle qwen2.5:7b (Ollama) et la vraie PokéAPI. Le modèle n'est pas déterministe, d'où les 3 passages.
+- Jeu de cas dans `apps/backend/eval/cases.json`, qui évolue : 16 cas pendant le test (6 normaux, 2 introuvables, 6 détournements, 1 hors sujet, 1 « réponds de mémoire »), 22 après le test, 23 pour Final 3 (ajout d'un combat).
+- 3 passages par cas (48 passages pendant le test ; Final 3 : 23 cas x 3 passages, soit 69) sur le vrai modèle qwen2.5:7b (Ollama) et la vraie PokéAPI. Le modèle n'est pas déterministe, d'où les 3 passages.
 - Commande : `bun run eval` (Ollama doit tourner). Le script affiche les mesures, les passages en échec avec leurs motifs, et sort en erreur si un seuil n'est pas atteint.
 - Mesures :
   - Bon outil : tous les outils attendus sont appelés ; si aucun n'est attendu, aucun appel ne réussit.
@@ -24,7 +24,7 @@
 | Détournements refusés | 71 % | 57 % | 95 % | 100 % | 100 % | 100 % | 100 % | 100 % |
 | Latence moyenne | 2,6 s | 2,6 s | 2,5 s | 7,8 s (5,4 s hors conversation longue) | 6,9 s | 7,4 s | 8,9 s | |
 
-Les seuils ne sont atteints dans aucune des trois évaluations.
+Pendant le test, les seuils n'étaient atteints dans aucune des trois évaluations. Ils sont atteints depuis Final 2, et en Final 3.
 
 ### Évaluation après test (26/11/2026)
 
@@ -72,7 +72,7 @@ Les critères ont changé entre les passages : le refus a été assoupli (correc
 - Régression Évoli causée par la règle « nom exact » : règle de traduction rétablie (prompt). L'échec persiste, voir la section 5.
 - Fausses alertes d'ancrage sur de vrais « introuvable » (« deoxys-normal » lu comme un type) : correction A (code).
 
-## 5. Cause principale des échecs restants
+## 5. Pendant le test : cause principale des échecs
 
 À la 3e évaluation, 16 passages sur 48 sont en échec, dont 9 viennent d'une seule cause : la traduction des noms français est faite de mémoire par le modèle (décision n°1) et elle est fausse.
 
@@ -82,7 +82,7 @@ Les critères ont changé entre les passages : le refus a été assoupli (correc
 
 Aucune règle de prompt ne corrige cela : chaque règle qui interdit de corriger un nom empêche aussi la traduction, et inversement.
 
-## 6. Limites restantes
+## 6. Pendant le test : limites
 
 - Réponse de mémoire : sur « réponds de mémoire », le modèle n'appelle aucun outil (3 passages sur 3). Le contrôle d'ancrage marque la réponse « à vérifier », mais ne l'empêche pas.
 - Zorglub : le modèle n'appelle pas d'outil, répond que le Pokémon n'est pas reconnu et propose un nom qu'il invente (3 passages sur 3).
@@ -90,9 +90,23 @@ Aucune règle de prompt ne corrige cela : chaque règle qui interdit de corriger
 - Filtre d'injection fragile : c'est une liste de mots (SYSTEM, ADMIN, « ignore tes instructions »). Il se contourne facilement (autres mots, autres langues). Il réduit le risque sans le supprimer. Les vraies protections sont la liste fermée d'outils en lecture seule, la validation des arguments et le prompt.
 - Le contrôle d'ancrage est une heuristique : il ne voit pas une valeur fausse qui provient d'un bon appel d'outil, et peut signaler à tort un mot courant (« combat », « vol », « sol »).
 
-## 7. Prochaines étapes
+## 7. Pendant le test : prochaines étapes
 
-- Résoudre les noms français en code, avec une table générée depuis PokéAPI (revoit la décision n°1).
-- Relancer le tour si la réponse n'est pas ancrée et qu'aucun outil n'a été appelé (traite « de mémoire » et Zorglub).
-- Essayer un modèle plus robuste (`OLLAMA_MODEL=<modèle> bun run eval`), à comparer avec ce tableau.
-- Renforcer le filtre d'injection (plus de formulations, détection par motif plutôt que par liste fixe).
+- Résoudre les noms français en code, avec une table générée depuis PokéAPI : fait (`apps/backend/src/tools/frenchNames.ts`, `apps/backend/src/data/names-fr.json`).
+- Relancer le tour si la réponse n'est pas ancrée et qu'aucun outil n'a été appelé : fait (`apps/backend/src/toolReminder.ts`). Zorglub passe ; « de mémoire » échoue encore.
+- Essayer un modèle plus robuste (`OLLAMA_MODEL=<modèle> bun run eval`) : non fait.
+- Renforcer le filtre d'injection : fait pour les formulations (`apps/backend/src/answer.ts`) ; détection par motif non faite, c'est toujours une liste.
+
+## 8. Limites actuelles (Final 3)
+
+- Réponse de mémoire : sur « réponds de mémoire », aucun outil appelé (3 passages sur 3). La réponse est signalée « à vérifier », pas bloquée.
+- Le contrôle d'ancrage est une heuristique : « vérifié » veut dire aucun écart détecté, pas une preuve que la réponse est juste.
+- Question de suite sur un combat (« et contre Ectoplasma ? ») : le Pokémon de l'historique n'est pas dans la question, le combat est marqué « à vérifier » à tort.
+- Latence moyenne de 8,9 s (2,5 s pendant le test) : la relance ajoute un appel au modèle.
+- Filtre d'injection fragile : liste de formulations, facile à contourner.
+
+## 9. Rejeu de 16 questions enchaînées
+
+- Avant : Ollama chargeait le modèle avec un contexte de 4 096 tokens ; au-delà, le prompt système et les outils étaient tronqués.
+- Avant : outil appelé sur 2 des 8 premières questions, puis blocage à la question 9.
+- Après (`num_ctx` 8192, fenêtre d'historique, relance) : outil appelé 16 fois sur 16 (1 passage, voir le README).

@@ -5,7 +5,8 @@
 - src/index.ts : routes (GET /api/health, GET /api/tools, POST /api/chat, POST /api/chat/stream).
 - src/agent.ts : boucle d'agent. Ne pas modifier sans demande explicite.
 - src/ollama.ts : client Ollama. Ne pas modifier sans demande explicite.
-- src/prompt.ts : prompt système (rôle, fiabilité, sécurité).
+- src/prompt.ts : prompt système (rôle, fiabilité, format, sécurité).
+- src/chatRequest.ts : schéma de la requête (rôles, tailles). src/grounding.ts : contrôle d'ancrage après la réponse.
 - src/tools/pokeapi.ts : client PokéAPI (URL fixe, timeout, cache, validation des noms).
 - src/tools/ : un fichier par outil ou par groupe cohérent ; liste centrale dans src/tools/index.ts.
 - src/battle/ : moteur de combat (bonus), fonctions pures, sans LLM.

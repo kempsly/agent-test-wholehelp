@@ -5,12 +5,26 @@ import { fetchHealth, streamChat } from "./api";
 interface UiMessage extends ChatMessage {
   toolCalls?: ToolTrace[];
   meta?: string;
+  /** Result of the grounding check, only for answers of the agent. */
+  grounded?: boolean;
+  unverified?: string[];
   error?: boolean;
 }
 
 // On test day: adapt the title and the suggestions to the topic.
 const TITLE = "Assistant Pokémon";
 const SUGGESTIONS = ["Fiche de Pikachu", "Contre quoi le type feu est-il faible ?", "Compare Salamèche et Carapuce"];
+
+function GroundingBadge({ grounded, unverified, usedTools }: { grounded: boolean; unverified: string[]; usedTools: boolean }) {
+  if (!grounded) {
+    return (
+      <span className="badge warn" title={`Non retrouvé dans les outils : ${unverified.join(", ")}`}>
+        à vérifier
+      </span>
+    );
+  }
+  return usedTools ? <span className="badge ok">vérifié</span> : null;
+}
 
 export function App() {
   const [messages, setMessages] = useState<UiMessage[]>([]);
@@ -53,7 +67,7 @@ export function App() {
           const r = event.response;
           setMessages((prev) => [
             ...prev,
-            { role: "assistant", content: r.reply, toolCalls: r.toolCalls, meta: `${r.model} · ${r.iterations} étape(s) · ${(r.durationMs / 1000).toFixed(1)} s` },
+            { role: "assistant", content: r.reply, toolCalls: r.toolCalls, grounded: r.grounded, unverified: [...r.unverified_numbers, ...r.unverified_types], meta: `${r.model} · ${r.iterations} étape(s) · ${(r.durationMs / 1000).toFixed(1)} s` },
           ]);
         }
         if (event.type === "error") {
@@ -108,6 +122,10 @@ export function App() {
                   </div>
                 ))}
               </details>
+            )}
+            {m.role === "assistant" && !m.error && m.grounded !== undefined && (
+              // "verified" only if at least one tool was used; an answer without tool is never shown as verified.
+              <GroundingBadge grounded={m.grounded} unverified={m.unverified ?? []} usedTools={(m.toolCalls?.length ?? 0) > 0} />
             )}
             {m.meta && <div className="meta">{m.meta}</div>}
           </div>

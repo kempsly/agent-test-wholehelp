@@ -32,3 +32,6 @@
 | Tests *.test.ts à côté du code ; agent.test.ts réservé à la boucle | Tests proches du code testé | Tout dans agent.test.ts |
 | Prompt système en 3 sections (rôle, fiabilité, sécurité), sans date ni donnée utilisateur | Prompt fixe et court pour un 7B ; vérification de french_name et recopie des multiplicateurs imposées | Prompt long ou construit dynamiquement |
 | Format de réponse en texte simple, "Libellé : valeur", ordre fixe pour la fiche | Rendu lisible sans Markdown (le front affiche du texte simple) | Markdown libre |
+| Contrôle d'ancrage dans grounding.ts, appelé par les routes (index.ts), pas dans la boucle d'agent | La boucle reste inchangée et testée ; grounded, unverified_numbers et unverified_types ajoutés à la réponse | Modifier agent.ts |
+| Badge « vérifié » seulement si au moins un outil a été appelé ; « à vérifier » si grounded est false | Une réponse sans outil ne doit jamais être présentée comme vérifiée | Badge « vérifié » dès que rien n'est détecté |
+| Noms de types français et anglais dans une table fixe de 18 entrées (grounding.ts) | Les outils renvoient l'anglais, la réponse est en français ; table de libellés, pas de données | Comparer en anglais seulement |

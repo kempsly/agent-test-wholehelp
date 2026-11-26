@@ -30,10 +30,18 @@ export interface ChatResponse {
   durationMs: number;
 }
 
+/** Final response of the API: the agent response plus the result of the grounding check (heuristic). */
+export interface GroundedChatResponse extends ChatResponse {
+  /** false if the answer cites a number or a type that no tool returned during the turn. */
+  grounded: boolean;
+  unverified_numbers: string[];
+  unverified_types: string[];
+}
+
 /** Events sent over the streaming endpoint (Server-Sent Events). */
 export type StreamEvent =
   | { type: "tool_call"; name: string; arguments: Record<string, unknown> }
   | { type: "tool_result"; trace: ToolTrace }
   | { type: "token"; content: string }
-  | { type: "done"; response: ChatResponse }
+  | { type: "done"; response: GroundedChatResponse }
   | { type: "error"; message: string };

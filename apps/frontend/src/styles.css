@@ -33,6 +33,9 @@ main { flex: 1; overflow-y: auto; padding: 16px; display: flex; flex-direction: 
 .msg.user .bubble { background: var(--user); border-color: transparent; }
 .msg.error .bubble { color: var(--error); }
 .thinking { color: var(--muted); font-style: italic; }
+.badge { font-size: 11px; margin-top: 4px; padding: 1px 8px; border-radius: 999px; align-self: flex-start; border: 1px solid; }
+.badge.ok { color: var(--accent); }
+.badge.warn { color: var(--error); }
 .meta { font-size: 11px; color: var(--muted); margin-top: 4px; }
 
 .tools { font-size: 12px; margin-top: 6px; color: var(--muted); }

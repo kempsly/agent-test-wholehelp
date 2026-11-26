@@ -2,19 +2,12 @@ import { Hono } from "hono";
 import { cors } from "hono/cors";
 import { logger } from "hono/logger";
 import { streamSSE } from "hono/streaming";
-import { z } from "zod";
-import type { ChatRequest } from "@app/shared";
 import { runAgent } from "./agent";
+import { ChatRequestSchema } from "./chatRequest";
 import { config } from "./config";
+import { withGrounding } from "./grounding";
 import { ollamaHealth } from "./ollama";
 import { tools } from "./tools";
-
-const ChatRequestSchema = z.object({
-  messages: z
-    .array(z.object({ role: z.enum(["user", "assistant"]), content: z.string().min(1).max(8000) }))
-    .min(1)
-    .max(50),
-}) satisfies z.ZodType<ChatRequest>;
 
 export const app = new Hono();
 
@@ -30,7 +23,7 @@ app.post("/api/chat", async (c) => {
   const parsed = ChatRequestSchema.safeParse(await c.req.json().catch(() => null));
   if (!parsed.success) return c.json({ error: "Invalid request", details: parsed.error.issues }, 400);
   try {
-    return c.json(await runAgent(parsed.data.messages));
+    return c.json(withGrounding(await runAgent(parsed.data.messages)));
   } catch (err) {
     return c.json({ error: (err as Error).message }, 502);
   }
@@ -44,7 +37,7 @@ app.post("/api/chat/stream", async (c) => {
   return streamSSE(c, async (stream) => {
     const send = (event: object) => stream.writeSSE({ data: JSON.stringify(event) });
     try {
-      const response = await runAgent(parsed.data.messages, { onEvent: (e) => void send(e) });
+      const response = withGrounding(await runAgent(parsed.data.messages, { onEvent: (e) => void send(e) }));
       await send({ type: "done", response });
     } catch (err) {
       await send({ type: "error", message: (err as Error).message });

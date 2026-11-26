@@ -92,5 +92,13 @@ Lancer : `bun run dev`. Tester : `bun run test`. Vérifier les types : `bun run 
 
 ## Implementation Status
 
-(Mis à jour à la fin de chaque étape validée.)
+(Mis à jour à la fin de chaque étape. Les cases de docs/PLAN.md restent à cocher par toi après tes tests.)
 - Socle : agent + outils d'exemple + interface de chat + tests.
+- Partie 2 : client PokéAPI (URL fixe, timeout 8 s, cache, noms validés).
+- Partie 3 : outils get_pokemon, get_type_matchups (pokemon ou types, calcul en code), get_evolution_chain ; table fixe des 18 types.
+- Partie 4 : prompt système (rôle, fiabilité, format, sécurité) ; titre et suggestions du front.
+- Partie 5 : schéma de requête (rôles, tailles), contrôle d'ancrage (grounded), badge dans le front, answer.ts (messages encadrés, filtre d'injection fragile).
+- Partie 6 : évaluation (16 cas x 3 passages, `bun run eval`), 3 passages réalisés : seuils non atteints (docs/EVALUATION.md).
+- Partie 7 (bonus, version minimale) : moteur de combat en code, outil simulate_battle, vue de combat dans le front ; pas de routes /api/battles ; non couvert par l'évaluation.
+- Partie 8 : README, EVALUATION.md, DECISIONS.md.
+- Limites connues : noms français traduits par le modèle, contrôle d'ancrage heuristique, filtre d'injection fragile, get_current_datetime encore exposé (voir README).

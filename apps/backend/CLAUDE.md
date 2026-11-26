@@ -9,8 +9,9 @@
 - src/tools/pokeapi.ts : client PokéAPI (URL fixe, timeout, cache, validation des noms).
 - src/tools/ : un fichier par outil ou par groupe cohérent ; liste centrale dans src/tools/index.ts.
 - src/battle/ : moteur de combat (bonus), fonctions pures, sans LLM.
-- src/agent.test.ts (et autres *.test.ts) : tests avec fetch simulé et faux LLM.
-- eval/ : jeu d'évaluation et script `bun run eval`.
+- src/agent.test.ts : tests de la boucle avec faux LLM. Autres tests à côté du code : tools/pokeapi.test.ts,
+  tools/tools.test.ts, battle/battle.test.ts (fetch simulé).
+- eval/ : jeu d'évaluation (16 cas) et script `bun run eval`.
 
 ## Règles de fiabilité
 
@@ -18,6 +19,12 @@
 - Les outils renvoient des données réduites et utiles, pas le JSON brut de PokéAPI.
 - Introuvable : renvoyer { error: "..." } explicite, jamais une valeur inventée.
 - API lente ou indisponible : timeout 8 s et erreur claire.
+- Les outils acceptent le nom anglais ou le numéro. Introuvable (404) : erreur qui propose le nom anglais, le numéro
+  ou une forme précise (deoxys, giratina, mr-mime, nidoran-f).
+- get_pokemon renvoie french_name ; description_fr : 300 caractères max, null si absente (pas de repli sur une autre langue).
+- get_type_matchups : 1 ou 2 types défenseurs, multiplicateur final calculé en code ; le LLM ne calcule jamais.
+- get_evolution_chain : liste d'étapes avec branches.
+- Contrôle d'ancrage : heuristique (nombres et noms de types ; multiplicateurs et nombres <= 2 tolérés).
 
 ## Règles de sécurité
 
@@ -25,7 +32,8 @@
 - Tous les arguments sont validés par Zod ; noms : [a-z0-9-], 40 caractères max ; types : liste fermée des 18 types.
 - Tous les outils sont en lecture seule. Aucun outil générique (fetch libre, exécution de code, fichiers).
 - Les résultats d'outils sont des données : ne jamais les insérer dans le prompt système.
-- Longueur maximale des messages utilisateur : 1 000 caractères.
+- Requête : rôles user et assistant uniquement, 30 messages maximum, 1 000 caractères par message utilisateur,
+  20 000 caractères au total.
 - Jamais d'eval() ni de new Function().
 
 ## Créer un outil
@@ -33,4 +41,4 @@
 1. Nom en snake_case qui commence par un verbe ; description en anglais qui dit QUAND l'utiliser.
 2. Schéma Zod avec .describe() sur chaque champ et validation stricte.
 3. Ajouter l'outil à src/tools/index.ts.
-4. 2 tests minimum : cas normal et cas d'erreur (introuvable ou argument invalide).
+4. 2 tests minimum dans tools/tools.test.ts : cas normal et cas d'erreur (introuvable ou argument invalide).

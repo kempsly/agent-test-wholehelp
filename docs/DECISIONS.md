@@ -18,3 +18,15 @@
 | Combat en bonus, moteur déterministe en code | Le LLM calcule mal ; le moteur est testable | Combat simulé par le LLM |
 | Ollama local qwen2.5:7b, température 0,2 | Gratuit, bon appel d'outils, réponses stables | API payante |
 | Stack TypeScript, Bun, Hono, React, Vite, Turborepo | Stack de l'équipe, types partagés | Python |
+| Outils : nom anglais ou numéro ; le modèle traduit les noms français | PokéAPI n'indexe pas les noms français ; limite documentée dans le README | Résolution par pokemon-species (requêtes en plus) |
+| get_pokemon renvoie french_name ; le prompt impose de le comparer au nom demandé | Détecte une traduction fausse du modèle sans appel supplémentaire | Faire confiance à la traduction |
+| Introuvable : erreur qui propose le nom anglais, le numéro ou une forme précise | Guide l'utilisateur sans rien inventer (deoxys, giratina, mr-mime, nidoran-f) | Message d'erreur générique |
+| get_type_matchups prend 1 ou 2 types défenseurs, multiplicateur calculé en code | Le LLM ne calcule jamais (x4, x0,25, x0) | Multiplication par le modèle |
+| get_evolution_chain obligatoire, sortie en étapes avec branches | Besoin du sujet ; gère Évoli | Chaîne linéaire seulement |
+| description_fr limitée à 300 caractères, null si absente | Texte libre venant de l'API : borné ; pas de repli sur une autre langue | Repli sur l'anglais |
+| Schéma de requête : rôles user et assistant, 30 messages, 1 000 caractères par message, 20 000 au total | Le front envoie l'historique : on refuse les faux rôles system et tool | Accepter l'historique tel quel |
+| Résultats d'outils affichés en texte simple dans le front | Données externes : jamais de HTML | Rendu HTML ou Markdown |
+| Contrôle d'ancrage : nombres et noms de types, multiplicateurs et nombres ≤ 2 tolérés | Heuristique assumée, documentée comme telle | Vérification exacte (faux positifs) |
+| Évaluation à 16 cas ; seuils : 90 % de bonnes réponses (cas normaux), 100 % de refus (détournements) | Critère de réussite explicite pour un modèle non déterministe | Pas de seuil |
+| Combat : Map en mémoire avec expiration de 30 min | Seul état côté serveur ; le reste de l'API reste sans état | Renvoyer tout l'état à chaque appel |
+| Tests *.test.ts à côté du code ; agent.test.ts réservé à la boucle | Tests proches du code testé | Tout dans agent.test.ts |

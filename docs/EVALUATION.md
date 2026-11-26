@@ -15,14 +15,14 @@
 
 ## 2. Résultats
 
-| Mesure | 1re évaluation | 2e évaluation | 3e évaluation | Après test (26/11/2026) | Final 1 (régression base_stat_total) | Final 2 | Seuil |
-| --- | --- | --- | --- | --- | --- | --- | --- |
-| Bon outil | 79 % | 81 % | 88 % | 95 % | 97 % | 95 % | |
-| Bonne réponse (tous les cas) | 74 % | 70 % | 56 % | 100 % | 70 % | 100 % | |
-| Bonne réponse (cas normaux) | 78 % | 67 % | 67 % | 100 % | 57 % | 100 % | 90 % |
-| Pas d'invention | 75 % | 73 % | 88 % | 88 % | 97 % | 95 % | |
-| Détournements refusés | 71 % | 57 % | 95 % | 100 % | 100 % | 100 % | 100 % |
-| Latence moyenne | 2,6 s | 2,6 s | 2,5 s | 7,8 s (5,4 s hors conversation longue) | 6,9 s | 7,4 s | |
+| Mesure | 1re évaluation | 2e évaluation | 3e évaluation | Après test (26/11/2026) | Final 1 (régression base_stat_total) | Final 2 | Final 3 | Seuil |
+| --- | --- | --- | --- | --- | --- | --- | --- | --- |
+| Bon outil | 79 % | 81 % | 88 % | 95 % | 97 % | 95 % | 96 % | |
+| Bonne réponse (tous les cas) | 74 % | 70 % | 56 % | 100 % | 70 % | 100 % | 100 % | |
+| Bonne réponse (cas normaux) | 78 % | 67 % | 67 % | 100 % | 57 % | 100 % | 100 % | 90 % |
+| Pas d'invention | 75 % | 73 % | 88 % | 88 % | 97 % | 95 % | 96 % | |
+| Détournements refusés | 71 % | 57 % | 95 % | 100 % | 100 % | 100 % | 100 % | 100 % |
+| Latence moyenne | 2,6 s | 2,6 s | 2,5 s | 7,8 s (5,4 s hors conversation longue) | 6,9 s | 7,4 s | 8,9 s | |
 
 Les seuils ne sont atteints dans aucune des trois évaluations.
 
@@ -51,6 +51,11 @@ Les seuils ne sont atteints dans aucune des trois évaluations.
 - Mêmes 22 cas x 3 passages, après la correction du prompt : toujours les 6 statistiques, `base_stat_total` seulement si l'utilisateur demande un total ou une comparaison globale, jamais calculé par le modèle. Seuils atteints. Sortie complète : `apps/backend/eval/resultats-final.txt`.
 - 3 passages en échec sur 66, tous sur `memoire-type-pikachu` (3 sur 3) : le modèle répond de mémoire sans outil, même après la relance ; la réponse est marquée « à vérifier », comme prévu, mais pas bloquée.
 - Les refus et les cas de fuite du prompt ne sont plus marqués « à vérifier » ; les cas normaux retrouvent les 6 statistiques.
+
+### Final 3 (26/11/2026)
+
+- 23 cas x 3 passages (69 passages) : les 22 cas, plus le combat « Qui gagne entre Ronflex et Ectoplasma ? » (snorlax et gengar attendus dans le résultat de l'outil). Après : résolution des noms en combat, identité des combattants vérifiée, faiblesses et résumé de combat rédigés en code. Seuils atteints. Sortie complète : `apps/backend/eval/resultats-final.txt`.
+- 3 passages en échec sur 69, tous sur `memoire-type-pikachu` (3 sur 3) : réponse de mémoire sans outil, même après la relance ; marquée « à vérifier », pas bloquée. Le cas de combat passe 3 fois sur 3.
 
 ## 3. Note de comparabilité
 

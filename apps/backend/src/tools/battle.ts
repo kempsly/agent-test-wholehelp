@@ -26,8 +26,8 @@ export const simulateBattleTool = defineTool({
     "Simulates a turn-by-turn battle between two Pokemon and returns the winner and the battle log (attack type, effectiveness, damage, remaining HP). " +
     "The result is calculated by code from their PokeAPI stats and types. Use it for any question about who wins a fight or a battle between two Pokemon; never guess a winner.",
   schema: z.object({
-    pokemon_a: nameOrId.describe("First Pokemon: English name or Pokedex number. It attacks first when speeds are equal."),
-    pokemon_b: nameOrId.describe("Second Pokemon: English name or Pokedex number."),
+    pokemon_a: nameOrId.describe("First Pokemon: name as the user wrote it (French or English) or Pokedex number. It attacks first when speeds are equal."),
+    pokemon_b: nameOrId.describe("Second Pokemon: name as the user wrote it (French or English) or Pokedex number."),
   }),
   execute: async ({ pokemon_a, pokemon_b }) => {
     const [a, b] = await Promise.all([loadFighter(pokemon_a), loadFighter(pokemon_b)]);

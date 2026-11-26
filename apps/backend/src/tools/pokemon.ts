@@ -2,13 +2,20 @@
 
 import { z } from "zod";
 import { defineTool } from "./types";
+import { resolvePokemonName } from "./frenchNames";
 import { PokeApiError, fetchPokeApi } from "./pokeapi";
 import { POKEMON_TYPES, typeFr, type PokemonType } from "./pokemonTypes";
 
-/** English name or Pokedex number. Numbers sent as JSON numbers are accepted and turned into strings. */
+/**
+ * French or English name, or Pokedex number. A known French name is replaced by the English name from the table
+ * (data/names-fr.json); anything else is kept as is. Numbers sent as JSON numbers are turned into strings.
+ */
 export const nameOrId = z
-  .preprocess((value) => (typeof value === "number" ? String(value) : value), z.string().min(1))
-  .describe("English Pokemon name (e.g. charizard) or Pokedex number (e.g. 25). Translate French names to English.");
+  .preprocess(
+    (value) => (typeof value === "number" ? String(value) : typeof value === "string" ? resolvePokemonName(value) : value),
+    z.string().min(1),
+  )
+  .describe("Pokemon name exactly as the user wrote it, French or English (e.g. Dracaufeu, charizard), or Pokedex number (e.g. 25). Never translate it.");
 
 // ---------- shapes of the PokeAPI answers we rely on (anything else is ignored) ----------
 
@@ -88,7 +95,7 @@ async function fetchPokemon(name: string) {
     if (error instanceof PokeApiError && error.kind === "not_found") {
       throw new PokeApiError(
         "not_found",
-        `Pokemon "${name}" not found. Check the spelling, or give the English name or the Pokedex number. ` +
+        `Pokemon "${name}" not found. Check the spelling, or give the French or English name or the Pokedex number. ` +
           "If this Pokemon has several forms (deoxys, giratina...), try a specific form such as deoxys-normal.",
       );
     }

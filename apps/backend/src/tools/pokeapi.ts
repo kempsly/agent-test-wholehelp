@@ -31,7 +31,7 @@ export function normalizeName(input: string | number): string {
   if (!NAME_PATTERN.test(name) || name === "0") {
     throw new PokeApiError(
       "invalid",
-      "Invalid name. Use the English name (letters, digits, hyphens; 40 characters max) or the Pokedex number.",
+      "Invalid name. Use the exact French or English name (40 characters max) or the Pokedex number.",
     );
   }
   return name;
@@ -60,7 +60,7 @@ export async function fetchPokeApi(resource: Resource, nameOrId: string | number
   if (response.status === 404) {
     throw new PokeApiError(
       "not_found",
-      `${resource} "${name}" not found. Ask the user for the English name or the Pokedex number.`,
+      `${resource} "${name}" not found. Ask the user for the French or English name or the Pokedex number.`,
     );
   }
   if (!response.ok) {

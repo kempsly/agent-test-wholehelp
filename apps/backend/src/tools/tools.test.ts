@@ -325,6 +325,35 @@ describe("simulate_battle", () => {
   });
 });
 
+// ---------- French names (table data/names-fr.json, generated from PokeAPI) ----------
+
+describe("French names", () => {
+  const resolved = (name: string) => getPokemon.schema.parse({ name_or_id: name }).name_or_id;
+
+  test("a French name is replaced by the English name from the table, accents and case ignored", () => {
+    expect(resolved("Dracaufeu")).toBe("charizard");
+    expect(resolved("Évoli")).toBe("eevee");
+    expect(resolved("evoli")).toBe("eevee");
+    expect(resolved("ECTOPLASMA")).toBe("gengar");
+    // Same lookup for the other tools, which share nameOrId.
+    expect(simulateBattleTool.schema.parse({ pokemon_a: "Dracaufeu", pokemon_b: "Ectoplasma" })).toEqual({ pokemon_a: "charizard", pokemon_b: "gengar" });
+    expect(getTypeMatchups.schema.parse({ pokemon: "Évoli" })).toEqual({ pokemon: "eevee" });
+  });
+
+  test("get_pokemon with a French name reads the English Pokemon from PokeAPI", async () => {
+    mockApi({ "/pokemon/charizard": { ...pikachu, id: 6, name: "charizard" }, "/pokemon-species/pikachu": pikachuSpecies });
+    expect(await getPokemon.execute(getPokemon.schema.parse({ name_or_id: "Dracaufeu" }))).toMatchObject({ id: 6, name: "charizard" });
+  });
+
+  test("an unknown name is kept as is, never guessed: Pikachoux is not found", async () => {
+    mockApi({ "/pokemon/pikachu": pikachu });
+    expect(resolved("Pikachoux")).toBe("Pikachoux");
+    expect(resolved("charizard")).toBe("charizard");
+    expect(resolved("constructor")).toBe("constructor");
+    await expect(getPokemon.execute(getPokemon.schema.parse({ name_or_id: "Pikachoux" }))).rejects.toThrow(/"Pikachoux" not found/);
+  });
+});
+
 // ---------- registry ----------
 
 describe("tool registry", () => {

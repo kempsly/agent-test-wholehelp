@@ -58,7 +58,7 @@ export const getTypeMatchups = defineTool({
     "To ask about a Pokemon, pass its name or number in pokemon (its types are read for you); to ask about one or two types without a Pokemon, pass types. Pass exactly one of the two.",
   schema: z
     .object({
-      pokemon: nameOrId.optional().describe("The DEFENDING Pokemon: English name or Pokedex number. Its types are read automatically."),
+      pokemon: nameOrId.optional().describe("The DEFENDING Pokemon: name as the user wrote it (French or English) or Pokedex number. Its types are read automatically."),
       types: z
         .array(z.enum(POKEMON_TYPES))
         .min(1)

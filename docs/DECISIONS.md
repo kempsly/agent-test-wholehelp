@@ -30,3 +30,4 @@
 | Évaluation à 16 cas ; seuils : 90 % de bonnes réponses (cas normaux), 100 % de refus (détournements) | Critère de réussite explicite pour un modèle non déterministe | Pas de seuil |
 | Combat : Map en mémoire avec expiration de 30 min | Seul état côté serveur ; le reste de l'API reste sans état | Renvoyer tout l'état à chaque appel |
 | Tests *.test.ts à côté du code ; agent.test.ts réservé à la boucle | Tests proches du code testé | Tout dans agent.test.ts |
+| Prompt système en 3 sections (rôle, fiabilité, sécurité), sans date ni donnée utilisateur | Prompt fixe et court pour un 7B ; vérification de french_name et recopie des multiplicateurs imposées | Prompt long ou construit dynamiquement |

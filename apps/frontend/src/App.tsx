@@ -9,8 +9,8 @@ interface UiMessage extends ChatMessage {
 }
 
 // On test day: adapt the title and the suggestions to the topic.
-const TITLE = "Assistant";
-const SUGGESTIONS = ["Quel est le taux de TVA normal ?", "Combien font 1 250 € HT avec 20 % de TVA ?", "Quel jour sommes-nous ?"];
+const TITLE = "Assistant Pokémon";
+const SUGGESTIONS = ["Fiche de Pikachu", "Contre quoi le type feu est-il faible ?", "Compare Salamèche et Carapuce"];
 
 export function App() {
   const [messages, setMessages] = useState<UiMessage[]>([]);

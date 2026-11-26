@@ -48,7 +48,7 @@
   20 000 caractères au total.
 - Historique : le modèle ne voit que la question et les 2 échanges précédents (recentHistory, packages/shared) ; une
   réponse de plus de 8 000 caractères est coupée avant la signature.
-- Relance forcée (src/toolReminder.ts) : 1re étape sans outil qui cite un Pokémon, un type ou un chiffre -> une relance ;
+- Relance forcée (src/toolReminder.ts) : 1re étape sans outil qui cite un Pokémon, un type ou un chiffre -> une relance sans historique ;
   toujours sans outil -> grounded = false.
 - Jamais d'eval() ni de new Function().
 

@@ -40,7 +40,7 @@ export const ollamaChat: ChatFn = async (messages, tools) => {
       messages,
       tools: tools.length ? tools : undefined,
       stream: false,
-      options: { temperature: config.temperature },
+      options: { temperature: config.temperature, num_ctx: config.numCtx, num_predict: config.numPredict },
     }),
   });
 

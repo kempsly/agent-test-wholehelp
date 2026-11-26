@@ -1,5 +1,6 @@
 // Forced retry: if the first model step calls no tool but its answer cites a Pokemon, a type or a number (so it
-// answers from memory), the same step is asked again once, with a system reminder to call the right tool first.
+// answers from memory), the same step is asked again once, without the history, with a system reminder to call the
+// right tool first.
 // Done by wrapping the chat function: the agent loop (agent.ts) is unchanged.
 
 import type { ChatFn } from "./ollama";
@@ -30,7 +31,11 @@ export function withToolReminder(chat: ChatFn): { chat: ChatFn; state: ToolRemin
     firstCall = false;
     if ((result.message.tool_calls?.length ?? 0) > 0 || !needsTool(result.message.content)) return result;
     state.retried = true;
-    return chat([...messages, { role: "system", content: TOOL_REMINDER }], tools);
+    // Without the history: alone, the question gets its tool call (9 times out of 9 measured); with the history, the
+    // model copies its previous answers. Only the system prompt, the current question and the reminder are sent.
+    const system = messages.find((m) => m.role === "system");
+    const question = [...messages].reverse().find((m) => m.role === "user");
+    return chat([...(system ? [system] : []), ...(question ? [question] : []), { role: "system", content: TOOL_REMINDER }], tools);
   };
   return { chat: wrapped, state };
 }

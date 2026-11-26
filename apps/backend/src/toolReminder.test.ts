@@ -85,10 +85,22 @@ describe("forced tool retry", () => {
     const response = await answer([user("Fiche de Pikachuu")], { chat });
 
     expect(received).toHaveLength(3);
+    expect(received[1]!.map((m) => m.role)).toEqual(["system", "user", "system"]);
     expect(received[1]!.at(-1)).toEqual({ role: "system", content: TOOL_REMINDER });
     expect(received[0]!.some((m) => m.content === TOOL_REMINDER)).toBe(false);
     expect(response.toolCalls.map((t) => t.name)).toEqual(["get_pokemon"]);
     expect(response.reply).toBe("Je n'ai pas trouvé Pikachuu. Vérifiez l'orthographe.");
+  });
+
+  test("the retry is sent without the history: system prompt, current question and reminder only", async () => {
+    const { chat, received } = scripted(text("Évoli évolue en Aquali."), text("Je ne sais pas."));
+    await answer([user("Fiche de Pikachu"), assistant("Pikachu : type Électrik."), user("Évolutions d'Évoli")], { chat });
+    const [first, retry] = received;
+    expect(first!.map((m) => m.role)).toEqual(["system", "user", "assistant", "user"]);
+    expect(retry!.map((m) => m.role)).toEqual(["system", "user", "system"]);
+    expect(retry![0]).toEqual(first![0]!); // the same system prompt
+    expect(retry![1]!.content).toContain("Évolutions d'Évoli");
+    expect(retry!.some((m) => m.content.includes("Pikachu"))).toBe(false);
   });
 
   test("still no tool after the reminder: the answer is never grounded, even without number or type", async () => {

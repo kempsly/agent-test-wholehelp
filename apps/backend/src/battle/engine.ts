@@ -40,6 +40,8 @@ export interface BattleResult {
   winner: string | null;
   turns: number;
   log: BattleLogEntry[];
+  /** HP at the start (base HP stat from PokeAPI), so the answer and the battle view can cite them. */
+  initial_hp: { name: string; hp: number }[];
   final_hp: { name: string; hp: number }[];
 }
 
@@ -101,6 +103,10 @@ export function simulateBattle(a: Fighter, b: Fighter): BattleResult {
     winner: winner === null ? null : fighters[winner]!.name,
     turns,
     log,
+    initial_hp: [
+      { name: a.name, hp: a.hp },
+      { name: b.name, hp: b.hp },
+    ],
     final_hp: [
       { name: a.name, hp: hp[0]! },
       { name: b.name, hp: hp[1]! },

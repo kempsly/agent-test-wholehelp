@@ -2,13 +2,14 @@
 // agent loop (unchanged, with the forced tool retry), replace a reply that leaks the system prompt, then add the
 // grounding check and the signature. Used by the routes and by the evaluation, so both test the same thing.
 
-import { recentHistory, type ChatMessage, type SignedChatResponse } from "@app/shared";
+import { recentHistory, type ChatMessage, type SignedChatResponse, type ToolTrace } from "@app/shared";
 import { runAgent, type AgentOptions } from "./agent";
 import { MAX_ASSISTANT_CHARS } from "./chatRequest";
 import { withGrounding } from "./grounding";
 import { signReply } from "./history";
 import { ollamaChat } from "./ollama";
-import { guardReply } from "./outputGuard";
+import { addEvolutionSummaries } from "./evolutionAnswer";
+import { LEAK_REFUSAL, guardReply } from "./outputGuard";
 import { withToolReminder } from "./toolReminder";
 
 export const INJECTION_MARKER = "[texte retiré : instruction non autorisée]";
@@ -84,24 +85,39 @@ export function wrapUserMessages(messages: ChatMessage[]): ChatMessage[] {
   );
 }
 
+/**
+ * The text the user gets, the same in the stream and in the response: output check (leak, Markdown, Chinese
+ * characters), then the code-written list of evolutions if get_evolution_chain was called, then the length limit
+ * (the front sends the reply back in the history, where an assistant message is limited to MAX_ASSISTANT_CHARS).
+ */
+export function finalizeReply(reply: string, toolCalls: ToolTrace[]): string {
+  const guarded = guardReply(reply);
+  const text = guarded === LEAK_REFUSAL ? guarded : addEvolutionSummaries(guarded, toolCalls);
+  return text.length > MAX_ASSISTANT_CHARS ? `${text.slice(0, MAX_ASSISTANT_CHARS - 1)}…` : text;
+}
+
 export async function answer(history: ChatMessage[], options: AgentOptions = {}): Promise<SignedChatResponse> {
-  // The reply also goes out in the "token" event of the stream: it gets the same output check.
+  // The reply also goes out in the "token" event of the stream: the tool results seen so far give the same final text.
   const onEvent = options.onEvent;
+  const traces: ToolTrace[] = [];
   const reminder = withToolReminder(options.chat ?? ollamaChat);
   const guardedOptions: AgentOptions = {
     ...options,
     chat: reminder.chat,
-    onEvent: onEvent && ((e) => onEvent(e.type === "token" ? { ...e, content: guardReply(e.content) } : e)),
+    onEvent:
+      onEvent &&
+      ((e) => {
+        if (e.type === "tool_result") traces.push(e.trace);
+        onEvent(e.type === "token" ? { ...e, content: finalizeReply(e.content, traces) } : e);
+      }),
   };
   // A 7B model stops calling tools when the history is long: it only sees the last exchanges (text only, the
   // tool results of earlier turns are never sent back). The front keeps and shows the whole conversation.
   const raw = await runAgent(wrapUserMessages(recentHistory(history)), guardedOptions);
-  const grounded = withGrounding({ ...raw, reply: guardReply(raw.reply) });
+  const reply = finalizeReply(raw.reply, raw.toolCalls);
+  const grounded = withGrounding({ ...raw, reply });
   // Retried and still no tool: the answer comes from memory, it is never shown as verified.
   const response = reminder.state.retried && raw.toolCalls.length === 0 ? { ...grounded, grounded: false } : grounded;
-  // The front sends the reply back in the history, where an assistant message is limited to MAX_ASSISTANT_CHARS:
-  // a longer reply (a runaway generation) is cut here, before the signature, so the next request never fails.
-  const reply = response.reply.length > MAX_ASSISTANT_CHARS ? `${response.reply.slice(0, MAX_ASSISTANT_CHARS - 1)}…` : response.reply;
   // The front sends this signature back with the reply; without it the reply is refused in the history.
-  return { ...response, reply, signature: signReply(reply) };
+  return { ...response, signature: signReply(reply) };
 }

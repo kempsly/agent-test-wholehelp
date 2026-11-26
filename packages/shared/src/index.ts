@@ -63,6 +63,8 @@ export interface GroundedChatResponse extends ChatResponse {
   grounded: boolean;
   unverified_numbers: string[];
   unverified_types: string[];
+  /** Evolutions cited without their own condition (a condition put on another Pokemon). */
+  unverified_evolutions: string[];
 }
 
 /** What the API sends: the grounded response plus the signature of reply. */

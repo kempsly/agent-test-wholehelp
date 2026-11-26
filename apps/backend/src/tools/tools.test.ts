@@ -343,6 +343,25 @@ describe("get_evolution_chain", () => {
     }
   });
 
+  test("summary_fr: one line per evolution, written in code, each with its own condition_fr", async () => {
+    mockApi(evolutionRoutes("eevee", 67, eeveeChain));
+    const result = (await evolutions("eevee")) as EvolutionResult & { summary_fr: string };
+    expect(result.summary_fr.split("\n")).toEqual([
+      "Aquali (évolution d'Évoli) : Pierre Eau",
+      "Voltali (évolution d'Évoli) : Pierre Foudre",
+      "Pyroli (évolution d'Évoli) : Pierre Feu",
+      "Mentali (évolution d'Évoli) : amitié élevée, le jour",
+      "Noctali (évolution d'Évoli) : amitié élevée, la nuit",
+      "Phyllali (évolution d'Évoli) : Pierre Plante ou près d'un rocher spécial à Forêt Vestigion",
+      "Givrali (évolution d'Évoli) : Pierre Glace ou près d'un rocher spécial à Route 217",
+      "Nymphali (évolution d'Évoli) : amitié élevée, en connaissant une attaque de type Fée",
+    ]);
+    mockApi(evolutionRoutes("charmander", 2, charmanderChain));
+    expect(((await evolutions("charmander")) as unknown as { summary_fr: string }).summary_fr).toBe(
+      "Reptincel (évolution de Salamèche) : niveau 16\nDracaufeu (évolution de Reptincel) : niveau 36",
+    );
+  });
+
   test("only the most recent game is kept: Phyllali from Brilliant Diamond / Shining Pearl, Nymphali from Sword / Shield", async () => {
     mockApi(evolutionRoutes("eevee", 67, eeveeChain));
     const pokemon = (await evolutions("eevee")).stages[1]!.pokemon;

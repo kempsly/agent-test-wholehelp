@@ -41,7 +41,25 @@ export function leaksSystemPrompt(reply: string, promptExcerpts: Set<string> = P
   return false;
 }
 
-/** The reply itself, or the refusal if it leaks the system prompt. */
+/**
+ * Removes what the prompt forbids and the model still writes: Markdown (** and #) and Chinese / Japanese characters
+ * (qwen2.5 writes "(英 : Mewtwo)"). Full-width punctuation becomes ASCII; a bracket left empty is removed.
+ */
+export function cleanFormatting(reply: string): string {
+  return reply
+    .replace(/\*\*/g, "")
+    .replace(/#/g, "")
+    .replace(/[！-～]/g, (c) => String.fromCharCode(c.charCodeAt(0) - 0xfee0))
+    .replace(/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}　-〿]/gu, "")
+    .replace(/\(\s*:\s*/g, "(")
+    .replace(/\(\s*\)/g, "")
+    .replace(/[ \t]{2,}/g, " ")
+    .replace(/[ \t]+([.,])/g, "$1")
+    .replace(/^[ \t]+|[ \t]+$/gm, "")
+    .trim();
+}
+
+/** The reply cleaned of forbidden formatting, or the refusal if it leaks the system prompt. */
 export function guardReply(reply: string): string {
-  return leaksSystemPrompt(reply) ? LEAK_REFUSAL : reply;
+  return leaksSystemPrompt(reply) ? LEAK_REFUSAL : cleanFormatting(reply);
 }

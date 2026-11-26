@@ -261,11 +261,30 @@ export async function summarizeEvolutions(stages: EvolutionStage[], allVersions 
   }));
 }
 
+/** "d'Évoli", "de Salamèche": French elision before a vowel. */
+export const fromName = (name: string) => (/^[aeiouyhàâäéèêëîïôöùûü]/i.test(name) ? `d'${name}` : `de ${name}`);
+
+/**
+ * The list of the evolutions, written here in code: one line per evolution, its French name, what it evolves from and
+ * its own condition_fr. The backend adds this text as it is to the answer, so a condition is never put on another Pokemon.
+ */
+export function evolutionSummaryFr(stages: { pokemon: EvolutionSummary[] }[]): string {
+  const all = stages.flatMap((s) => s.pokemon);
+  const displayed = (english: string) => all.find((p) => p.name === english)?.name_fr ?? english;
+  const lines = all
+    .filter((p) => p.condition_fr !== undefined)
+    .map((p) => `${p.name_fr ?? p.name}${p.evolves_from ? ` (évolution ${fromName(displayed(p.evolves_from))})` : ""} : ${p.condition_fr}`);
+  const first = all[0];
+  if (lines.length === 0) return `${first ? (first.name_fr ?? first.name) : "Ce Pokémon"} n'a pas d'évolution dans PokéAPI.`;
+  return lines.join("\n");
+}
+
 export const getEvolutionChain = defineTool({
   name: "get_evolution_chain",
   description:
     "Returns the evolution chain of a Pokemon as ordered stages (with branches, e.g. Eevee). Each Pokemon has its English name, its French name (name_fr) and, except the first stage, " +
-    "condition_fr: a short French sentence, built from PokeAPI, of how it evolves in the most recent game (version_group). Copy condition_fr as it is. " +
+    "condition_fr: a short French sentence, built from PokeAPI, of how it evolves in the most recent game (version_group). " +
+    "summary_fr is the full list of the evolutions with their conditions: it is added to your answer automatically, so only write one short introduction sentence, without any condition. " +
     "Use it for any question about evolutions, pre-evolutions or what a Pokemon evolves into.",
   schema: z.object({
     name_or_id: nameOrId,
@@ -283,6 +302,7 @@ export const getEvolutionChain = defineTool({
     if (!chainId) throw new PokeApiError("unavailable", "PokeAPI unavailable (unexpected evolution chain URL).");
 
     const { chain } = parseApi(evolutionChainResponse, await fetchPokeApi("evolution-chain", chainId), "evolution chain");
-    return { pokemon: pokemon.name, stages: await summarizeEvolutions(flattenEvolutionChain(chain), all_versions) };
+    const stages = await summarizeEvolutions(flattenEvolutionChain(chain), all_versions);
+    return { pokemon: pokemon.name, stages, summary_fr: evolutionSummaryFr(stages) };
   },
 });

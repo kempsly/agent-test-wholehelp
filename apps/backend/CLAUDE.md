@@ -31,7 +31,11 @@
 - data/names-fr.json : nom français normalisé -> { en, fr }, généré par scripts/build-names.ts (ne pas éditer à la main).
 - Noms de types : table fixe des 18 types (tools/pokemonTypes.ts), noms français et anglais dans les sorties des outils.
 - get_type_matchups : paramètre pokemon (types lus en code) ou types (1 ou 2), un seul des deux ; listes faiblesses, resistances, immunites ; get_evolution_chain : seuls les champs présents dans PokéAPI.
-- Contrôle d'ancrage : heuristique (nombres et noms de types ; multiplicateurs et nombres <= 2 tolérés).
+- Contrôle d'ancrage : heuristique (nombres et noms de types ; multiplicateurs, nombres <= 2 et numéros de liste tolérés ;
+  « combat », « vol », « normal » comptent comme types seulement en contexte de type) ; par paire pour les évolutions
+  (chaque évolution citée avec sa propre condition_fr).
+- Évolutions : la liste affichée est summary_fr (rédigée en code par get_evolution_chain, ajoutée par src/evolutionAnswer.ts) ;
+  le modèle n'écrit qu'une phrase d'introduction.
 
 ## Règles de sécurité
 
@@ -43,7 +47,7 @@
   d'injection FRAGILE, phrase par phrase (SYSTEM, ADMIN, ignore/oublie tes règles, changement de rôle, répéter le prompt)
   qui réduit le risque sans le supprimer.
 - Contrôle de sortie (src/outputGuard.ts) : une réponse qui contient 30 caractères consécutifs du prompt système est
-  remplacée par un refus poli.
+  remplacée par un refus poli ; Markdown (** et #) et caractères chinois retirés de toute réponse.
 - Requête : rôles user et assistant uniquement ; chaque message assistant porte la signature HMAC donnée par le serveur (HISTORY_SECRET), sinon 400 ; 30 messages maximum, 1 000 caractères par message utilisateur,
   20 000 caractères au total.
 - Historique : le modèle ne voit que la question et les 2 échanges précédents (recentHistory, packages/shared) ; une

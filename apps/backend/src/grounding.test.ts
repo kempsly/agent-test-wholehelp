@@ -35,7 +35,7 @@ const dracaufeuMatchups = trace("get_type_matchups", {
 describe("grounding check", () => {
   test("an answer built from the tool results is grounded", () => {
     const reply = "Nom : Pikachu\nTypes : Électrik\nStatistiques : PV 35, Attaque 55, Vitesse 90\nTaille et poids : 0,4 m, 6 kg\nNuméro : 25";
-    expect(checkGrounding(reply, [pikachu])).toEqual({ grounded: true, unverified_numbers: [], unverified_types: [] });
+    expect(checkGrounding(reply, [pikachu])).toEqual({ grounded: true, unverified_numbers: [], unverified_types: [], unverified_evolutions: [] });
   });
 
   test("an invented number is reported", () => {
@@ -95,6 +95,74 @@ describe("grounding check", () => {
 
   test("withGrounding adds the fields to the agent response without changing it", () => {
     const response: ChatResponse = { reply: "Pikachu a 99 PV.", toolCalls: [pikachu], model: "m", iterations: 2, durationMs: 10 };
-    expect(withGrounding(response)).toEqual({ ...response, grounded: false, unverified_numbers: ["99"], unverified_types: [] });
+    expect(withGrounding(response)).toEqual({ ...response, grounded: false, unverified_numbers: ["99"], unverified_types: [], unverified_evolutions: [] });
+  });
+
+  // ---------- evolutions: each one with its own condition ----------
+
+  const eevee = {
+    name: "get_evolution_chain",
+    arguments: {},
+    durationMs: 1,
+    result: {
+      summary_fr: "Aquali (évolution d'Évoli) : Pierre Eau\nMentali (évolution d'Évoli) : amitié élevée, le jour",
+      stages: [
+        { stage: 1, pokemon: [{ name: "eevee", name_fr: "Évoli" }] },
+        {
+          stage: 2,
+          pokemon: [
+            { name: "vaporeon", name_fr: "Aquali", condition_fr: "Pierre Eau" },
+            { name: "espeon", name_fr: "Mentali", condition_fr: "amitié élevée, le jour" },
+          ],
+        },
+      ],
+    },
+  };
+
+  test("pair check: a condition put on another evolution is flagged (Aquali : amitié élevée, le jour)", () => {
+    expect(checkGrounding("Aquali : amitié élevée, le jour", [eevee])).toMatchObject({ grounded: false, unverified_evolutions: ["Aquali"] });
+    expect(checkGrounding("Aquali : Pierre Eau\nMentali : Pierre Eau", [eevee]).unverified_evolutions).toEqual(["Mentali"]);
+  });
+
+  test("pair check: each evolution with its own condition is grounded, accents and case ignored; the base Pokemon is free", () => {
+    const reply = "Évoli a plusieurs évolutions.\nAquali (évolution d'Évoli) : Pierre Eau\nmentali : AMITIE ELEVEE, LE JOUR";
+    expect(checkGrounding(reply, [eevee])).toMatchObject({ grounded: true, unverified_evolutions: [] });
+  });
+
+  // ---------- battles (real answers of qwen2.5:7b, before the fix all flagged "à vérifier") ----------
+
+  const battle = {
+    name: "simulate_battle",
+    arguments: {},
+    durationMs: 1,
+    result: {
+      pokemon_a: "charizard",
+      pokemon_b: "blastoise",
+      winner: "blastoise",
+      turns: 2,
+      log: [
+        { turn: 1, attacker: "charizard", defender: "blastoise", attack_type: "flying", attack_type_fr: "Vol", effectiveness: 1, damage: 16, defender_hp_left: 63 },
+        { turn: 1, attacker: "blastoise", defender: "charizard", attack_type: "water", attack_type_fr: "Eau", effectiveness: 2, damage: 42, defender_hp_left: 36 },
+        { turn: 2, attacker: "charizard", defender: "blastoise", attack_type: "flying", attack_type_fr: "Vol", effectiveness: 1, damage: 16, defender_hp_left: 47 },
+        { turn: 2, attacker: "blastoise", defender: "charizard", attack_type: "water", attack_type_fr: "Eau", effectiveness: 2, damage: 42, defender_hp_left: 0 },
+      ],
+      initial_hp: [{ name: "charizard", hp: 78 }, { name: "blastoise", hp: 79 }],
+      final_hp: [{ name: "charizard", hp: 0 }, { name: "blastoise", hp: 47 }],
+    },
+  };
+
+  test("battle: the word combat is not the Fighting type, list numbers are not data, log numbers and start HP are grounded", () => {
+    const reply =
+      "Le Tortank gagne le combat. Voici un résumé du combat :\n1. Tour 1 : Dracaufeu attaque avec Vol, 16 dégâts, il reste 63 PV.\n" +
+      "2. Tour 1 : Tortank attaque avec Eau (efficacité x2), 42 dégâts.\n3. Tour 2 : Dracaufeu attaque avec Vol, il reste 47 PV.\n" +
+      "4. Tour 2 : Tortank inflige 42 dégâts.\nDracaufeu avait 78 PV au départ.";
+    expect(checkGrounding(reply, [battle])).toEqual({ grounded: true, unverified_numbers: [], unverified_types: [], unverified_evolutions: [] });
+  });
+
+  test("battle: a real Fighting type mention is still checked, an invented number is still flagged", () => {
+    expect(checkGrounding("Tortank est faible contre le type Combat.", [battle]).unverified_types).toEqual(["fighting"]);
+    expect(checkGrounding("Faiblesses : Plante, Combat (x2)", [battle]).unverified_types).toEqual(["grass", "fighting"]);
+    expect(checkGrounding("Tortank inflige 99 dégâts.", [battle]).unverified_numbers).toEqual(["99"]);
   });
 });
+

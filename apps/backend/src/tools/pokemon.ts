@@ -105,6 +105,21 @@ export async function fetchPokemonTypes(nameOrIdValue: string): Promise<{ name: 
   return { name: pokemon.name, types: parsed.data };
 }
 
+/** Name, types and base stats of a Pokemon, read from PokeAPI (used by the battle tool). */
+export async function fetchPokemonBattleData(nameOrIdValue: string) {
+  const pokemon = await fetchPokemon(nameOrIdValue);
+  const types = await fetchPokemonTypes(nameOrIdValue);
+  const stats: Record<string, number> = {};
+  for (const { base_stat, stat } of pokemon.stats) {
+    const key = STAT_KEYS[stat.name];
+    if (key) stats[key] = base_stat;
+  }
+  for (const key of ["hp", "attack", "defense", "speed"]) {
+    if (stats[key] === undefined) throw new PokeApiError("unavailable", `PokeAPI unavailable (missing stat ${key}).`);
+  }
+  return { name: pokemon.name, types: types.types, stats: stats as Record<"hp" | "attack" | "defense" | "speed", number> };
+}
+
 // ---------- tools ----------
 
 export const getPokemon = defineTool({

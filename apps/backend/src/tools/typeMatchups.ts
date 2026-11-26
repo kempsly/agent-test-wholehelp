@@ -38,6 +38,18 @@ export function computeMultipliers(defenders: DefenderRelations[]): Record<Pokem
 
 const entry = (type: PokemonType, multiplicateur: number) => ({ type_fr: TYPE_FR[type], type_en: type, multiplicateur });
 
+/** How one defending type is hit, from PokeAPI (shared with the battle tool). */
+export async function fetchDefenderRelations(type: PokemonType): Promise<DefenderRelations> {
+  const parsed = typeResponse.safeParse(await fetchPokeApi("type", type));
+  if (!parsed.success) throw new PokeApiError("unavailable", "PokeAPI unavailable (unexpected type format).");
+  const r = parsed.data.damage_relations;
+  return {
+    double_damage_from: r.double_damage_from.map((t) => t.name),
+    half_damage_from: r.half_damage_from.map((t) => t.name),
+    no_damage_from: r.no_damage_from.map((t) => t.name),
+  };
+}
+
 export const getTypeMatchups = defineTool({
   name: "get_type_matchups",
   description:
@@ -59,17 +71,7 @@ export const getTypeMatchups = defineTool({
   execute: async ({ pokemon, types }) => {
     const defender = pokemon !== undefined ? await fetchPokemonTypes(pokemon) : { name: undefined, types: types! };
 
-    const relations: DefenderRelations[] = [];
-    for (const type of defender.types) {
-      const parsed = typeResponse.safeParse(await fetchPokeApi("type", type));
-      if (!parsed.success) throw new PokeApiError("unavailable", "PokeAPI unavailable (unexpected type format).");
-      const r = parsed.data.damage_relations;
-      relations.push({
-        double_damage_from: r.double_damage_from.map((t) => t.name),
-        half_damage_from: r.half_damage_from.map((t) => t.name),
-        no_damage_from: r.no_damage_from.map((t) => t.name),
-      });
-    }
+    const relations = await Promise.all(defender.types.map(fetchDefenderRelations));
 
     const multipliers = computeMultipliers(relations);
     const attackers = POKEMON_TYPES.map((type) => ({ type, multiplier: multipliers[type] }));

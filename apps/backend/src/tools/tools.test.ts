@@ -4,6 +4,7 @@ import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { clearCache } from "./pokeapi";
 import { getEvolutionChain, getPokemon } from "./pokemon";
 import { getTypeMatchups } from "./typeMatchups";
+import { simulateBattleTool } from "./battle";
 import { tools } from "./index";
 
 const realFetch = globalThis.fetch;
@@ -288,12 +289,48 @@ describe("get_evolution_chain", () => {
   });
 });
 
+// ---------- simulate_battle ----------
+
+const fighterBody = (name: string, types: string[], hp: number, attack: number, defense: number, speed: number) => ({
+  ...pikachu,
+  name,
+  types: types.map((type, i) => ({ slot: i + 1, type: { name: type } })),
+  stats: [stat("hp", hp), stat("attack", attack), stat("defense", defense), stat("speed", speed)],
+});
+
+describe("simulate_battle", () => {
+  test("simulates the fight in code from the PokeAPI data: log, damage and winner (read-only, nothing stored)", async () => {
+    mockApi({
+      ...typeRoutes,
+      "/pokemon/charizard": fighterBody("charizard", ["fire", "flying"], 78, 84, 78, 100),
+      "/pokemon/ghosty": fighterBody("ghosty", ["ghost"], 60, 65, 50, 60),
+    });
+    const result = (await simulateBattleTool.execute({ pokemon_a: "ghosty", pokemon_b: "Charizard" })) as {
+      winner: string;
+      turns: number;
+      log: { attacker: string; damage: number; effectiveness: number; defender_hp_left: number }[];
+      final_hp: { name: string; hp: number }[];
+    };
+    // charizard is faster: it attacks first even though it is Pokemon B. 20*84/50 = 33, then 33 again: KO at turn 2.
+    expect(result.log[0]).toMatchObject({ attacker: "charizard", damage: 33, effectiveness: 1, defender_hp_left: 27 });
+    expect(result).toMatchObject({ winner: "charizard", turns: 2 });
+    expect(result.final_hp).toEqual([{ name: "ghosty", hp: 0 }, { name: "charizard", hp: 62 }]);
+    expect(result.log).toHaveLength(3);
+  });
+
+  test("unknown or invalid Pokemon: clear error, no simulation", async () => {
+    mockApi({ ...typeRoutes, "/pokemon/charizard": fighterBody("charizard", ["fire", "flying"], 78, 84, 78, 100) });
+    await expect(simulateBattleTool.execute({ pokemon_a: "charizard", pokemon_b: "zorglub" })).rejects.toThrow(/not found.*English name.*number/);
+    await expect(simulateBattleTool.execute({ pokemon_a: "../../users", pokemon_b: "charizard" })).rejects.toThrow(/Invalid name/);
+  });
+});
+
 // ---------- registry ----------
 
 describe("tool registry", () => {
   test("exposes the Pokemon tools and neither calculator nor search_knowledge_base", () => {
     const names = tools.map((t) => t.name);
-    expect(names).toEqual(expect.arrayContaining(["get_pokemon", "get_type_matchups", "get_evolution_chain"]));
+    expect(names).toEqual(expect.arrayContaining(["get_pokemon", "get_type_matchups", "get_evolution_chain", "simulate_battle"]));
     expect(names).not.toContain("calculator");
     expect(names).not.toContain("search_knowledge_base");
   });

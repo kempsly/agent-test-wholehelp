@@ -6,7 +6,7 @@ import { answer } from "./answer";
 import { config } from "./config";
 import { signReply } from "./history";
 import type { ChatFn, ChatResult, OllamaMessage } from "./ollama";
-import { TOOL_REMINDER, needsTool } from "./toolReminder";
+import { TOOL_REMINDER, contextPokemon, needsTool } from "./toolReminder";
 
 config.historySecret = "test-secret";
 const realFetch = globalThis.fetch;
@@ -101,6 +101,27 @@ describe("forced tool retry", () => {
     expect(retry![0]).toEqual(first![0]!); // the same system prompt
     expect(retry![1]!.content).toContain("Évolutions d'Évoli");
     expect(retry!.some((m) => m.content.includes("Pikachu"))).toBe(false);
+  });
+
+  test("follow-up question: the retry names the Pokemon of the history (\"Pokémon dont on parle : pikachu\")", async () => {
+    const { chat, received } = scripted(text("Sa vitesse est de 90."), toolCall("get_pokemon", { name_or_id: "pikachu" }), text("Vitesse : 90."));
+    globalThis.fetch = (async () => new Response("Not Found", { status: 404 })) as unknown as typeof fetch;
+    await answer([user("Fiche de Pikachu"), assistant("Pikachu : type Électrik."), user("et sa vitesse ?")], { chat });
+    const retry = received[1]!;
+    expect(retry.map((m) => m.role)).toEqual(["system", "user", "system"]);
+    expect(retry.at(-1)!.content).toBe(`${TOOL_REMINDER} Pokémon dont on parle : pikachu.`);
+    expect(retry.some((m) => m.role === "assistant")).toBe(false);
+  });
+
+  test("without history, or when the question names its own Pokemon, nothing is added to the reminder", async () => {
+    const alone = scripted(text("Sa vitesse est de 90."), text("Je ne sais pas."));
+    await answer([user("et sa vitesse ?")], { chat: alone.chat });
+    expect(alone.received[1]!.at(-1)).toEqual({ role: "system", content: TOOL_REMINDER });
+
+    const msg = (role: "user" | "assistant", content: string): OllamaMessage => ({ role, content });
+    expect(contextPokemon([msg("user", "Fiche de Pikachu"), msg("assistant", "Voici."), msg("user", "Évolutions d'Évoli")])).toBeNull();
+    // Most recent first: Dracaufeu (answer) wins over Pikachu (older question); French names give the English name.
+    expect(contextPokemon([msg("user", "Fiche de Pikachu"), msg("assistant", "Dracaufeu : type Feu."), msg("user", "et sa taille ?")])).toBe("charizard");
   });
 
   test("still no tool after the reminder: the answer is never grounded, even without number or type", async () => {

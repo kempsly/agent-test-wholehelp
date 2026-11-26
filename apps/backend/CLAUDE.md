@@ -53,7 +53,8 @@
 - Historique : le modèle ne voit que la question et les 2 échanges précédents (recentHistory, packages/shared) ; une
   réponse de plus de 8 000 caractères est coupée avant la signature.
 - Relance forcée (src/toolReminder.ts) : 1re étape sans outil qui cite un Pokémon, un type ou un chiffre -> une relance sans historique ;
-  toujours sans outil -> grounded = false.
+  toujours sans outil -> grounded = false. Question de suite sans nom : le rappel ajoute « Pokémon dont on parle : <nom> »,
+  dernier Pokémon cité dans l'historique, extrait en code.
 - API (src/index.ts) : 20 requêtes par minute et par IP en mémoire (src/rateLimit.ts, 429), Content-Type application/json
   obligatoire sur les POST (415), corps de 32 Ko maximum (413). get_current_datetime n'est plus exposé (gardé dans examples.ts
   pour les tests de la boucle).

@@ -34,6 +34,23 @@ export function frenchNameOf(english: string): string | null {
  */
 const ONE_WORD_NAMES = new Set([...BY_FRENCH].flatMap(([french, { en }]) => [french, en]).filter((name) => !name.includes(" ")));
 
+/** One-word name (French or English, normalized) -> English name. */
+const ENGLISH_BY_WORD = new Map<string, string>();
+for (const [french, { en }] of BY_FRENCH) {
+  if (!french.includes(" ") && !ENGLISH_BY_WORD.has(french)) ENGLISH_BY_WORD.set(french, en);
+  if (!en.includes(" ") && !ENGLISH_BY_WORD.has(en)) ENGLISH_BY_WORD.set(en, en);
+}
+
+/** English name of the last Pokemon cited in the text by a one-word name (Pikachu -> pikachu), or null. */
+export function lastCitedPokemon(text: string): string | null {
+  const words = normalizeFrenchName(text).split(/[^\p{L}\p{N}-]+/u);
+  for (let i = words.length - 1; i >= 0; i--) {
+    const english = ENGLISH_BY_WORD.get(words[i]!);
+    if (english) return english;
+  }
+  return null;
+}
+
 /** True if the text cites a Pokemon by a one-word French or English name (accents and case ignored). */
 export function citesPokemon(text: string): boolean {
   return normalizeFrenchName(text)

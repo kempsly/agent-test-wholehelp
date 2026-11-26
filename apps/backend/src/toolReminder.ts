@@ -3,13 +3,30 @@
 // right tool first.
 // Done by wrapping the chat function: the agent loop (agent.ts) is unchanged.
 
-import type { ChatFn } from "./ollama";
+import type { ChatFn, OllamaMessage } from "./ollama";
 import { citedTypes } from "./grounding";
-import { citesPokemon } from "./tools/frenchNames";
+import { citesPokemon, lastCitedPokemon } from "./tools/frenchNames";
 
 export const TOOL_REMINDER =
   "Appelle d'abord l'outil adapté (get_pokemon, get_type_matchups, get_evolution_chain ou simulate_battle) avec le nom exact " +
   "donné par l'utilisateur, puis réponds uniquement à partir de son résultat. Si la question ne porte sur aucun Pokémon ni aucun type, réponds sans outil.";
+
+/**
+ * The Pokemon the conversation is about, for a follow-up question that names none ("et sa vitesse ?"): the last
+ * Pokemon cited in the history (most recent message first), extracted in code. Null if the question names a Pokemon
+ * itself (the name of the history could mislead) or if the history cites none.
+ */
+export function contextPokemon(messages: OllamaMessage[]): string | null {
+  const questionIndex = messages.map((m) => m.role).lastIndexOf("user");
+  if (questionIndex < 0 || citesPokemon(messages[questionIndex]!.content)) return null;
+  for (let i = questionIndex - 1; i >= 0; i--) {
+    const m = messages[i]!;
+    if (m.role !== "user" && m.role !== "assistant") continue;
+    const name = lastCitedPokemon(m.content);
+    if (name) return name;
+  }
+  return null;
+}
 
 /** True if a text answer cites a Pokemon, a type or a number: such an answer needs a tool. */
 export function needsTool(reply: string): boolean {
@@ -35,7 +52,10 @@ export function withToolReminder(chat: ChatFn): { chat: ChatFn; state: ToolRemin
     // model copies its previous answers. Only the system prompt, the current question and the reminder are sent.
     const system = messages.find((m) => m.role === "system");
     const question = [...messages].reverse().find((m) => m.role === "user");
-    return chat([...(system ? [system] : []), ...(question ? [question] : []), { role: "system", content: TOOL_REMINDER }], tools);
+    // The history is dropped, but not the Pokemon it is about: "et sa vitesse ?" keeps "pikachu".
+    const pokemon = contextPokemon(messages);
+    const reminder = pokemon ? `${TOOL_REMINDER} Pokémon dont on parle : ${pokemon}.` : TOOL_REMINDER;
+    return chat([...(system ? [system] : []), ...(question ? [question] : []), { role: "system", content: reminder }], tools);
   };
   return { chat: wrapped, state };
 }

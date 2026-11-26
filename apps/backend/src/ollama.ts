@@ -26,6 +26,8 @@ export interface OllamaToolSpec {
 
 export interface ChatResult {
   message: OllamaMessage;
+  /** Tokens read (prompt) and written (answer) by the model for this call, as given by Ollama. */
+  usage?: { prompt_eval_count: number; eval_count: number };
 }
 
 /** The signature the agent depends on: makes it trivial to fake the LLM in tests. */
@@ -49,8 +51,8 @@ export const ollamaChat: ChatFn = async (messages, tools) => {
     throw new Error(`Ollama error ${res.status}: ${text}`);
   }
 
-  const data = (await res.json()) as { message: OllamaMessage };
-  return { message: data.message };
+  const data = (await res.json()) as { message: OllamaMessage; prompt_eval_count?: number; eval_count?: number };
+  return { message: data.message, usage: { prompt_eval_count: data.prompt_eval_count ?? 0, eval_count: data.eval_count ?? 0 } };
 };
 
 /** Used by /health: checks that Ollama is up and the configured model is installed. */

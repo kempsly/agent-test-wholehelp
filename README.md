@@ -25,7 +25,7 @@ docs/           SUJET, PLAN, DECISIONS, EVALUATION
 | `get_evolution_chain` | Chaîne d'évolution par étapes, avec les branches et les conditions présentes dans PokéAPI |
 | `simulate_battle` | Combat simulé tour par tour entre deux Pokémon (règles simplifiées), vainqueur et journal |
 
-L'outil d'exemple du socle `get_current_datetime` est encore dans la liste des outils : il est hors sujet et devrait être retiré.
+API : corps de 32 Ko maximum (413), Content-Type application/json obligatoire (415), 20 requêtes par minute et par IP, en mémoire (429).
 
 ## Garanties de fiabilité
 
@@ -83,5 +83,5 @@ Les seuils ne sont pas atteints. Les critères ont changé entre les passages : 
 - Résoudre les noms français en code, avec une table générée depuis PokéAPI.
 - Relancer le tour si la réponse n'est pas ancrée et qu'aucun outil n'a été appelé.
 - Essayer un modèle plus robuste (`OLLAMA_MODEL=<modèle> bun run eval`) et comparer avec le tableau ci-dessus.
-- Renforcer le filtre d'injection, ajouter une limitation de débit, retirer `get_current_datetime`.
+- Renforcer le filtre d'injection.
 - Ajouter les types et les PV de départ dans le résultat de `simulate_battle`, et des cas de combat dans l'évaluation.

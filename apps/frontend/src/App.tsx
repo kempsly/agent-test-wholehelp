@@ -72,7 +72,7 @@ export function App() {
           const r = event.response;
           setMessages((prev) => [
             ...prev,
-            { role: "assistant", content: r.reply, signature: r.signature, toolCalls: r.toolCalls, grounded: r.grounded, unverified: [...r.unverified_numbers, ...r.unverified_types, ...r.unverified_evolutions], meta: `${r.model} · ${r.iterations} étape(s) · ${(r.durationMs / 1000).toFixed(1)} s` },
+            { role: "assistant", content: r.reply, signature: r.signature, toolCalls: r.toolCalls, grounded: r.grounded, unverified: [...r.unverified_numbers, ...r.unverified_types, ...r.unverified_evolutions], meta: `${r.model} · ${r.iterations} étape(s) · ${(r.durationMs / 1000).toFixed(1)} s · ${r.tokens.prompt_eval_count} tokens lus, ${r.tokens.eval_count} écrits` },
           ]);
         }
         if (event.type === "error") {

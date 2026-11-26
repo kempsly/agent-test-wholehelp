@@ -101,4 +101,4 @@ Lancer : `bun run dev`. Tester : `bun run test`. Vérifier les types : `bun run 
 - Partie 6 : évaluation (16 cas x 3 passages, `bun run eval`), 3 passages réalisés : seuils non atteints (docs/EVALUATION.md).
 - Partie 7 (bonus, version minimale) : moteur de combat en code, outil simulate_battle, vue de combat dans le front ; pas de routes /api/battles ; non couvert par l'évaluation.
 - Partie 8 : README, EVALUATION.md, DECISIONS.md.
-- Limites connues : noms français traduits par le modèle, contrôle d'ancrage heuristique, filtre d'injection fragile, get_current_datetime encore exposé (voir README).
+- Limites connues : noms français traduits par le modèle, contrôle d'ancrage heuristique, filtre d'injection fragile (voir README).

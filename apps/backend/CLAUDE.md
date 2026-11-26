@@ -54,6 +54,10 @@
   réponse de plus de 8 000 caractères est coupée avant la signature.
 - Relance forcée (src/toolReminder.ts) : 1re étape sans outil qui cite un Pokémon, un type ou un chiffre -> une relance sans historique ;
   toujours sans outil -> grounded = false.
+- API (src/index.ts) : 20 requêtes par minute et par IP en mémoire (src/rateLimit.ts, 429), Content-Type application/json
+  obligatoire sur les POST (415), corps de 32 Ko maximum (413). get_current_datetime n'est plus exposé (gardé dans examples.ts
+  pour les tests de la boucle).
+- Réponse : tokens = somme de prompt_eval_count et eval_count sur tous les appels au modèle du tour (relance comprise).
 - Jamais d'eval() ni de new Function().
 
 ## Créer un outil

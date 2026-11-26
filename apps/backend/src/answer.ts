@@ -2,12 +2,12 @@
 // agent loop (unchanged, with the forced tool retry), replace a reply that leaks the system prompt, then add the
 // grounding check and the signature. Used by the routes and by the evaluation, so both test the same thing.
 
-import { recentHistory, type ChatMessage, type SignedChatResponse, type ToolTrace } from "@app/shared";
+import { recentHistory, type ChatMessage, type SignedChatResponse, type TokenUsage, type ToolTrace } from "@app/shared";
 import { runAgent, type AgentOptions } from "./agent";
 import { MAX_ASSISTANT_CHARS } from "./chatRequest";
 import { withGrounding } from "./grounding";
 import { signReply } from "./history";
-import { ollamaChat } from "./ollama";
+import { ollamaChat, type ChatFn } from "./ollama";
 import { addEvolutionSummaries } from "./evolutionAnswer";
 import { LEAK_REFUSAL, guardReply } from "./outputGuard";
 import { withToolReminder } from "./toolReminder";
@@ -96,11 +96,24 @@ export function finalizeReply(reply: string, toolCalls: ToolTrace[]): string {
   return text.length > MAX_ASSISTANT_CHARS ? `${text.slice(0, MAX_ASSISTANT_CHARS - 1)}…` : text;
 }
 
+/** Wraps the chat function to sum the tokens of every model call of the turn. */
+export function withTokenCount(chat: ChatFn): { chat: ChatFn; tokens: TokenUsage } {
+  const tokens: TokenUsage = { prompt_eval_count: 0, eval_count: 0 };
+  const counted: ChatFn = async (messages, specs) => {
+    const result = await chat(messages, specs);
+    tokens.prompt_eval_count += result.usage?.prompt_eval_count ?? 0;
+    tokens.eval_count += result.usage?.eval_count ?? 0;
+    return result;
+  };
+  return { chat: counted, tokens };
+}
+
 export async function answer(history: ChatMessage[], options: AgentOptions = {}): Promise<SignedChatResponse> {
   // The reply also goes out in the "token" event of the stream: the tool results seen so far give the same final text.
   const onEvent = options.onEvent;
   const traces: ToolTrace[] = [];
-  const reminder = withToolReminder(options.chat ?? ollamaChat);
+  const counter = withTokenCount(options.chat ?? ollamaChat);
+  const reminder = withToolReminder(counter.chat);
   const guardedOptions: AgentOptions = {
     ...options,
     chat: reminder.chat,
@@ -119,5 +132,5 @@ export async function answer(history: ChatMessage[], options: AgentOptions = {})
   // Retried and still no tool: the answer comes from memory, it is never shown as verified.
   const response = reminder.state.retried && raw.toolCalls.length === 0 ? { ...grounded, grounded: false } : grounded;
   // The front sends this signature back with the reply; without it the reply is refused in the history.
-  return { ...response, signature: signReply(reply) };
+  return { ...response, signature: signReply(reply), tokens: counter.tokens };
 }

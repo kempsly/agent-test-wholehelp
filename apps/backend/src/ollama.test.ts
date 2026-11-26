@@ -18,3 +18,11 @@ test("every chat request asks for num_ctx 8192 and num_predict 1024, with the co
   await ollamaChat([{ role: "user", content: "Salut" }], []);
   expect(body.options).toEqual({ temperature: config.temperature, num_ctx: 8192, num_predict: 1024 });
 });
+
+test("returns the token counts given by Ollama (0 when absent)", async () => {
+  globalThis.fetch = (async () =>
+    Response.json({ message: { role: "assistant", content: "ok" }, prompt_eval_count: 2154, eval_count: 42 })) as unknown as typeof fetch;
+  expect((await ollamaChat([{ role: "user", content: "Salut" }], [])).usage).toEqual({ prompt_eval_count: 2154, eval_count: 42 });
+  globalThis.fetch = (async () => Response.json({ message: { role: "assistant", content: "ok" } })) as unknown as typeof fetch;
+  expect((await ollamaChat([{ role: "user", content: "Salut" }], [])).usage).toEqual({ prompt_eval_count: 0, eval_count: 0 });
+});

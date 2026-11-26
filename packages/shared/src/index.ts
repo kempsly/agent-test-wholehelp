@@ -67,8 +67,15 @@ export interface GroundedChatResponse extends ChatResponse {
   unverified_evolutions: string[];
 }
 
-/** What the API sends: the grounded response plus the signature of reply. */
+/** Tokens of the turn, summed over all the model calls (tool steps and forced retry included). */
+export interface TokenUsage {
+  prompt_eval_count: number;
+  eval_count: number;
+}
+
+/** What the API sends: the grounded response plus the signature of reply and the tokens used. */
 export interface SignedChatResponse extends GroundedChatResponse {
+  tokens: TokenUsage;
   /** HMAC-SHA256 of reply: the front stores it and sends it back with the message in the history. */
   signature: string;
 }

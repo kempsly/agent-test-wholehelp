@@ -149,3 +149,16 @@ describe("answer", () => {
     expect(received[0]!.find((m) => m.role === "assistant")).toEqual({ role: "assistant", content: "Bonjour." });
   });
 });
+
+describe("tokens", () => {
+  test("sums prompt_eval_count and eval_count over every model call of the turn", async () => {
+    const steps = [
+      { message: { role: "assistant" as const, content: "", tool_calls: [{ function: { name: "unknown_tool", arguments: {} } }] }, usage: { prompt_eval_count: 2000, eval_count: 20 } },
+      { message: { role: "assistant" as const, content: "Bonjour." }, usage: { prompt_eval_count: 2100, eval_count: 5 } },
+    ];
+    let i = 0;
+    const chat: ChatFn = async () => steps[i++]!;
+    const res = await answer([{ role: "user", content: "Salut" }], { chat });
+    expect(res.tokens).toEqual({ prompt_eval_count: 4100, eval_count: 25 });
+  });
+});

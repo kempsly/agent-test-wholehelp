@@ -3,12 +3,11 @@
 
 import type { Tool } from "./types";
 import { toOllamaSpec } from "./types";
-import { getCurrentDateTime } from "./examples";
 import { getEvolutionChain, getPokemon } from "./pokemon";
 import { getTypeMatchups } from "./typeMatchups";
 import { simulateBattleTool } from "./battle";
 
-export const tools: Tool[] = [getPokemon, getTypeMatchups, getEvolutionChain, simulateBattleTool, getCurrentDateTime] as Tool[];
+export const tools: Tool[] = [getPokemon, getTypeMatchups, getEvolutionChain, simulateBattleTool] as Tool[];
 
 export const toolsByName = new Map(tools.map((t) => [t.name, t]));
 

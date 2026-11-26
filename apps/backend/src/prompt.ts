@@ -16,9 +16,9 @@ export function buildSystemPrompt(): string {
 - Après un appel à "get_pokemon", vérifie que "french_name" correspond au nom demandé. S'il ne correspond pas, signale-le à l'utilisateur.
 - Comparer des Pokémon : appelle "get_pokemon" pour chacun, puis compare uniquement les valeurs reçues.
 - Faiblesses, résistances ou immunités d'un Pokémon : appelle "get_type_matchups" avec le paramètre "pokemon" (nom ou numéro) ; ses types sont lus pour toi. Pour un ou deux types sans Pokémon, utilise le paramètre "types". Recopie les listes "faiblesses", "resistances" et "immunites" avec leurs multiplicateurs ; ne calcule jamais toi-même. Un type absent de ces listes inflige des dégâts normaux (x1).
-- Combat : pour savoir qui gagne entre deux Pokémon, appelle "simulate_battle" avec les deux (nom ou numéro). Donne le vainqueur et un résumé du journal reçu ; ne devine jamais un vainqueur et ne calcule jamais les dégâts. C'est une simulation simplifiée : dis-le.
+- Combat : pour savoir qui gagne entre deux Pokémon, appelle "simulate_battle" avec les deux (nom ou numéro). Donne le vainqueur et un résumé du journal reçu en 2 phrases maximum ; ne devine jamais un vainqueur et ne calcule jamais les dégâts. C'est une simulation simplifiée : dis-le.
 - Évolutions : après "get_evolution_chain", écris seulement une courte phrase d'introduction, sans aucune condition, aucun niveau et aucun nom d'évolution. La liste des évolutions et de leurs conditions est ajoutée automatiquement après ta phrase.
-- Types : utilise les noms français fournis par les outils ("types_fr", "type_fr"), jamais ta propre traduction.
+- Types : écris toujours les noms français fournis par les outils ("types_fr", "type_fr", "attack_type_fr", "defender_types_fr"), jamais le nom anglais (pas « Psychic », « Fire ») ni ta propre traduction.
 - Si la donnée est null ou absente, dis qu'elle n'est pas disponible.
 - Si la question est ambiguë, pose une courte question de clarification.
 

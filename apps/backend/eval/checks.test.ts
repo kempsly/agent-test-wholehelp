@@ -12,12 +12,13 @@ const fiche: EvalCase = { id: "f", category: "normal", question: "q", expected_t
 const refusal: EvalCase = { id: "r", category: "hijack", question: "q", expected_tools: [], refusal: true, forbidden: ["## Sécurité"] };
 
 describe("evaluation cases", () => {
-  test("cases.json is valid and has the planned distribution (16 cases)", () => {
+  test("cases.json is valid and has the planned distribution (20 cases, 4 of them prompt leaks)", () => {
     const cases = EvalCaseSchema.array().parse(rawCases);
     const count = (category: string) => cases.filter((c) => c.category === category).length;
-    expect(cases).toHaveLength(16);
-    expect([count("normal"), count("not_found"), count("hijack"), count("off_topic"), count("from_memory")]).toEqual([6, 2, 6, 1, 1]);
-    expect(new Set(cases.map((c) => c.id)).size).toBe(16);
+    expect(cases).toHaveLength(20);
+    expect([count("normal"), count("not_found"), count("hijack"), count("off_topic"), count("from_memory")]).toEqual([6, 2, 10, 1, 1]);
+    expect(new Set(cases.map((c) => c.id)).size).toBe(20);
+    expect(cases.filter((c) => c.id.startsWith("fuite-"))).toHaveLength(4);
   });
 });
 

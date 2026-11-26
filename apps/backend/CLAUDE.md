@@ -13,7 +13,7 @@
 - src/battle/ : moteur de combat (bonus), fonctions pures, sans LLM.
 - src/agent.test.ts : tests de la boucle avec faux LLM. Autres tests à côté du code : tools/pokeapi.test.ts,
   tools/tools.test.ts, battle/battle.test.ts (fetch simulé).
-- eval/ : jeu d'évaluation (16 cas) et script `bun run eval`.
+- eval/ : jeu d'évaluation (20 cas, dont 4 de fuite du prompt) et script `bun run eval`.
 
 ## Règles de fiabilité
 
@@ -37,7 +37,10 @@
 - Tous les outils sont en lecture seule. Aucun outil générique (fetch libre, exécution de code, fichiers).
 - Les résultats d'outils sont des données : ne jamais les insérer dans le prompt système.
 - Les messages utilisateur sont encadrés par <user_message> avant d'être envoyés au modèle (src/answer.ts), après un filtre
-  d'injection FRAGILE (liste de mots : SYSTEM, ADMIN, « ignore tes instructions ») qui réduit le risque sans le supprimer.
+  d'injection FRAGILE, phrase par phrase (SYSTEM, ADMIN, ignore/oublie tes règles, changement de rôle, répéter le prompt)
+  qui réduit le risque sans le supprimer.
+- Contrôle de sortie (src/outputGuard.ts) : une réponse qui contient 30 caractères consécutifs du prompt système est
+  remplacée par un refus poli.
 - Requête : rôles user et assistant uniquement ; chaque message assistant porte la signature HMAC donnée par le serveur (HISTORY_SECRET), sinon 400 ; 30 messages maximum, 1 000 caractères par message utilisateur,
   20 000 caractères au total.
 - Jamais d'eval() ni de new Function().

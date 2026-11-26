@@ -50,3 +50,15 @@ input { flex: 1; padding: 10px 12px; border: 1px solid var(--border); border-rad
 button { padding: 8px 14px; border: 1px solid var(--accent); background: var(--accent); color: white; border-radius: 8px; cursor: pointer; font-size: 13px; }
 button:disabled { opacity: 0.5; cursor: default; }
 button.ghost, .suggestions button { background: transparent; color: var(--accent); }
+
+.battle { margin-top: 8px; padding: 12px; background: var(--panel); border: 1px solid var(--border); border-radius: 12px; font-size: 13px; }
+.fighters { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.fighter { display: flex; flex-direction: column; gap: 4px; padding: 8px; border: 1px solid var(--border); border-radius: 8px; }
+.fighter.winner { border-color: var(--accent); background: var(--user); }
+.fighter .muted { font-size: 12px; color: var(--muted); }
+.hp-track { height: 10px; background: var(--border); border-radius: 999px; overflow: hidden; }
+.hp-fill { height: 100%; background: var(--accent); transition: width 0.5s ease; }
+.hp-value { font-size: 12px; }
+.battle-actions { display: flex; align-items: center; gap: 12px; margin-top: 10px; }
+.winner-text { font-weight: 600; color: var(--accent); }
+.battle-log { margin: 10px 0 0; padding-left: 18px; font-size: 12px; color: var(--muted); max-height: 160px; overflow-y: auto; }

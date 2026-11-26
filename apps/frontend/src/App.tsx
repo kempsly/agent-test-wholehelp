@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from "react";
 import type { ChatMessage, ToolTrace } from "@app/shared";
 import { fetchHealth, streamChat } from "./api";
+import { BattleView } from "./BattleView";
 
 interface UiMessage extends ChatMessage {
   toolCalls?: ToolTrace[];
@@ -111,6 +112,9 @@ export function App() {
         {messages.map((m, i) => (
           <div key={i} className={`msg ${m.role} ${m.error ? "error" : ""}`}>
             <div className="bubble">{m.content}</div>
+            {m.toolCalls
+              ?.filter((t) => t.name === "simulate_battle" && !t.error)
+              .map((t, j) => <BattleView key={j} result={t.result} />)}
             {m.toolCalls && m.toolCalls.length > 0 && (
               <details className="tools">
                 <summary>{m.toolCalls.length} appel(s) d'outil</summary>

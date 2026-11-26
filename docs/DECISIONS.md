@@ -35,3 +35,5 @@
 | Contrôle d'ancrage dans grounding.ts, appelé par les routes (index.ts), pas dans la boucle d'agent | La boucle reste inchangée et testée ; grounded, unverified_numbers et unverified_types ajoutés à la réponse | Modifier agent.ts |
 | Badge « vérifié » seulement si au moins un outil a été appelé ; « à vérifier » si grounded est false | Une réponse sans outil ne doit jamais être présentée comme vérifiée | Badge « vérifié » dès que rien n'est détecté |
 | Noms de types français et anglais dans une table fixe de 18 entrées (grounding.ts) | Les outils renvoient l'anglais, la réponse est en français ; table de libellés, pas de données | Comparer en anglais seulement |
+| Évaluation : critères pures dans eval/checks.ts (testées), exécution sur le vrai modèle dans eval/run.ts, code de sortie 1 si les seuils ne sont pas atteints | Séparer la mesure (déterministe) du modèle (non déterministe) | Script unique non testé |
+| Refus = mot de refus et mention des Pokémon dans la réponse, sans outil réussi ni contenu interdit | Critère simple et automatisable ; heuristique assumée | Relecture manuelle |

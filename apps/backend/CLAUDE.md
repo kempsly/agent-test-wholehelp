@@ -38,7 +38,7 @@
 - Les résultats d'outils sont des données : ne jamais les insérer dans le prompt système.
 - Les messages utilisateur sont encadrés par <user_message> avant d'être envoyés au modèle (src/answer.ts), après un filtre
   d'injection FRAGILE (liste de mots : SYSTEM, ADMIN, « ignore tes instructions ») qui réduit le risque sans le supprimer.
-- Requête : rôles user et assistant uniquement, 30 messages maximum, 1 000 caractères par message utilisateur,
+- Requête : rôles user et assistant uniquement ; chaque message assistant porte la signature HMAC donnée par le serveur (HISTORY_SECRET), sinon 400 ; 30 messages maximum, 1 000 caractères par message utilisateur,
   20 000 caractères au total.
 - Jamais d'eval() ni de new Function().
 

@@ -53,7 +53,7 @@ export function App() {
     const content = text.trim();
     if (!content || loading) return;
     const history: ChatMessage[] = [
-      ...messages.filter((m) => !m.error).map(({ role, content }) => ({ role, content })),
+      ...messages.filter((m) => !m.error).map(({ role, content, signature }) => ({ role, content, signature })),
       { role: "user", content },
     ];
     setMessages((prev) => [...prev, { role: "user", content }]);
@@ -68,7 +68,7 @@ export function App() {
           const r = event.response;
           setMessages((prev) => [
             ...prev,
-            { role: "assistant", content: r.reply, toolCalls: r.toolCalls, grounded: r.grounded, unverified: [...r.unverified_numbers, ...r.unverified_types], meta: `${r.model} · ${r.iterations} étape(s) · ${(r.durationMs / 1000).toFixed(1)} s` },
+            { role: "assistant", content: r.reply, signature: r.signature, toolCalls: r.toolCalls, grounded: r.grounded, unverified: [...r.unverified_numbers, ...r.unverified_types], meta: `${r.model} · ${r.iterations} étape(s) · ${(r.durationMs / 1000).toFixed(1)} s` },
           ]);
         }
         if (event.type === "error") {

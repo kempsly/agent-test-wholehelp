@@ -2,7 +2,11 @@
 
 import { describe, expect, test } from "bun:test";
 import { INJECTION_MARKER, answer, neutralizeInjections, wrapUserMessages } from "./answer";
+import { config } from "./config";
+import { isValidSignature } from "./history";
 import type { ChatFn, OllamaMessage } from "./ollama";
+
+config.historySecret = "test-secret";
 
 describe("wrapUserMessages", () => {
   test("frames user messages and leaves assistant messages untouched", () => {
@@ -62,5 +66,23 @@ describe("answer", () => {
     const user = received[0]!.find((m) => m.role === "user")!;
     expect(user.content).toBe("<user_message>\nFiche de Pikachu\n</user_message>");
     expect(response).toMatchObject({ reply: "Pikachu a 99 PV.", grounded: false, unverified_numbers: ["99"] });
+  });
+
+  test("the response carries the signature of the reply, and the signature is not sent to the model", async () => {
+    const received: OllamaMessage[][] = [];
+    const chat: ChatFn = async (messages) => {
+      received.push(structuredClone(messages));
+      return { message: { role: "assistant", content: "Pikachu est de type Électrik." } };
+    };
+    const response = await answer(
+      [
+        { role: "user", content: "Salut" },
+        { role: "assistant", content: "Bonjour.", signature: "a".repeat(64) },
+        { role: "user", content: "Type de Pikachu ?" },
+      ],
+      { chat },
+    );
+    expect(isValidSignature(response.reply, response.signature)).toBe(true);
+    expect(received[0]!.find((m) => m.role === "assistant")).toEqual({ role: "assistant", content: "Bonjour." });
   });
 });

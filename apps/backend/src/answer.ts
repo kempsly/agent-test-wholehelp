@@ -1,9 +1,10 @@
 // What the API does for one question: frame the user messages as untrusted data, run the agent loop
 // (unchanged), then add the grounding check. Used by the routes and by the evaluation, so both test the same thing.
 
-import type { ChatMessage, GroundedChatResponse } from "@app/shared";
+import type { ChatMessage, SignedChatResponse } from "@app/shared";
 import { runAgent, type AgentOptions } from "./agent";
 import { withGrounding } from "./grounding";
+import { signReply } from "./history";
 
 export const INJECTION_MARKER = "[texte retiré : instruction non autorisée]";
 
@@ -44,6 +45,8 @@ export function wrapUserMessages(messages: ChatMessage[]): ChatMessage[] {
   );
 }
 
-export async function answer(history: ChatMessage[], options?: AgentOptions): Promise<GroundedChatResponse> {
-  return withGrounding(await runAgent(wrapUserMessages(history), options));
+export async function answer(history: ChatMessage[], options?: AgentOptions): Promise<SignedChatResponse> {
+  const response = withGrounding(await runAgent(wrapUserMessages(history), options));
+  // The front sends this signature back with the reply; without it the reply is refused in the history.
+  return { ...response, signature: signReply(response.reply) };
 }

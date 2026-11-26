@@ -6,6 +6,8 @@ export type Role = "system" | "user" | "assistant" | "tool";
 export interface ChatMessage {
   role: "user" | "assistant";
   content: string;
+  /** Assistant messages only: HMAC given by the server with the reply, sent back unchanged. */
+  signature?: string;
 }
 
 /** One tool call made by the agent during a turn, shown in the UI for transparency. */
@@ -38,10 +40,16 @@ export interface GroundedChatResponse extends ChatResponse {
   unverified_types: string[];
 }
 
+/** What the API sends: the grounded response plus the signature of reply. */
+export interface SignedChatResponse extends GroundedChatResponse {
+  /** HMAC-SHA256 of reply: the front stores it and sends it back with the message in the history. */
+  signature: string;
+}
+
 /** Events sent over the streaming endpoint (Server-Sent Events). */
 export type StreamEvent =
   | { type: "tool_call"; name: string; arguments: Record<string, unknown> }
   | { type: "tool_result"; trace: ToolTrace }
   | { type: "token"; content: string }
-  | { type: "done"; response: GroundedChatResponse }
+  | { type: "done"; response: SignedChatResponse }
   | { type: "error"; message: string };

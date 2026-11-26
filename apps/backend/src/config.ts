@@ -10,4 +10,6 @@ export const config = {
   toolTimeoutMs: Number(process.env.TOOL_TIMEOUT_MS ?? 10_000),
   /** Low temperature: we want reliable tool calls, not creativity. */
   temperature: Number(process.env.LLM_TEMPERATURE ?? 0.2),
+  /** Key of the HMAC that signs the assistant replies kept by the front (no default: required). */
+  historySecret: process.env.HISTORY_SECRET ?? "",
 };

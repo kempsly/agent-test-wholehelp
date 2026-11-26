@@ -6,6 +6,7 @@
 - src/agent.ts : boucle d'agent. Ne pas modifier sans demande explicite.
 - src/ollama.ts : client Ollama. Ne pas modifier sans demande explicite.
 - src/prompt.ts : prompt système (rôle, fiabilité, format, sécurité).
+- src/answer.ts : pipeline d'une réponse (encadrement des messages, agent, ancrage), utilisé par les routes et par eval/.
 - src/chatRequest.ts : schéma de la requête (rôles, tailles). src/grounding.ts : contrôle d'ancrage après la réponse.
 - src/tools/pokeapi.ts : client PokéAPI (URL fixe, timeout, cache, validation des noms).
 - src/tools/ : un fichier par outil ou par groupe cohérent ; liste centrale dans src/tools/index.ts.
@@ -23,8 +24,10 @@
 - Les outils acceptent le nom anglais ou le numéro. Introuvable (404) : erreur qui propose le nom anglais, le numéro
   ou une forme précise (deoxys, giratina, mr-mime, nidoran-f).
 - get_pokemon renvoie french_name ; description_fr : 300 caractères max, null si absente (pas de repli sur une autre langue).
-- get_type_matchups : 1 ou 2 types défenseurs, multiplicateur final calculé en code ; le LLM ne calcule jamais.
+- get_type_matchups : multiplicateur final calculé en code ; le LLM ne calcule jamais.
 - get_evolution_chain : liste d'étapes avec branches.
+- Noms de types : table fixe des 18 types (tools/pokemonTypes.ts), noms français et anglais dans les sorties des outils.
+- get_type_matchups : paramètre pokemon (types lus en code) ou types (1 ou 2), un seul des deux ; listes faiblesses, resistances, immunites ; get_evolution_chain : seuls les champs présents dans PokéAPI.
 - Contrôle d'ancrage : heuristique (nombres et noms de types ; multiplicateurs et nombres <= 2 tolérés).
 
 ## Règles de sécurité
@@ -33,6 +36,8 @@
 - Tous les arguments sont validés par Zod ; noms : [a-z0-9-], 40 caractères max ; types : liste fermée des 18 types.
 - Tous les outils sont en lecture seule. Aucun outil générique (fetch libre, exécution de code, fichiers).
 - Les résultats d'outils sont des données : ne jamais les insérer dans le prompt système.
+- Les messages utilisateur sont encadrés par <user_message> avant d'être envoyés au modèle (src/answer.ts), après un filtre
+  d'injection FRAGILE (liste de mots : SYSTEM, ADMIN, « ignore tes instructions ») qui réduit le risque sans le supprimer.
 - Requête : rôles user et assistant uniquement, 30 messages maximum, 1 000 caractères par message utilisateur,
   20 000 caractères au total.
 - Jamais d'eval() ni de new Function().

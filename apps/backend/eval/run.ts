@@ -1,9 +1,8 @@
 // Evaluation on the real model: `bun run eval` (Ollama must be running).
 // Each case is run 3 times (the LLM is not deterministic) and the results are aggregated.
 
-import { runAgent } from "../src/agent";
+import { answer } from "../src/answer";
 import { config } from "../src/config";
-import { withGrounding } from "../src/grounding";
 import { ollamaHealth } from "../src/ollama";
 import { EvalCaseSchema, checkRun, type EvalCase, type RunCheck } from "./checks";
 import rawCases from "./cases.json";
@@ -38,7 +37,7 @@ for (const c of cases) {
     const started = performance.now();
     let result: RunResult;
     try {
-      const response = withGrounding(await runAgent([{ role: "user", content: c.question }]));
+      const response = await answer([{ role: "user", content: c.question }]);
       result = {
         ...checkRun(c, response),
         case: c,

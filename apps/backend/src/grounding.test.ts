@@ -22,16 +22,14 @@ const pikachu = trace("get_pokemon", {
   description_fr: "Il possède 2 poches dans les joues.",
 });
 
+const entry = (type_fr: string, type_en: string, multiplicateur: number) => ({ type_fr, type_en, multiplicateur });
+
 const dracaufeuMatchups = trace("get_type_matchups", {
   defender_types: ["fire", "flying"],
-  attacking_types_by_multiplier: {
-    x4: ["rock"],
-    x2: ["water", "electric"],
-    x1: ["normal", "ice", "poison", "flying", "psychic", "ghost", "dragon", "dark"],
-    x0_5: ["fire", "fighting", "steel", "fairy"],
-    x0_25: ["grass", "bug"],
-    x0: ["ground"],
-  },
+  defender_types_fr: ["Feu", "Vol"],
+  faiblesses: [entry("Roche", "rock", 4), entry("Eau", "water", 2), entry("Électrik", "electric", 2)],
+  resistances: [entry("Plante", "grass", 0.25), entry("Insecte", "bug", 0.25)],
+  immunites: [entry("Sol", "ground", 0)],
 });
 
 describe("grounding check", () => {
@@ -59,6 +57,11 @@ describe("grounding check", () => {
     expect(checkGrounding(reply, [dracaufeuMatchups])).toMatchObject({ grounded: true, unverified_numbers: [] });
   });
 
+  test("a French type name from the tool results is grounded; a neutral type absent from the results is not", () => {
+    expect(checkGrounding("Faible contre Roche (x4), Eau et Électrik. Immunisé contre Sol.", [dracaufeuMatchups]).grounded).toBe(true);
+    expect(checkGrounding("Insecte et Plante : x0,25. Spectre : x1.", [dracaufeuMatchups]).unverified_types).toEqual(["ghost"]);
+  });
+
   test("a decimal comma matches a decimal point in the results", () => {
     expect(checkGrounding("Taille : 0,4 m. Poids : 6,0 kg.", [pikachu]).unverified_numbers).toEqual([]);
   });
@@ -74,9 +77,16 @@ describe("grounding check", () => {
     expect(result.unverified_types).toEqual(["water", "grass"]);
   });
 
-  test("results of a failed tool call do not ground anything", () => {
-    const failed = trace("get_pokemon", null, 'Pokemon "pikachoux" not found.');
+  test("a failed tool call grounds nothing but its own message: stats are not grounded, the error text is", () => {
+    const failed = trace("get_pokemon", null, 'Pokemon "pikachoux" not found. Try a specific form such as deoxys-normal.');
     expect(checkGrounding("Pikachoux a 35 PV.", [failed]).unverified_numbers).toEqual(["35"]);
+    // A legitimate "not found" answer that repeats the advice of the tool is grounded.
+    expect(checkGrounding("Introuvable. Essayez une forme précise, par exemple deoxys-normal.", [failed]).grounded).toBe(true);
+  });
+
+  test("a hyphenated name is not a type mention (deoxys-normal, water-absorb)", () => {
+    expect(checkGrounding("Essayez deoxys-normal ou vaporeon (water-absorb).", []).unverified_types).toEqual([]);
+    expect(checkGrounding("Il est de type normal.", []).unverified_types).toEqual(["normal"]);
   });
 
   test("numbers without any tool call are not grounded", () => {

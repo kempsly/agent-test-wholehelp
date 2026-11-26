@@ -3,14 +3,8 @@
 import { z } from "zod";
 import { defineTool } from "./types";
 import { PokeApiError, fetchPokeApi } from "./pokeapi";
-
-/** Closed list of the 18 types. */
-export const POKEMON_TYPES = [
-  "normal", "fire", "water", "electric", "grass", "ice", "fighting", "poison", "ground",
-  "flying", "psychic", "bug", "rock", "ghost", "dragon", "dark", "steel", "fairy",
-] as const;
-
-export type PokemonType = (typeof POKEMON_TYPES)[number];
+import { fetchPokemonTypes, nameOrId } from "./pokemon";
+import { POKEMON_TYPES, TYPE_FR, type PokemonType } from "./pokemonTypes";
 
 /** How the attacking types hit one defending type (names of attacking types). */
 export interface DefenderRelations {
@@ -42,31 +36,31 @@ export function computeMultipliers(defenders: DefenderRelations[]): Record<Pokem
   return result;
 }
 
-const GROUPS: [key: string, multiplier: number][] = [
-  ["x4", 4],
-  ["x2", 2],
-  ["x1", 1],
-  ["x0_5", 0.5],
-  ["x0_25", 0.25],
-  ["x0", 0],
-];
+const entry = (type: PokemonType, multiplicateur: number) => ({ type_fr: TYPE_FR[type], type_en: type, multiplicateur });
 
 export const getTypeMatchups = defineTool({
   name: "get_type_matchups",
   description:
-    "Returns, for a defending Pokemon with 1 or 2 types, the final damage multiplier of each of the 18 attacking types (x4, x2, x1, x0.5, x0.25, x0), already combined for dual types. " +
-    "Use it for any question about weaknesses, resistances, immunities or type effectiveness. Pass the types of the defending Pokemon (get its types with get_pokemon if unknown).",
-  schema: z.object({
-    types: z
-      .array(z.enum(POKEMON_TYPES))
-      .min(1)
-      .max(2)
-      .refine((types) => new Set(types).size === types.length, "types must be different")
-      .describe("The 1 or 2 types of the DEFENDING Pokemon, in English lowercase (e.g. [\"fire\", \"flying\"])"),
-  }),
-  execute: async ({ types }) => {
+    "Returns, for a defending Pokemon with 1 or 2 types, its weaknesses (faiblesses), resistances and immunities: each attacking type with its French and English names and its final damage multiplier (x4, x2, x0.5, x0.25, x0), already combined for dual types. Attacking types not listed deal normal damage (x1). " +
+    "Use it for any question about weaknesses, resistances, immunities or type effectiveness. " +
+    "To ask about a Pokemon, pass its name or number in pokemon (its types are read for you); to ask about one or two types without a Pokemon, pass types. Pass exactly one of the two.",
+  schema: z
+    .object({
+      pokemon: nameOrId.optional().describe("The DEFENDING Pokemon: English name or Pokedex number. Its types are read automatically."),
+      types: z
+        .array(z.enum(POKEMON_TYPES))
+        .min(1)
+        .max(2)
+        .refine((types) => new Set(types).size === types.length, "types must be different")
+        .optional()
+        .describe("Instead of pokemon: the 1 or 2 types of the DEFENDING side, in English lowercase"),
+    })
+    .refine((args) => (args.pokemon === undefined) !== (args.types === undefined), "Give exactly one of pokemon or types"),
+  execute: async ({ pokemon, types }) => {
+    const defender = pokemon !== undefined ? await fetchPokemonTypes(pokemon) : { name: undefined, types: types! };
+
     const relations: DefenderRelations[] = [];
-    for (const type of types) {
+    for (const type of defender.types) {
       const parsed = typeResponse.safeParse(await fetchPokeApi("type", type));
       if (!parsed.success) throw new PokeApiError("unavailable", "PokeAPI unavailable (unexpected type format).");
       const r = parsed.data.damage_relations;
@@ -78,10 +72,14 @@ export const getTypeMatchups = defineTool({
     }
 
     const multipliers = computeMultipliers(relations);
-    const groups: Record<string, string[]> = {};
-    for (const [key, value] of GROUPS) {
-      groups[key] = POKEMON_TYPES.filter((attacker) => multipliers[attacker] === value);
-    }
-    return { defender_types: types, attacking_types_by_multiplier: groups };
+    const attackers = POKEMON_TYPES.map((type) => ({ type, multiplier: multipliers[type] }));
+    return {
+      ...(defender.name && { pokemon: defender.name }),
+      defender_types: defender.types,
+      defender_types_fr: defender.types.map((t) => TYPE_FR[t]),
+      faiblesses: attackers.filter((a) => a.multiplier > 1).sort((a, b) => b.multiplier - a.multiplier).map((a) => entry(a.type, a.multiplier)),
+      resistances: attackers.filter((a) => a.multiplier > 0 && a.multiplier < 1).sort((a, b) => a.multiplier - b.multiplier).map((a) => entry(a.type, a.multiplier)),
+      immunites: attackers.filter((a) => a.multiplier === 0).map((a) => entry(a.type, 0)),
+    };
   },
 });

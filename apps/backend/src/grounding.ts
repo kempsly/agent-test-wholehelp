@@ -1,34 +1,25 @@
 // Grounding check (heuristic, assumed): after the final answer, every number and every type name cited in the
-// answer must appear in the results of the tools called during the turn. It cannot prove an answer is right,
+// answer must appear in what the tools returned during the turn (results and error messages). It cannot prove an answer is right,
 // it detects numbers and types that no tool returned.
 
 import type { ChatResponse, GroundedChatResponse, ToolTrace } from "@app/shared";
-import { POKEMON_TYPES, type PokemonType } from "./tools/typeMatchups";
+import { POKEMON_TYPES, TYPE_FR, type PokemonType } from "./tools/pokemonTypes";
 
 /** Numbers up to this value are not checked (multipliers like x2, counts like "2 types", stage numbers). */
 const SMALL_NUMBER_MAX = 2;
 
-/** Names under which each type can be cited (English as returned by the tools, and French), without accents. */
-const TYPE_NAMES: Record<PokemonType, string[]> = {
-  normal: ["normal"],
-  fire: ["fire", "feu"],
-  water: ["water", "eau"],
-  electric: ["electric", "electrik", "electrique", "electricite"],
-  grass: ["grass", "plante"],
-  ice: ["ice", "glace"],
-  fighting: ["fighting", "combat"],
-  poison: ["poison"],
-  ground: ["ground", "sol"],
-  flying: ["flying", "vol"],
-  psychic: ["psychic", "psychique", "psy"],
-  bug: ["bug", "insecte"],
-  rock: ["rock", "roche"],
-  ghost: ["ghost", "spectre"],
-  dragon: ["dragon"],
-  dark: ["dark", "tenebres"],
-  steel: ["steel", "acier"],
-  fairy: ["fairy", "fee"],
+/** Other spellings of a type that the model may use (the official French names come from TYPE_FR). */
+const TYPE_VARIANTS: Partial<Record<PokemonType, string[]>> = {
+  electric: ["electrique", "electricite"],
+  psychic: ["psychique"],
 };
+
+const normalizeText = (text: string) => text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
+
+/** Names under which each type can be cited, without accents: English, official French, variants. */
+const TYPE_NAMES = Object.fromEntries(
+  POKEMON_TYPES.map((type) => [type, [type, normalizeText(TYPE_FR[type]), ...(TYPE_VARIANTS[type] ?? [])]]),
+) as Record<PokemonType, string[]>;
 
 // A number, not glued to a letter, a digit or a separator before it; multipliers (x2, ×0,25) are skipped.
 const NUMBER_PATTERN = /(?<![\w.,×])\d+(?:[.,]\d+)?/g;
@@ -38,8 +29,6 @@ const toValue = (token: string) => Number(token.replace(",", "."));
 function extractNumbers(text: string): string[] {
   return text.match(NUMBER_PATTERN) ?? [];
 }
-
-const normalizeText = (text: string) => text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
 
 /** Every number found in the tool results, as values (numbers and numbers written in texts). */
 function numbersInResults(value: unknown, found = new Set<number>()): Set<number> {
@@ -52,8 +41,9 @@ function numbersInResults(value: unknown, found = new Set<number>()): Set<number
 
 function citedTypes(text: string): PokemonType[] {
   const normalized = normalizeText(text);
+  // A hyphen counts as part of the word: "deoxys-normal" or "water-absorb" are names, not type mentions.
   return POKEMON_TYPES.filter((type) =>
-    TYPE_NAMES[type].some((name) => new RegExp(`(?<![a-z])${name}(?![a-z])`).test(normalized)),
+    TYPE_NAMES[type].some((name) => new RegExp(`(?<![a-z-])${name}(?![a-z-])`).test(normalized)),
   );
 }
 
@@ -63,9 +53,9 @@ export interface GroundingResult {
   unverified_types: string[];
 }
 
-/** Compares the answer with the results of the tool calls that succeeded during the turn. */
+/** Compares the answer with what the tools returned during the turn: results, or the error message of a failed call. */
 export function checkGrounding(reply: string, toolCalls: ToolTrace[]): GroundingResult {
-  const results = toolCalls.filter((t) => !t.error).map((t) => t.result);
+  const results = toolCalls.map((t) => (t.error ? t.error : t.result));
   const knownNumbers = numbersInResults(results);
   const knownTypes = new Set(citedTypes(JSON.stringify(results)));
 

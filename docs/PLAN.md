@@ -29,8 +29,9 @@ Commit : `feat: client PokéAPI sécurisé avec cache`
       description_fr (300 caractères max, null si absente, pas de repli sur une autre langue) – 2 tests minimum
 - [ ] get_pokemon : si /pokemon/{nom} renvoie 404 → erreur qui propose de donner le nom anglais ou le numéro
       et d'essayer une forme précise (deoxys, giratina, mr-mime, nidoran-f : cas à tester)
-- [ ] get_type_matchups(types) : liste de 1 ou 2 types défenseurs (liste fermée des 18) ; multiplicateur final
-      calculé EN CODE pour chacun des 18 types attaquants (x4, x2, x1, x0,5, x0,25, x0) – 2 tests minimum
+- [ ] get_type_matchups(pokemon | types) : soit un Pokémon (types lus en code), soit une liste de 1 ou 2 types
+      défenseurs (liste fermée des 18), un seul des deux ; multiplicateur final calculé EN CODE pour chacun des 18
+      types attaquants (x4, x2, x1, x0,5, x0,25, x0) – 2 tests minimum
 - [ ] get_evolution_chain(name_or_id) : obligatoire ; liste d'étapes avec branches (Évoli : une étape,
       plusieurs évolutions possibles) – 2 tests minimum
 - [ ] Tests dans apps/backend/src/tools/tools.test.ts (fetch simulé)

@@ -3,9 +3,10 @@
 import { z } from "zod";
 import { defineTool } from "./types";
 import { PokeApiError, fetchPokeApi } from "./pokeapi";
+import { POKEMON_TYPES, typeFr, type PokemonType } from "./pokemonTypes";
 
 /** English name or Pokedex number. Numbers sent as JSON numbers are accepted and turned into strings. */
-const nameOrId = z
+export const nameOrId = z
   .preprocess((value) => (typeof value === "number" ? String(value) : value), z.string().min(1))
   .describe("English Pokemon name (e.g. charizard) or Pokedex number (e.g. 25). Translate French names to English.");
 
@@ -95,12 +96,21 @@ async function fetchPokemon(name: string) {
   }
 }
 
+/** Name and types (1 or 2, in slot order) of a Pokemon, read from PokeAPI. */
+export async function fetchPokemonTypes(nameOrIdValue: string): Promise<{ name: string; types: PokemonType[] }> {
+  const pokemon = await fetchPokemon(nameOrIdValue);
+  const names = [...pokemon.types].sort((a, b) => a.slot - b.slot).map((t) => t.type.name);
+  const parsed = z.array(z.enum(POKEMON_TYPES)).min(1).max(2).safeParse(names);
+  if (!parsed.success) throw new PokeApiError("unavailable", "PokeAPI unavailable (unexpected type for this Pokemon).");
+  return { name: pokemon.name, types: parsed.data };
+}
+
 // ---------- tools ----------
 
 export const getPokemon = defineTool({
   name: "get_pokemon",
   description:
-    "Returns the sheet of one Pokemon: id, English and French names, types, base stats, abilities, height, weight and French description. " +
+    "Returns the sheet of one Pokemon: id, English and French names, types (English in types, French in types_fr), base stats, abilities, height, weight and French description. " +
     "Use it for any question about a Pokemon, and once per Pokemon when comparing several. Never answer about a Pokemon without it.",
   schema: z.object({ name_or_id: nameOrId }),
   execute: async ({ name_or_id }) => {
@@ -114,11 +124,14 @@ export const getPokemon = defineTool({
       if (key) baseStats[key] = base_stat;
     }
 
+    const types = [...pokemon.types].sort((a, b) => a.slot - b.slot).map((t) => t.type.name);
+
     return {
       id: pokemon.id,
       name: pokemon.name,
       french_name: species.names.find((n) => n.language.name === "fr")?.name ?? null,
-      types: [...pokemon.types].sort((a, b) => a.slot - b.slot).map((t) => t.type.name),
+      types,
+      types_fr: types.map(typeFr),
       base_stats: baseStats,
       abilities: pokemon.abilities.map((a) => a.ability.name),
       height_m: pokemon.height / 10,
@@ -128,9 +141,10 @@ export const getPokemon = defineTool({
   },
 });
 
+/** Only the fields present in PokeAPI are given: an absent field is never replaced by a guess. */
 export interface EvolutionStage {
   stage: number;
-  pokemon: { name: string; evolves_from: string | null; min_level: number | null; trigger: string | null; item: string | null }[];
+  pokemon: { name: string; evolves_from?: string; min_level?: number; trigger?: string; item?: string }[];
 }
 
 /** Flattens the evolution tree into ordered stages; branches (Eevee) are several Pokemon in the same stage. */
@@ -141,10 +155,10 @@ export function flattenEvolutionChain(root: ChainLink): EvolutionStage[] {
     const stage = (stages[depth] ??= { stage: depth + 1, pokemon: [] });
     stage.pokemon.push({
       name: link.species.name,
-      evolves_from: parent,
-      min_level: details?.min_level ?? null,
-      trigger: details?.trigger?.name ?? null,
-      item: details?.item?.name ?? null,
+      ...(parent && { evolves_from: parent }),
+      ...(details?.min_level != null && { min_level: details.min_level }),
+      ...(details?.trigger && { trigger: details.trigger.name }),
+      ...(details?.item && { item: details.item.name }),
     });
     for (const next of link.evolves_to) visit(next, depth + 1, link.species.name);
   };
@@ -155,7 +169,7 @@ export function flattenEvolutionChain(root: ChainLink): EvolutionStage[] {
 export const getEvolutionChain = defineTool({
   name: "get_evolution_chain",
   description:
-    "Returns the evolution chain of a Pokemon as ordered stages (with branches, e.g. Eevee), with the minimum level, trigger or item when present. " +
+    "Returns the evolution chain of a Pokemon as ordered stages (with branches, e.g. Eevee), with the minimum level, trigger or item only when PokeAPI provides them (an absent field means the condition is not specified). " +
     "Use it for any question about evolutions, pre-evolutions or what a Pokemon evolves into.",
   schema: z.object({ name_or_id: nameOrId }),
   execute: async ({ name_or_id }) => {

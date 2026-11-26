@@ -17,7 +17,7 @@
     "id": "normal-faiblesses-dracaufeu",
     "category": "normal",
     "question": "Quelles sont les faiblesses de Dracaufeu ?",
-    "expected_tools": ["get_pokemon", "get_type_matchups"],
+    "expected_tools": ["get_type_matchups"],
     "expected": ["roche", "4"]
   },
   {

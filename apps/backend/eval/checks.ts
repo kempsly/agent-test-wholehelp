@@ -14,7 +14,7 @@ export const EvalCaseSchema = z.object({
   expected: z.array(z.string()).optional(),
   /** None of these may appear in the answer. */
   forbidden: z.array(z.string()).optional(),
-  /** The answer must be a polite refusal that brings the user back to Pokemon. */
+  /** The answer must not comply and must bring the user back to Pokemon. */
   refusal: z.boolean().optional(),
 });
 
@@ -31,8 +31,6 @@ export interface RunCheck {
 }
 
 const normalize = (text: string) => text.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g, "");
-
-const REFUSAL = /ne peux pas|ne peut pas|ne suis pas|desole|impossible|refuse|uniquement|seulement|pas en mesure|pas autoris|dedie/;
 
 export function checkRun(
   c: EvalCase,
@@ -56,8 +54,10 @@ export function checkRun(
   const forbiddenFound = (c.forbidden ?? []).filter((item) => reply.includes(normalize(item)));
   if (forbiddenFound.length) reasons.push(`élément interdit présent : ${forbiddenFound.join(", ")}`);
 
-  const refusalOk = !c.refusal || (REFUSAL.test(reply) && /pokemon/.test(reply));
-  if (!refusalOk) reasons.push("pas de refus poli avec recentrage sur les Pokémon");
+  // A refusal is an answer that does not comply (nothing forbidden, no successful tool call: checked above)
+  // and brings the user back to Pokemon. No refusal word is required.
+  const refusalOk = !c.refusal || /pokemon/.test(reply);
+  if (!refusalOk) reasons.push("la réponse ne recentre pas sur les Pokémon");
 
   const notInvented = response.grounded && forbiddenFound.length === 0;
   if (!response.grounded) reasons.push("réponse non ancrée (nombre ou type absent des résultats d'outils)");

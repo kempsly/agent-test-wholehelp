@@ -81,6 +81,7 @@ describe("get_pokemon", () => {
       name: "pikachu",
       french_name: "Pikachu",
       types: ["electric"],
+      types_fr: ["Électrik"],
       base_stats: { hp: 35, attack: 55, defense: 40, special_attack: 50, special_defense: 50, speed: 90 },
       abilities: ["static", "lightning-rod"],
       height_m: 0.4,
@@ -155,41 +156,71 @@ const typeRoutes = {
   "/type/ghost": typeBody(["ghost", "dark"], ["poison", "bug"], ["normal", "fighting"]),
 };
 
+type Entry = { type_fr: string; type_en: string; multiplicateur: number };
+type Matchups = {
+  defender_types: string[];
+  defender_types_fr: string[];
+  faiblesses: Entry[];
+  resistances: Entry[];
+  immunites: Entry[];
+};
+const names = (entries: Entry[]) => entries.map((e) => e.type_en);
+
 describe("get_type_matchups", () => {
-  test("single type: x2, x0.5 and x0 (ghost is immune to normal and fighting)", async () => {
+  test("single type: weaknesses, resistances and immunities with French and English names (ghost is immune to normal and fighting)", async () => {
     mockApi(typeRoutes);
-    const result = (await getTypeMatchups.execute({ types: ["ghost"] })) as {
-      attacking_types_by_multiplier: Record<string, string[]>;
-    };
-    const groups = result.attacking_types_by_multiplier;
-    expect(groups.x2).toEqual(["ghost", "dark"]);
-    expect(groups.x0_5).toEqual(["poison", "bug"]);
-    expect(groups.x0).toEqual(["normal", "fighting"]);
-    expect(groups.x4).toEqual([]);
+    const result = (await getTypeMatchups.execute({ types: ["ghost"] })) as Matchups;
+    expect(result.defender_types_fr).toEqual(["Spectre"]);
+    expect(result.faiblesses).toEqual([
+      { type_fr: "Spectre", type_en: "ghost", multiplicateur: 2 },
+      { type_fr: "Ténèbres", type_en: "dark", multiplicateur: 2 },
+    ]);
+    expect(names(result.resistances)).toEqual(["poison", "bug"]);
+    expect(result.immunites).toEqual([
+      { type_fr: "Normal", type_en: "normal", multiplicateur: 0 },
+      { type_fr: "Combat", type_en: "fighting", multiplicateur: 0 },
+    ]);
   });
 
-  test("dual type fire/flying: x4 (rock), x0 (ground), x0.25 (grass, bug), x1 (ice) computed in code", async () => {
+  test("dual type fire/flying: x4 (rock), x0 (ground), x0.25 (grass, bug) computed in code, French names (Sol, Électrik)", async () => {
     mockApi(typeRoutes);
-    const result = (await getTypeMatchups.execute({ types: ["fire", "flying"] })) as {
-      defender_types: string[];
-      attacking_types_by_multiplier: Record<string, string[]>;
-    };
-    const groups = result.attacking_types_by_multiplier;
+    const result = (await getTypeMatchups.execute({ types: ["fire", "flying"] })) as Matchups;
     expect(result.defender_types).toEqual(["fire", "flying"]);
-    expect(groups.x4).toEqual(["rock"]);
-    expect(groups.x2).toEqual(["water", "electric"]);
-    expect(groups.x0).toEqual(["ground"]);
-    expect(groups.x0_25).toEqual(["grass", "bug"]);
-    expect(groups.x1).toContain("ice");
-    // Every one of the 18 attacking types appears exactly once.
-    expect(Object.values(groups).flat()).toHaveLength(18);
+    expect(result.faiblesses[0]).toEqual({ type_fr: "Roche", type_en: "rock", multiplicateur: 4 });
+    expect(result.faiblesses.slice(1).map((e) => [e.type_fr, e.multiplicateur])).toEqual([["Eau", 2], ["Électrik", 2]]);
+    expect(result.immunites).toEqual([{ type_fr: "Sol", type_en: "ground", multiplicateur: 0 }]);
+    expect(result.resistances.slice(0, 2).map((e) => [e.type_en, e.multiplicateur])).toEqual([["grass", 0.25], ["bug", 0.25]]);
+    // Ice is x1 (x2 on flying, x0.5 on fire): it is in none of the three lists.
+    const listed = [...result.faiblesses, ...result.resistances, ...result.immunites].map((e) => e.type_en);
+    expect(listed).not.toContain("ice");
   });
 
-  test("invalid arguments are rejected by the schema: unknown type, 0 or 3 types, duplicates, injection", () => {
+  test("pokemon parameter: the types are read in code, no get_pokemon needed (charizard: x4 rock, immune to ground)", async () => {
+    mockApi({
+      ...typeRoutes,
+      "/pokemon/charizard": { ...pikachu, id: 6, name: "charizard", types: [{ slot: 2, type: { name: "flying" } }, { slot: 1, type: { name: "fire" } }] },
+    });
+    const result = (await getTypeMatchups.execute({ pokemon: "Charizard" })) as Matchups & { pokemon: string };
+    expect(result.pokemon).toBe("charizard");
+    expect(result.defender_types).toEqual(["fire", "flying"]);
+    expect(result.faiblesses[0]).toEqual({ type_fr: "Roche", type_en: "rock", multiplicateur: 4 });
+    expect(result.immunites).toEqual([{ type_fr: "Sol", type_en: "ground", multiplicateur: 0 }]);
+  });
+
+  test("pokemon parameter: unknown Pokemon and invalid name give a clear error", async () => {
+    mockApi(typeRoutes);
+    await expect(getTypeMatchups.execute({ pokemon: "pikachoux" })).rejects.toThrow(/not found.*English name.*number/);
+    await expect(getTypeMatchups.execute({ pokemon: "../../users" })).rejects.toThrow(/Invalid name/);
+  });
+
+  test("invalid arguments are rejected by the schema: unknown type, 0 or 3 types, duplicates, injection, none or both parameters", () => {
     for (const types of [["shadow"], [], ["fire", "water", "grass"], ["fire", "fire"], ["../users"], "fire"]) {
       expect(getTypeMatchups.schema.safeParse({ types }).success).toBe(false);
     }
+    expect(getTypeMatchups.schema.safeParse({}).success).toBe(false);
+    expect(getTypeMatchups.schema.safeParse({ pokemon: "charizard", types: ["fire"] }).success).toBe(false);
     expect(getTypeMatchups.schema.safeParse({ types: ["fire", "flying"] }).success).toBe(true);
+    expect(getTypeMatchups.schema.safeParse({ pokemon: 6 }).success).toBe(true);
   });
 
   test("PokeAPI down: clear error", async () => {
@@ -225,21 +256,25 @@ describe("get_evolution_chain", () => {
   test("linear chain: ordered stages with the minimum level", async () => {
     mockApi(evolutionRoutes("charmander", 2, charmanderChain));
     const result = (await getEvolutionChain.execute({ name_or_id: "charmander" })) as {
-      stages: { stage: number; pokemon: { name: string; evolves_from: string | null; min_level: number | null }[] }[];
+      stages: { stage: number; pokemon: { name: string; evolves_from?: string; min_level?: number }[] }[];
     };
     expect(result.stages.map((s) => s.pokemon.map((p) => p.name))).toEqual([["charmander"], ["charmeleon"], ["charizard"]]);
     expect(result.stages[1]!.pokemon[0]).toMatchObject({ evolves_from: "charmander", min_level: 16 });
     expect(result.stages[2]!.pokemon[0]).toMatchObject({ evolves_from: "charmeleon", min_level: 36 });
+    // The first stage has no pre-evolution and no level: these fields are absent, not null.
+    expect(result.stages[0]!.pokemon[0]).toEqual({ name: "charmander" });
   });
 
   test("branches: Eevee has one stage with several evolutions, with the item", async () => {
     mockApi(evolutionRoutes("eevee", 67, eeveeChain));
     const result = (await getEvolutionChain.execute({ name_or_id: "eevee" })) as {
-      stages: { pokemon: { name: string; item: string | null; trigger: string | null }[] }[];
+      stages: { pokemon: { name: string; item?: string; trigger?: string }[] }[];
     };
     expect(result.stages).toHaveLength(2);
     expect(result.stages[1]!.pokemon.map((p) => p.name)).toEqual(["vaporeon", "jolteon"]);
     expect(result.stages[1]!.pokemon[0]).toMatchObject({ trigger: "use-item", item: "water-stone" });
+    // No level in PokeAPI for a stone evolution: the field does not exist (the model must not invent one).
+    expect(result.stages[1]!.pokemon[0]).not.toHaveProperty("min_level");
   });
 
   test("unknown Pokemon: clear error", async () => {

@@ -2,7 +2,7 @@
 
 import { z } from "zod";
 import { defineTool } from "./types";
-import { resolvePokemonName } from "./frenchNames";
+import { frenchNameOf, resolvePokemonName } from "./frenchNames";
 import { PokeApiError, fetchPokeApi } from "./pokeapi";
 import { POKEMON_TYPES, typeFr, type PokemonType } from "./pokemonTypes";
 
@@ -38,22 +38,23 @@ const speciesResponse = z.object({
   evolution_chain: z.object({ url: z.string() }),
 });
 
+/**
+ * One evolution condition as PokeAPI gives it (one entry per version group). PokeAPI has about 30 fields
+ * (trigger, min_level, gender, held_item, known_move, trade_species...), most of them null: all are read, and only
+ * the non-empty ones are returned (see toCondition).
+ */
+const evolutionDetail = z.record(z.string(), z.unknown());
+
 interface ChainLink {
   species: { name: string };
-  evolution_details: { min_level: number | null; trigger: { name: string } | null; item: { name: string } | null }[];
+  evolution_details: z.infer<typeof evolutionDetail>[];
   evolves_to: ChainLink[];
 }
 
 const chainLink: z.ZodType<ChainLink> = z.lazy(() =>
   z.object({
     species: namedResource,
-    evolution_details: z.array(
-      z.object({
-        min_level: z.number().nullable().optional().transform((v) => v ?? null),
-        trigger: namedResource.nullable().optional().transform((v) => v ?? null),
-        item: namedResource.nullable().optional().transform((v) => v ?? null),
-      }),
-    ),
+    evolution_details: z.array(evolutionDetail),
     evolves_to: z.array(chainLink),
   }),
 ) as z.ZodType<ChainLink>;
@@ -163,24 +164,62 @@ export const getPokemon = defineTool({
   },
 });
 
-/** Only the fields present in PokeAPI are given: an absent field is never replaced by a guess. */
+/**
+ * Only the fields present in PokeAPI are given: an absent field is never replaced by a guess.
+ * Values: a number (min_level, relative_physical_stats: 0 counts), a name (item, held_item, known_move, trade_species,
+ * version_group...), true (needs_overworld_rain, turn_upside_down...) or a list of names (allowed_natures).
+ */
+export type EvolutionCondition = Record<string, string | number | boolean | string[]>;
+
 export interface EvolutionStage {
   stage: number;
-  pokemon: { name: string; evolves_from?: string; min_level?: number; trigger?: string; item?: string }[];
+  pokemon: { name: string; name_fr?: string; evolves_from?: string; conditions?: EvolutionCondition[] }[];
 }
 
-/** Flattens the evolution tree into ordered stages; branches (Eevee) are several Pokemon in the same stage. */
+/** Not a condition: it only says which entry PokeAPI shows by default. */
+const IGNORED_FIELDS = new Set(["is_default"]);
+/** PokeAPI codes for gender: 1 female, 2 male. */
+const GENDERS: Record<number, string> = { 1: "female", 2: "male" };
+/** Fields that hold a type: their French name is added (known_move_type_fr). */
+const TYPE_FIELDS = new Set(["known_move_type", "party_type"]);
+
+const nameOf = (value: unknown): string | null =>
+  value && typeof value === "object" && "name" in value && typeof value.name === "string" ? value.name : null;
+
+function toCondition(detail: z.infer<typeof evolutionDetail>): EvolutionCondition {
+  const condition: EvolutionCondition = {};
+  for (const [key, value] of Object.entries(detail)) {
+    if (IGNORED_FIELDS.has(key) || value === null || value === undefined || value === "" || value === false) continue;
+    if (key === "gender" && typeof value === "number") condition.gender = GENDERS[value] ?? value;
+    else if (typeof value === "number" || typeof value === "string" || value === true) condition[key] = value;
+    else if (Array.isArray(value)) {
+      const names = value.map((v) => (typeof v === "string" ? v : nameOf(v))).filter((v): v is string => v !== null);
+      if (names.length) condition[key] = names;
+    } else {
+      const name = nameOf(value);
+      if (name === null) continue; // an object without a name: nothing reliable to show
+      condition[key] = name;
+      if (TYPE_FIELDS.has(key)) condition[`${key}_fr`] = typeFr(name);
+    }
+  }
+  return condition;
+}
+
+/**
+ * Flattens the evolution tree into ordered stages; branches (Eevee) are several Pokemon in the same stage.
+ * Every evolution_details entry is kept as one condition; the French names come from data/names-fr.json.
+ */
 export function flattenEvolutionChain(root: ChainLink): EvolutionStage[] {
   const stages: EvolutionStage[] = [];
   const visit = (link: ChainLink, depth: number, parent: string | null) => {
-    const details = link.evolution_details[0];
     const stage = (stages[depth] ??= { stage: depth + 1, pokemon: [] });
+    const nameFr = frenchNameOf(link.species.name);
+    const conditions = link.evolution_details.map(toCondition);
     stage.pokemon.push({
       name: link.species.name,
+      ...(nameFr && { name_fr: nameFr }),
       ...(parent && { evolves_from: parent }),
-      ...(details?.min_level != null && { min_level: details.min_level }),
-      ...(details?.trigger && { trigger: details.trigger.name }),
-      ...(details?.item && { item: details.item.name }),
+      ...(conditions.length > 0 && { conditions }),
     });
     for (const next of link.evolves_to) visit(next, depth + 1, link.species.name);
   };
@@ -191,7 +230,9 @@ export function flattenEvolutionChain(root: ChainLink): EvolutionStage[] {
 export const getEvolutionChain = defineTool({
   name: "get_evolution_chain",
   description:
-    "Returns the evolution chain of a Pokemon as ordered stages (with branches, e.g. Eevee), with the minimum level, trigger or item only when PokeAPI provides them (an absent field means the condition is not specified). " +
+    "Returns the evolution chain of a Pokemon as ordered stages (with branches, e.g. Eevee). Each Pokemon has its English name, its French name (name_fr) and, except the first stage, " +
+    "the list of its evolution conditions as PokeAPI gives them (one entry per version group, only the non-empty fields: trigger, min_level, item, gender, held_item, known_move, known_move_type, min_happiness, min_affection, time_of_day, location, trade_species..., version_group); " +
+    "a field that is absent means the condition is not specified. " +
     "Use it for any question about evolutions, pre-evolutions or what a Pokemon evolves into.",
   schema: z.object({ name_or_id: nameOrId }),
   execute: async ({ name_or_id }) => {

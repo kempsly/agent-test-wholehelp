@@ -25,7 +25,9 @@
   ou une forme précise (deoxys, giratina, mr-mime, nidoran-f).
 - get_pokemon renvoie french_name ; description_fr : 300 caractères max, null si absente (pas de repli sur une autre langue).
 - get_type_matchups : multiplicateur final calculé en code ; le LLM ne calcule jamais.
-- get_evolution_chain : liste d'étapes avec branches.
+- get_evolution_chain : liste d'étapes avec branches ; pour chaque Pokémon, name_fr (nom affiché, names-fr.json) et toutes
+  les entrées de evolution_details dans conditions (tous les champs non vides, sexe en clair, avec version_group).
+- data/names-fr.json : nom français normalisé -> { en, fr }, généré par scripts/build-names.ts (ne pas éditer à la main).
 - Noms de types : table fixe des 18 types (tools/pokemonTypes.ts), noms français et anglais dans les sorties des outils.
 - get_type_matchups : paramètre pokemon (types lus en code) ou types (1 ou 2), un seul des deux ; listes faiblesses, resistances, immunites ; get_evolution_chain : seuls les champs présents dans PokéAPI.
 - Contrôle d'ancrage : heuristique (nombres et noms de types ; multiplicateurs et nombres <= 2 tolérés).

@@ -2,7 +2,8 @@
 
 import { afterEach, beforeEach, describe, expect, test } from "bun:test";
 import { clearCache } from "./pokeapi";
-import { getEvolutionChain, getPokemon } from "./pokemon";
+import { flattenEvolutionChain, getEvolutionChain, getPokemon, type EvolutionStage } from "./pokemon";
+import { frenchNameOf } from "./frenchNames";
 import { getTypeMatchups } from "./typeMatchups";
 import { simulateBattleTool } from "./battle";
 import { tools } from "./index";
@@ -236,6 +237,29 @@ const eeveeChain = {
   chain: link("eevee", [], [
     link("vaporeon", [{ min_level: null, trigger: { name: "use-item" }, item: { name: "water-stone" } }]),
     link("jolteon", [{ min_level: null, trigger: { name: "use-item" }, item: { name: "thunder-stone" } }]),
+    // Real PokeAPI entries (evolution-chain/67): empty fields are null or "" in PokeAPI.
+    link("espeon", [
+      { min_level: null, trigger: { name: "level-up" }, item: null, min_happiness: 160, min_affection: null, time_of_day: "day", known_move_type: null, location: null, version_group: { name: "gold-silver" } },
+    ]),
+    link("sylveon", [
+      { min_level: null, trigger: { name: "level-up" }, item: null, min_happiness: null, min_affection: 2, time_of_day: "", known_move_type: { name: "fairy" }, location: null, version_group: { name: "x-y" } },
+      { min_level: null, trigger: { name: "level-up" }, item: null, min_happiness: 160, min_affection: null, time_of_day: "", known_move_type: { name: "fairy" }, location: null, version_group: { name: "sword-shield" } },
+    ]),
+  ]),
+};
+
+// Real PokeAPI entries (evolution-chain/213): only a female Burmy becomes Wormadam, a male one becomes Mothim.
+const resource = (name: string) => ({ name, url: `${API}/x/` });
+const burmyEntry = (gender: number, form?: string) => ({
+  version_group: resource("diamond-pearl"), is_default: true, trigger: resource("level-up"), gender, min_level: 20,
+  held_item: null, known_move: null, trade_species: null, needs_overworld_rain: false, relative_physical_stats: null, time_of_day: "",
+  allowed_natures: [],
+  ...(form && { required_pokemon_form: resource(`burmy-${form}`), evolved_pokemon_form: resource(`wormadam-${form}`) }),
+});
+const burmyChain = {
+  chain: link("burmy", [], [
+    link("wormadam", [burmyEntry(1, "plant"), burmyEntry(1, "sandy"), burmyEntry(1, "trash")]),
+    link("mothim", [burmyEntry(2)]),
   ]),
 };
 
@@ -256,26 +280,100 @@ const evolutionRoutes = (name: string, chainId: number, chain: unknown) => ({
 describe("get_evolution_chain", () => {
   test("linear chain: ordered stages with the minimum level", async () => {
     mockApi(evolutionRoutes("charmander", 2, charmanderChain));
-    const result = (await getEvolutionChain.execute({ name_or_id: "charmander" })) as {
-      stages: { stage: number; pokemon: { name: string; evolves_from?: string; min_level?: number }[] }[];
-    };
+    const result = (await getEvolutionChain.execute({ name_or_id: "charmander" })) as { stages: EvolutionStage[] };
     expect(result.stages.map((s) => s.pokemon.map((p) => p.name))).toEqual([["charmander"], ["charmeleon"], ["charizard"]]);
-    expect(result.stages[1]!.pokemon[0]).toMatchObject({ evolves_from: "charmander", min_level: 16 });
-    expect(result.stages[2]!.pokemon[0]).toMatchObject({ evolves_from: "charmeleon", min_level: 36 });
-    // The first stage has no pre-evolution and no level: these fields are absent, not null.
-    expect(result.stages[0]!.pokemon[0]).toEqual({ name: "charmander" });
+    expect(result.stages[1]!.pokemon[0]).toEqual({
+      name: "charmeleon",
+      name_fr: "Reptincel",
+      evolves_from: "charmander",
+      conditions: [{ trigger: "level-up", min_level: 16 }],
+    });
+    expect(result.stages[2]!.pokemon[0]).toMatchObject({ name_fr: "Dracaufeu", evolves_from: "charmeleon", conditions: [{ min_level: 36 }] });
+    // The first stage has no pre-evolution and no condition: these fields are absent, not null.
+    expect(result.stages[0]!.pokemon[0]).toEqual({ name: "charmander", name_fr: "Salamèche" });
   });
 
-  test("branches: Eevee has one stage with several evolutions, with the item", async () => {
+  test("branches: Eevee has one stage with several evolutions, with the item and no invented level", async () => {
     mockApi(evolutionRoutes("eevee", 67, eeveeChain));
-    const result = (await getEvolutionChain.execute({ name_or_id: "eevee" })) as {
-      stages: { pokemon: { name: string; item?: string; trigger?: string }[] }[];
-    };
+    const result = (await getEvolutionChain.execute({ name_or_id: "eevee" })) as { stages: EvolutionStage[] };
     expect(result.stages).toHaveLength(2);
-    expect(result.stages[1]!.pokemon.map((p) => p.name)).toEqual(["vaporeon", "jolteon"]);
-    expect(result.stages[1]!.pokemon[0]).toMatchObject({ trigger: "use-item", item: "water-stone" });
-    // No level in PokeAPI for a stone evolution: the field does not exist (the model must not invent one).
-    expect(result.stages[1]!.pokemon[0]).not.toHaveProperty("min_level");
+    expect(result.stages[1]!.pokemon.map((p) => p.name_fr)).toEqual(["Aquali", "Voltali", "Mentali", "Nymphali"]);
+    expect(result.stages[1]!.pokemon[0]!.conditions).toEqual([{ trigger: "use-item", item: "water-stone" }]);
+    // No level in PokeAPI for these evolutions: the field does not exist (the model must not invent one).
+    for (const p of result.stages[1]!.pokemon) for (const c of p.conditions!) expect(c).not.toHaveProperty("min_level");
+    // Nobody evolves from itself.
+    for (const p of result.stages[1]!.pokemon) expect(p.evolves_from).toBe("eevee");
+  });
+
+  test("Évoli -> Mentali: friendship and daytime, from the French name", async () => {
+    mockApi(evolutionRoutes("eevee", 67, eeveeChain));
+    const args = getEvolutionChain.schema.parse({ name_or_id: "Évoli" });
+    const result = (await getEvolutionChain.execute(args)) as { stages: EvolutionStage[] };
+    const espeon = result.stages[1]!.pokemon.find((p) => p.name === "espeon");
+    expect(espeon).toEqual({
+      name: "espeon",
+      name_fr: "Mentali",
+      evolves_from: "eevee",
+      conditions: [{ trigger: "level-up", min_happiness: 160, time_of_day: "day", version_group: "gold-silver" }],
+    });
+  });
+
+  test("Évoli -> Nymphali: affection and a Fairy move, every PokeAPI entry kept (one per version group)", async () => {
+    mockApi(evolutionRoutes("eevee", 67, eeveeChain));
+    const result = (await getEvolutionChain.execute({ name_or_id: "eevee" })) as { stages: EvolutionStage[] };
+    const sylveon = result.stages[1]!.pokemon.find((p) => p.name === "sylveon");
+    expect(sylveon?.name_fr).toBe("Nymphali");
+    expect(sylveon?.conditions).toEqual([
+      { trigger: "level-up", min_affection: 2, known_move_type: "fairy", known_move_type_fr: "Fée", version_group: "x-y" },
+      { trigger: "level-up", min_happiness: 160, known_move_type: "fairy", known_move_type_fr: "Fée", version_group: "sword-shield" },
+    ]);
+  });
+
+  test("Cheniti -> Cheniselle: female only (gender), level 20, one entry per form; male gives Papilord", async () => {
+    mockApi(evolutionRoutes("burmy", 213, burmyChain));
+    const result = (await getEvolutionChain.execute(getEvolutionChain.schema.parse({ name_or_id: "Cheniti" }))) as { stages: EvolutionStage[] };
+    expect(result.stages[0]!.pokemon[0]).toEqual({ name: "burmy", name_fr: "Cheniti" });
+    const [wormadam, mothim] = result.stages[1]!.pokemon;
+    expect(wormadam!.name_fr).toBe("Cheniselle");
+    expect(wormadam!.conditions![0]).toEqual({
+      version_group: "diamond-pearl",
+      trigger: "level-up",
+      gender: "female",
+      min_level: 20,
+      required_pokemon_form: "burmy-plant",
+      evolved_pokemon_form: "wormadam-plant",
+    });
+    expect(wormadam!.conditions!.map((c) => c.evolved_pokemon_form)).toEqual(["wormadam-plant", "wormadam-sandy", "wormadam-trash"]);
+    expect(mothim).toMatchObject({ name_fr: "Papilord", conditions: [{ gender: "male", min_level: 20 }] });
+  });
+
+  test("other non-empty fields are kept (held item, move, trade, rain, stats 0, natures); empty ones and is_default are not", () => {
+    const [, stage] = flattenEvolutionChain(
+      link("x", [], [
+        link("y", [
+          {
+            is_default: true, trigger: resource("trade"), held_item: resource("metal-coat"), known_move: resource("ancient-power"),
+            trade_species: resource("shelmet"), needs_overworld_rain: true, relative_physical_stats: 0, party_type: resource("dark"),
+            allowed_natures: [resource("hardy"), resource("brave")], min_level: null, time_of_day: "", turn_upside_down: false, item: null,
+          },
+        ]),
+      ]) as never,
+    );
+    expect(stage!.pokemon[0]!.conditions).toEqual([
+      {
+        trigger: "trade", held_item: "metal-coat", known_move: "ancient-power", trade_species: "shelmet", needs_overworld_rain: true,
+        relative_physical_stats: 0, party_type: "dark", party_type_fr: "Ténèbres", allowed_natures: ["hardy", "brave"],
+      },
+    ]);
+  });
+
+  test("French names of the chain, as displayed: the default form of a species is found, an unknown name gives no French name", () => {
+    expect(frenchNameOf("eevee")).toBe("Évoli");
+    expect(frenchNameOf("deoxys")).toBe("Deoxys");
+    expect(frenchNameOf("wormadam")).toBe("Cheniselle");
+    expect(frenchNameOf("zorglub")).toBeNull();
+    const [stage] = flattenEvolutionChain(link("zorglub", []) as never);
+    expect(stage!.pokemon[0]).toEqual({ name: "zorglub" });
   });
 
   test("unknown Pokemon: clear error", async () => {

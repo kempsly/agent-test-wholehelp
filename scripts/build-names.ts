@@ -1,4 +1,5 @@
-// Builds apps/backend/src/data/names-fr.json once: normalized French name -> English name of the default Pokemon.
+// Builds apps/backend/src/data/names-fr.json once: normalized French name -> { en: English name of the default Pokemon,
+// fr: French name as displayed, with accents and capitals }.
 // Run from the repository root: `bun scripts/build-names.ts` (about 3 minutes, 1 request per species).
 // The GraphQL API (beta.pokeapi.co/graphql/v1beta) answers 401 Unauthorized, so the REST API is used,
 // one species at a time with a delay between the calls.
@@ -31,7 +32,7 @@ async function getJson<T>(url: string): Promise<T> {
 }
 
 const list = await getJson<{ count: number; results: { name: string }[] }>(`${API}/pokemon-species?limit=10000`);
-const table: Record<string, string> = {};
+const table: Record<string, { en: string; fr: string }> = {};
 const missing: string[] = [];
 
 for (const [i, { name }] of list.results.entries()) {
@@ -43,8 +44,9 @@ for (const [i, { name }] of list.results.entries()) {
     missing.push(species.name);
   } else {
     const key = normalizeFrenchName(french);
-    if (table[key] && table[key] !== english) throw new Error(`Same French name for ${table[key]} and ${english}: ${key}`);
-    table[key] = english;
+    const existing = table[key];
+    if (existing && existing.en !== english) throw new Error(`Same French name for ${existing.en} and ${english}: ${key}`);
+    table[key] = { en: english, fr: french };
   }
   if ((i + 1) % 100 === 0) console.log(`${i + 1} / ${list.results.length}`);
   await sleep(DELAY_MS);

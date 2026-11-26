@@ -1,1027 +1,4102 @@
 {
-  "abo": "ekans",
-  "abra": "abra",
-  "absol": "absol",
-  "aeromite": "venomoth",
-  "aeropteryx": "archeops",
-  "aflamanoir": "heatmor",
-  "airmure": "skarmory",
-  "akwakwak": "golduck",
-  "alakazam": "alakazam",
-  "aligatueur": "feraligatr",
-  "altaria": "altaria",
-  "ama-ama": "stakataka",
-  "amagara": "amaura",
-  "amassel": "naclstack",
-  "amonistar": "omastar",
-  "amonita": "omanyte",
-  "amovenus": "enamorus-incarnate",
-  "amphinobi": "greninja",
-  "ampibidou": "bellibolt",
-  "anchwatt": "tynamo",
-  "angoliath": "grimmsnarl",
-  "anorith": "anorith",
-  "apireine": "vespiquen",
-  "apitrini": "combee",
-  "aquali": "vaporeon",
-  "arakdo": "surskit",
-  "araqua": "dewpider",
-  "arbok": "arbok",
-  "arboliva": "arboliva",
-  "arcanin": "arcanine",
-  "arceus": "arceus",
-  "archeduc": "decidueye",
-  "archeodong": "bronzong",
-  "archeomire": "bronzor",
-  "arcko": "treecko",
-  "argouste": "gumshoos",
-  "arkeapti": "archen",
-  "armaldo": "armaldo",
-  "armulys": "silcoon",
-  "arrozard": "drizzile",
-  "artikodin": "articuno",
-  "aspicot": "weedle",
-  "astronelle": "orbeetle",
-  "avaltout": "swalot",
-  "axoloto": "wooper",
-  "azumarill": "azumarill",
-  "azurill": "azurill",
-  "babimanta": "mantyke",
-  "bacabouh": "sandygast",
-  "badabouin": "thwackey",
-  "baggaid": "scrafty",
-  "baggiguane": "scraggy",
-  "balbaleze": "cetitan",
-  "balbuto": "baltoy",
-  "balignon": "shroomish",
-  "bamboiselle": "celesteela",
-  "banshitrouye": "gourgeist-average",
-  "baojian": "chien-pao",
-  "barbicha": "whiscash",
-  "bargantua": "basculin-red-striped",
-  "barloche": "barboach",
-  "barpau": "feebas",
-  "bastiodon": "bastiodon",
-  "batracne": "palpitoad",
-  "baudrive": "drifloon",
-  "bazoucan": "toucannon",
-  "bebecaille": "jangmo-o",
-  "bekaglacon": "eiscue-ice",
-  "bekipan": "pelipper",
-  "beldeneige": "frosmoth",
-  "berasca": "rabsca",
-  "berserkatt": "perrserker",
-  "betochef": "conkeldurr",
-  "bibichut": "hatenna",
-  "blancoton": "eldegoss",
-  "bleuseille": "corvisquire",
-  "blindalys": "cascoon",
-  "blindepique": "chesnaught",
-  "blizzaroi": "abomasnow",
-  "blizzeval": "glastrier",
-  "blizzi": "snover",
-  "boguerisse": "quilladin",
-  "bombydou": "cutiefly",
-  "boreas": "tornadus-incarnate",
-  "boskara": "grotle",
-  "bouldeneu": "tangrowth",
-  "boumata": "turtonator",
-  "bourrinos": "mudsdale",
-  "boustiflor": "weepinbell",
-  "braisillon": "fletchinder",
-  "branette": "banette",
-  "brasegali": "blaziken",
-  "brindibou": "rowlet",
-  "briochien": "dachsbun",
-  "brocelome": "phantump",
-  "brouhabam": "exploud",
-  "brutalibre": "hawlucha",
-  "brutapode": "scolipede",
-  "bruyverne": "noivern",
-  "bulbizarre": "bulbasaur",
-  "cablifere": "xurkitree",
-  "cabriolaine": "skiddo",
-  "cacnea": "cacnea",
-  "cacturne": "cacturne",
-  "cadoizo": "delibird",
-  "camerupt": "camerupt",
-  "canarbello": "quaxwell",
-  "canarticho": "farfetchd",
-  "cancrelove": "pheromosa",
-  "candine": "steenee",
-  "caninos": "growlithe",
-  "capidextre": "ambipom",
-  "capumain": "aipom",
-  "carabaffe": "wartortle",
-  "carabing": "karrablast",
-  "carapagos": "tirtouga",
-  "carapuce": "squirtle",
-  "caratroc": "shuckle",
-  "carchacrok": "garchomp",
-  "carmache": "gabite",
-  "carmadura": "armarouge",
-  "carvanha": "carvanha",
-  "castorno": "bibarel",
-  "celebi": "celebi",
-  "cerbyllin": "wyrdeer",
-  "cerfrousse": "stantler",
-  "ceribou": "cherubi",
-  "ceriflor": "cherrim",
-  "chacripan": "purrloin",
-  "chaffreux": "purugly",
-  "chaglam": "glameow",
-  "chamallot": "numel",
-  "chapignon": "breloom",
-  "chapotus": "hattrem",
-  "charbambin": "charcadet",
-  "charbi": "rolycoly",
-  "charibari": "cufant",
-  "charkos": "rampardos",
-  "charmillon": "beautifly",
-  "charmilly": "alcremie",
-  "charmina": "medicham",
-  "charpenti": "timburr",
-  "chartor": "torkoal",
-  "chef-de-fer": "iron-crown",
-  "chelours": "bewear",
-  "chenipan": "caterpie",
-  "chenipotte": "wurmple",
-  "cheniselle": "wormadam-plant",
-  "cheniti": "burmy",
-  "chetiflor": "bellsprout",
-  "chevroum": "gogoat",
-  "chimpenfeu": "monferno",
-  "chinchidou": "minccino",
-  "chlorobule": "petilil",
-  "chochodile": "fuecoco",
-  "chongjian": "wo-chien",
-  "chovsourir": "woobat",
-  "chrysacier": "metapod",
-  "chrysapile": "charjabug",
-  "chuchmur": "whismur",
-  "cizayox": "scizor",
-  "clamiral": "samurott",
-  "cleopsytra": "espathra",
-  "clic": "klang",
-  "cliticlic": "klinklang",
-  "coatox": "toxicroak",
-  "cobaltium": "cobalion",
-  "cochignon": "piloswine",
-  "coconfort": "kakuna",
-  "cocotine": "aromatisse",
-  "coiffeton": "quaxly",
-  "coleodome": "dottler",
-  "colhomard": "crawdaunt",
-  "colimucus": "sliggoo",
-  "colombeau": "tranquill",
-  "colossinge": "primeape",
-  "compagnol": "tandemaus",
-  "concombaffe": "pyukumuku",
-  "coquiperl": "clamperl",
-  "corayome": "cursola",
-  "corayon": "corsola",
-  "corboss": "honchkrow",
-  "cornebre": "murkrow",
-  "corvaillus": "corviknight",
-  "cosmog": "cosmog",
-  "cosmovum": "cosmoem",
-  "cotovol": "jumpluff",
-  "couafarel": "furfrou",
-  "couaneton": "ducklett",
-  "coudlangue": "lickilicky",
-  "coupenotte": "axew",
-  "courrousinge": "annihilape",
-  "couverdure": "swadloon",
-  "coxy": "ledyba",
-  "coxyclaque": "ledian",
-  "crabagarre": "crabrawler",
-  "crabaraque": "crustle",
-  "crabicoque": "dwebble",
-  "crabominable": "crabominable",
-  "cradopaud": "croagunk",
-  "craparoi": "klawf",
-  "crapustule": "seismitoad",
-  "crefadet": "azelf",
-  "crefollet": "mesprit",
-  "crehelf": "uxie",
-  "cremy": "milcery",
-  "cresselia": "cresselia",
-  "crikzik": "kricketot",
-  "croaporal": "frogadier",
-  "crocogril": "crocalor",
-  "crocorible": "krookodile",
-  "crocrodil": "croconaw",
-  "croquine": "bounsweet",
-  "crustabri": "cloyster",
-  "cryodo": "arctibax",
-  "cryptero": "sigilyph",
-  "cupcanaille": "slurpuff",
-  "dardargnan": "beedrill",
-  "darkrai": "darkrai",
-  "darumacho": "darmanitan-standard",
-  "darumarond": "darumaka",
-  "debugant": "tyrogue",
-  "dedenne": "dedenne",
-  "deflaisan": "unfezant",
-  "delcatty": "delcatty",
-  "delestin": "veluza",
-  "demanta": "mantine",
-  "demeteros": "landorus-incarnate",
-  "demolosse": "houndoom",
-  "denticrisse": "bruxish",
-  "deoxys": "deoxys-normal",
-  "desseliande": "trevenant",
-  "deusolourdo": "dudunsparce-two-segment",
-  "dialga": "dialga",
-  "diamat": "zweilous",
-  "diancie": "diancie",
-  "dimocles": "doublade",
-  "dimoret": "weavile",
-  "dinglu": "ting-lu",
-  "dinoclier": "shieldon",
-  "dispareptil": "drakloak",
-  "dodoala": "komala",
-  "dodrio": "dodrio",
-  "doduo": "doduo",
-  "dofin": "finizen",
-  "dogrino": "mabosstiff",
-  "dolman": "stonjourner",
-  "donphan": "donphan",
-  "doudouvet": "cottonee",
-  "draby": "bagon",
-  "dracaufeu": "charizard",
-  "drackhaus": "shelgon",
-  "draco": "dragonair",
-  "dracolosse": "dragonite",
-  "dragmara": "aurorus",
-  "draieul": "drampa",
-  "drakkarmin": "druddigon",
-  "drascore": "drapion",
-  "dratatin": "appletun",
-  "drattak": "salamence",
-  "dunaconda": "sandaconda",
-  "dunaja": "silicobra",
-  "duralugon": "duraludon",
-  "dynavolt": "electrike",
-  "ecaid": "hakamo-o",
-  "ecayon": "finneon",
-  "ecrapince": "corphish",
-  "ecremeuh": "miltank",
-  "ectoplasma": "gengar",
-  "effleche": "dartrix",
-  "ekaiser": "kommo-o",
-  "elecsprint": "manectric",
-  "electhor": "zapdos",
-  "electrode": "electrode",
-  "elekable": "electivire",
-  "elekid": "elekid",
-  "elektek": "electabuzz",
-  "embrochet": "arrokuda",
-  "embrylex": "larvitar",
-  "emolga": "emolga",
-  "empiflor": "victreebel",
-  "engloutyran": "guzzlord",
-  "entei": "entei",
-  "eoko": "chimecho",
-  "epine-de-fer": "iron-thorns",
-  "escargaume": "shelmet",
-  "escroco": "krokorok",
-  "ethernatos": "eternatus",
-  "etouraptor": "staraptor",
-  "etourmi": "starly",
-  "etourvol": "staravia",
-  "evoli": "eevee",
-  "exagide": "aegislash-shield",
-  "excavarenne": "diggersby",
-  "excelangue": "lickitung",
-  "famignol": "maushold-family-of-four",
-  "fantominus": "gastly",
-  "fantyrm": "dreepy",
-  "farfaduvet": "whimsicott",
-  "farfuret": "sneasel",
-  "farfurex": "sneasler",
-  "farigiraf": "farigiraf",
-  "favianos": "fezandipiti",
-  "felicanis": "okidogi",
-  "felinferno": "incineroar",
-  "ferdeter": "orthworm",
-  "fermite": "durant",
-  "ferosinge": "mankey",
-  "feu-percant": "gouging-fire",
-  "feuforeve": "misdreavus",
-  "feuillajou": "pansage",
-  "feuiloutan": "simisage",
-  "feunard": "ninetales",
-  "feunnec": "fennekin",
-  "feurisson": "quilava",
-  "filentrappe": "spidops",
-  "flabebe": "flabebe",
-  "flagadoss": "slowbro",
-  "flamajou": "pansear",
-  "flambino": "scorbunny",
-  "flambusard": "talonflame",
-  "flamenroule": "flamigo",
-  "flamiaou": "litten",
-  "flamigator": "skeledirge",
-  "flamoutan": "simisear",
-  "flingouste": "clauncher",
-  "flobio": "marshtomp",
-  "floette": "floette",
-  "floramantis": "lurantis",
-  "floravol": "skiploom",
-  "floreclat": "glimmora",
-  "florges": "florges",
-  "florizarre": "venusaur",
-  "flotajou": "panpour",
-  "flotillon": "flittle",
-  "flotoutan": "simipour",
-  "flotte-meche": "flutter-mane",
-  "fluvetin": "spritzee",
-  "fongus-furie": "brute-bonnet",
-  "foretress": "forretress",
-  "forgelina": "tinkaton",
-  "forgella": "tinkatuff",
-  "forgerette": "tinkatink",
-  "fort-ivoire": "great-tusk",
-  "fortusimia": "munkidori",
-  "fouinar": "furret",
-  "fouinette": "sentret",
-  "fourbelin": "morgrem",
-  "fragilady": "lilligant",
-  "fragroin": "oinkologne-male",
-  "frigodo": "frigibax",
-  "frison": "bouffalant",
-  "frissonille": "snom",
-  "froussardine": "wishiwashi-solo",
-  "fulgudog": "boltund",
-  "fulgulairo": "kilowattrel",
-  "fulguris": "thundurus-incarnate",
-  "funecire": "litwick",
-  "furaiglon": "rufflet",
-  "galegon": "lairon",
-  "galekid": "aron",
-  "galeking": "aggron",
-  "galifeu": "combusken",
-  "gallame": "gallade",
-  "galopa": "rapidash",
-  "galvagla": "arctozolt",
-  "galvagon": "dracozolt",
-  "galvaran": "helioptile",
-  "gambex": "lokix",
-  "gamblast": "clawitzer",
-  "garde-de-fer": "iron-valiant",
-  "gardevoir": "gardevoir",
-  "gaulet": "amoonguss",
-  "genesect": "genesect",
-  "geolithe": "boldore",
-  "germeclat": "glimmet",
-  "germignon": "chikorita",
-  "gigalithe": "gigalith",
-  "gigansel": "garganacl",
-  "girafarig": "girafarig",
-  "giratina": "giratina-altered",
-  "givrali": "glaceon",
-  "glaivodo": "baxcalibur",
-  "gloupti": "gulpin",
-  "gobou": "mudkip",
-  "goelise": "wingull",
-  "goinfrex": "munchlax",
-  "golemastoc": "golurk",
-  "golgopathe": "barbaracle",
-  "gorythmic": "rillaboom",
-  "goupelin": "delphox",
-  "goupilou": "nickit",
-  "goupix": "vulpix",
-  "gourmelet": "lechonk",
-  "gouroutan": "oranguru",
-  "grahyena": "mightyena",
-  "grainipiot": "seedot",
-  "granbull": "granbull",
-  "granivol": "hoppip",
-  "gravalanch": "graveler",
-  "grelacon": "bergmite",
-  "grenousse": "froakie",
-  "gribouraigne": "shroodle",
-  "griknot": "gible",
-  "grillepattes": "sizzlipede",
-  "grimalin": "impidimp",
-  "grindur": "ferroseed",
-  "gringolem": "golett",
-  "grodoudou": "wigglytuff",
-  "grodrive": "drifblim",
-  "grolem": "golem",
-  "gromago": "gholdengo",
-  "grondogue": "maschiff",
-  "groret": "grumpig",
-  "grotadmorv": "muk",
-  "grotichon": "pignite",
-  "groudon": "groudon",
-  "gruikui": "tepig",
-  "gueriaigle": "braviary",
-  "guerilande": "comfey",
-  "hachecateur": "kleavor",
-  "hariyama": "hariyama",
-  "hastacuda": "barraskewda",
-  "haydaim": "sawsbuck",
-  "heatran": "heatran",
-  "heledelle": "swellow",
-  "heliatronc": "sunflora",
-  "helionceau": "litleo",
-  "herbizarre": "ivysaur",
-  "hericendre": "cyndaquil",
-  "hexadron": "falinks",
-  "hexagel": "cryogonal",
-  "hippodocus": "hippowdon",
-  "hippopotas": "hippopotas",
-  "ho-oh": "ho-oh",
-  "hoopa": "hoopa",
-  "hoothoot": "hoothoot",
-  "hotte-de-fer": "iron-bundle",
-  "hurle-queue": "scream-tail",
-  "hydragla": "arctovish",
-  "hydragon": "dracovish",
-  "hypnomade": "hypno",
-  "hypocean": "seadra",
-  "hyporoi": "kingdra",
-  "hypotrempe": "horsea",
-  "iguolta": "heliolisk",
-  "incisache": "fraxure",
-  "insecateur": "scyther",
-  "insolourdo": "dunsparce",
-  "ire-foudre": "raging-bolt",
-  "ixon": "obstagoon",
-  "jirachi": "jirachi",
-  "joliflor": "bellossom",
-  "judokrak": "throh",
-  "jungko": "sceptile",
-  "kabuto": "kabuto",
-  "kabutops": "kabutops",
-  "kadabra": "kadabra",
-  "kaiminus": "totodile",
-  "kaimorse": "walrein",
-  "kangourex": "kangaskhan",
-  "kaorine": "claydol",
-  "kapoera": "hitmontop",
-  "karaclee": "sawk",
-  "katagami": "kartana",
-  "kecleon": "kecleon",
-  "keldeo": "keldeo-ordinary",
-  "keunotor": "bidoof",
-  "khelocrok": "chewtle",
-  "kicklee": "hitmonlee",
-  "kirlia": "kirlia",
-  "kokiyas": "shellder",
-  "koraidon": "koraidon",
-  "korillon": "chingling",
-  "krabboss": "kingler",
-  "krabby": "krabby",
-  "kraknoix": "trapinch",
-  "krakos": "grapploct",
-  "kranidos": "cranidos",
-  "kravarech": "dragalge",
-  "kungfouine": "mienfoo",
-  "kyogre": "kyogre",
-  "kyurem": "kyurem",
-  "laggron": "swampert",
-  "lainergie": "flaaffy",
-  "lakmecygne": "swanna",
-  "lamantine": "dewgong",
-  "lamperoie": "eelektrik",
-  "lampignon": "shiinotic",
-  "lancargot": "escavalier",
-  "lanssorien": "dragapult",
-  "lanturn": "lanturn",
-  "laporeille": "buneary",
-  "lapyro": "raboot",
-  "larmeleon": "sobble",
-  "larvadar": "blipbug",
-  "larveyette": "sewaddle",
-  "larvibule": "grubbin",
-  "latias": "latias",
-  "latios": "latios",
-  "leboulerou": "rellor",
-  "leopardus": "liepard",
-  "lepidonille": "scatterbug",
-  "lestombaile": "bombirdier",
-  "leuphorie": "blissey",
-  "leveinard": "chansey",
-  "leviator": "gyarados",
-  "lewsor": "elgyem",
-  "lezargus": "inteleon",
-  "lianaja": "servine",
-  "libegon": "flygon",
-  "lilia": "lileep",
-  "lilliterelle": "nymble",
-  "limagma": "slugma",
-  "limaspeed": "accelgor",
-  "limonde": "stunfisk",
-  "lineon": "linoone",
-  "lippouti": "smoochum",
-  "lippoutou": "jynx",
-  "lixy": "shinx",
-  "lockpin": "lopunny",
-  "lokhlass": "lapras",
-  "lombre": "lombre",
-  "lougaroc": "lycanroc-midday",
-  "loupio": "chinchou",
-  "lovdisc": "luvdisc",
-  "lucanon": "vikavolt",
-  "lucario": "lucario",
-  "ludicolo": "ludicolo",
-  "lugia": "lugia",
-  "lugulabre": "chandelure",
-  "lumineon": "lumineon",
-  "lumivole": "illumise",
-  "lunala": "lunala",
-  "luxio": "luxio",
-  "luxray": "luxray",
-  "m. glaquette": "mr-rime",
-  "m. mime": "mr-mime",
-  "machoc": "machop",
-  "machopeur": "machoke",
-  "mackogneur": "machamp",
-  "macronium": "bayleef",
-  "maganon": "magmortar",
-  "magby": "magby",
-  "magearna": "magearna",
-  "magicarpe": "magikarp",
-  "magireve": "mismagius",
-  "magmar": "magmar",
-  "magneti": "magnemite",
-  "magneton": "magneton",
-  "magnezone": "magnezone",
-  "majaspic": "serperior",
-  "makuhita": "makuhita",
-  "malamandre": "salazzle",
-  "malosse": "houndour",
-  "malvalame": "ceruledge",
-  "mamanbo": "alomomola",
-  "mammochon": "mamoswine",
-  "manaphy": "manaphy",
-  "mandrillon": "naganadel",
-  "manglouton": "yungoos",
-  "mangriff": "zangoose",
-  "manternel": "leavanny",
-  "manzai": "bonsly",
-  "maracachi": "maractus",
-  "maraiste": "quagsire",
-  "marcacrin": "swinub",
-  "marill": "marill",
-  "marisson": "chespin",
-  "marshadow": "marshadow",
-  "mascaiman": "sandile",
-  "maskadra": "masquerain",
-  "massko": "grovyle",
-  "mastouffe": "stoutland",
-  "mateloutre": "dewott",
-  "matoufeu": "torracat",
-  "matourgeon": "floragato",
-  "medhyena": "poochyena",
-  "meditikka": "meditite",
-  "meganium": "meganium",
-  "megapagos": "carracosta",
-  "meios": "duosion",
-  "melancolux": "lampent",
-  "melmetal": "melmetal",
-  "melo": "cleffa",
-  "melodelfe": "clefable",
-  "meloetta": "meloetta-aria",
-  "melofee": "clefairy",
-  "melokrik": "kricketune",
-  "meltan": "meltan",
-  "mentali": "espeon",
-  "mesmerella": "gothorita",
-  "metalosse": "metagross",
-  "metamorph": "ditto",
-  "metang": "metang",
-  "meteno": "minior-red-meteor",
-  "mew": "mew",
-  "mewtwo": "mewtwo",
-  "miamiasme": "trubbish",
-  "miaouss": "meowth",
-  "miascarade": "meowscarada",
-  "miasmax": "garbodor",
-  "migalos": "ariados",
-  "milobellus": "milotic",
-  "mimantis": "fomantis",
-  "mime jr.": "mime-jr",
-  "mimigal": "spinarak",
-  "mimiqui": "mimikyu-disguised",
-  "mimitoss": "venonat",
-  "minidraco": "dratini",
-  "minisange": "rookidee",
-  "minotaupe": "excadrill",
-  "miradar": "watchog",
-  "miraidon": "miraidon",
-  "mistigrix": "meowstic-male",
-  "mite-de-fer": "iron-moth",
-  "momartik": "froslass",
-  "monaflemit": "slaking",
-  "monorpale": "honedge",
-  "monthracite": "coalossal",
-  "mordudor": "gimmighoul",
-  "morpeko": "morpeko-full-belly",
-  "morpheo": "castform",
-  "motisma": "rotom",
-  "motorizard": "cyclizar",
-  "moufflair": "skuntank",
-  "moufouette": "stunky",
-  "moumouflon": "dubwool",
-  "moumouton": "wooloo",
-  "mouscoto": "buzzwole",
-  "moustillon": "oshawott",
-  "moyade": "jellicent-male",
-  "muciole": "volbeat",
-  "mucuscule": "goomy",
-  "munja": "shedinja",
-  "munna": "munna",
-  "muplodocus": "goodra",
-  "mushana": "musharna",
-  "mustebouee": "buizel",
-  "musteflott": "floatzel",
-  "mygavolt": "galvantula",
-  "mysdibule": "mawile",
-  "mystherbe": "oddish",
-  "nanmeouie": "audino",
-  "natu": "natu",
-  "necrozma": "necrozma",
-  "negapi": "minun",
-  "neitram": "beheeyem",
-  "nemelios": "pyroar-male",
-  "nenupiot": "lotad",
-  "nidoking": "nidoking",
-  "nidoqueen": "nidoqueen",
-  "nidoran♀": "nidoran-f",
-  "nidoran♂": "nidoran-m",
-  "nidorina": "nidorina",
-  "nidorino": "nidorino",
-  "nigirigon": "tatsugiri-curly",
-  "nigosier": "cramorant",
-  "ningale": "nincada",
-  "ninjask": "ninjask",
-  "nirondelle": "taillow",
-  "noacier": "ferrothorn",
-  "noadkoko": "exeggutor",
-  "noarfang": "noctowl",
-  "noctali": "umbreon",
-  "noctunoir": "dusknoir",
-  "nodulithe": "roggenrola",
-  "noeunoeuf": "exeggcute",
-  "nosferalto": "golbat",
-  "nosferapti": "zubat",
-  "nostenfer": "crobat",
-  "nounourson": "stufful",
-  "nucleos": "solosis",
-  "nymphali": "sylveon",
-  "obalie": "spheal",
-  "octillery": "octillery",
-  "ogerpon": "ogerpon",
-  "ohmassacre": "eelektross",
-  "okeoke": "wynaut",
-  "olivado": "dolliv",
-  "olivini": "smoliv",
-  "oniglali": "glalie",
-  "onix": "onix",
-  "opermine": "binacle",
-  "oratoria": "primarina",
-  "ortide": "gloom",
-  "ossatueur": "marowak",
-  "osselait": "cubone",
-  "otaquin": "popplio",
-  "otaria": "seel",
-  "otarlette": "brionne",
-  "ouistempo": "grookey",
-  "ouisticram": "chimchar",
-  "ouvrifier": "gurdurr",
-  "oyacata": "dondozo",
-  "pachirisu": "pachirisu",
-  "pachyradjah": "copperajah",
-  "palarticho": "sirfetchd",
-  "palkia": "palkia",
-  "palmaval": "quaquaval",
-  "pandarbare": "pangoro",
-  "pandespiegle": "pancham",
-  "papilord": "mothim",
-  "papilusion": "butterfree",
-  "papinox": "dustox",
-  "paragruel": "basculegion-male",
-  "paras": "paras",
-  "parasect": "parasect",
-  "parecool": "slakoth",
-  "pashmilla": "cinccino",
-  "passerouge": "fletchling",
-  "patachiot": "fidough",
-  "paume-de-fer": "iron-hands",
-  "pechaminus": "pecharunt",
-  "pelage-sable": "sandy-shocks",
-  "peregrain": "spewpa",
-  "persian": "persian",
-  "phanpy": "phanpy",
-  "pharamp": "ampharos",
-  "phione": "phione",
-  "phogleur": "sealeo",
-  "phyllali": "leafeon",
-  "piafabec": "spearow",
-  "picassaut": "pikipek",
-  "pichu": "pichu",
-  "piclairon": "trumbeak",
-  "pierroteknik": "blacephalon",
-  "pietace": "cetoddle",
-  "pifeuil": "nuzleaf",
-  "pijako": "chatot",
-  "pikachu": "pikachu",
-  "pimito": "capsakid",
-  "pingoleon": "empoleon",
-  "pitrouille": "pumpkaboo-average",
-  "plumeline": "oricorio-baile",
-  "pohm": "pawmi",
-  "pohmarmotte": "pawmot",
-  "pohmotte": "pawmo",
-  "poichigeon": "pidove",
-  "poissirene": "goldeen",
-  "poissoroy": "seaking",
-  "polagriffe": "beartic",
-  "polarhume": "cubchoo",
-  "polichombr": "shuppet",
-  "poltchageist": "poltchageist",
-  "polthegeist": "polteageist",
-  "pomdepik": "pineco",
-  "pomdorochi": "hydrapple",
-  "pomdramour": "dipplin",
-  "pomdrapi": "flapple",
-  "ponchien": "herdier",
-  "ponchiot": "lillipup",
-  "pondralugon": "archaludon",
-  "ponyta": "ponyta",
-  "porygon": "porygon",
-  "porygon-z": "porygon-z",
-  "porygon2": "porygon2",
-  "posipi": "plusle",
-  "poulpaf": "clobbopus",
-  "poussacha": "sprigatito",
-  "poussifeu": "torchic",
-  "predasterie": "toxapex",
-  "prinplouf": "prinplup",
-  "prismillon": "vivillon",
-  "psykokwak": "psyduck",
-  "psystigri": "espurr",
-  "ptera": "aerodactyl",
-  "ptiravi": "happiny",
-  "ptitard": "poliwag",
-  "ptyranidur": "tyrunt",
-  "pyrax": "volcarona",
-  "pyrobut": "cinderace",
-  "pyroli": "flareon",
-  "pyronille": "larvesta",
-  "quartermac": "passimian",
-  "queulorior": "smeargle",
-  "qulbutoke": "wobbuffet",
-  "qwilfish": "qwilfish",
-  "qwilpik": "overqwil",
-  "racaillou": "geodude",
-  "rafflesia": "vileplume",
-  "raichu": "raichu",
-  "raikou": "raikou",
-  "ramboum": "loudred",
-  "ramoloss": "slowpoke",
-  "rampe-ailes": "slither-wing",
-  "rapasdepic": "fearow",
-  "rapion": "skorupi",
-  "ratentif": "patrat",
-  "rattata": "rattata",
-  "rattatac": "raticate",
-  "rayquaza": "rayquaza",
-  "regice": "regice",
-  "regidrago": "regidrago",
-  "regieleki": "regieleki",
-  "regigigas": "regigigas",
-  "regirock": "regirock",
-  "registeel": "registeel",
-  "relicanth": "relicanth",
-  "remoraid": "remoraid",
-  "reptincel": "charmeleon",
-  "reshiram": "reshiram",
-  "rexillius": "tyrantrum",
-  "rhinastoc": "rhyperior",
-  "rhinocorne": "rhyhorn",
-  "rhinoferos": "rhydon",
-  "rhinolove": "swoobat",
-  "riolu": "riolu",
-  "roc-de-fer": "iron-boulder",
-  "rocabot": "rockruff",
-  "roigada": "slowking",
-  "roitiflam": "emboar",
-  "rondoudou": "jigglypuff",
-  "ronflex": "snorlax",
-  "rongourmand": "skwovet",
-  "rongrigou": "greedent",
-  "rosabyss": "gorebyss",
-  "roselia": "roselia",
-  "roserade": "roserade",
-  "rototaupe": "drilbur",
-  "roublenard": "thievul",
-  "roucarnage": "pidgeot",
-  "roucool": "pidgey",
-  "roucoups": "pidgeotto",
-  "roue-de-fer": "iron-treads",
-  "roussil": "braixen",
-  "rozbouton": "budew",
-  "rubombelle": "ribombee",
-  "rugit-lune": "roaring-moon",
-  "sabelette": "sandshrew",
-  "sablaireau": "sandslash",
-  "salameche": "charmander",
-  "salarsen": "toxtricity-amped",
-  "sancoki": "shellos",
-  "sapereau": "bunnelby",
-  "saquedeneu": "tangela",
-  "sarmurai": "golisopod",
-  "scalpereur": "kingambit",
-  "scalpion": "pawniard",
-  "scalproie": "bisharp",
-  "scarabrute": "pinsir",
-  "scarhino": "heracross",
-  "scobolide": "whirlipede",
-  "scolocendre": "centiskorch",
-  "scorplane": "gligar",
-  "scorvol": "gliscor",
-  "scovilain": "scovillain",
-  "scrutella": "gothita",
-  "seleroc": "lunatone",
-  "selutin": "nacli",
-  "sepiatop": "inkay",
-  "sepiatroce": "malamar",
-  "seracrawl": "avalugg",
-  "serpang": "huntail",
-  "serpente-eau": "walking-wake",
-  "seviper": "seviper",
-  "shaofouine": "mienshao",
-  "sharpedo": "sharpedo",
-  "shaymin": "shaymin-land",
-  "shifours": "urshifu-single-strike",
-  "siderella": "gothitelle",
-  "silvallie": "silvally",
-  "simiabraz": "infernape",
-  "simularbre": "sudowoodo",
-  "sinistrail": "dhelmise",
-  "skelenox": "duskull",
-  "skitty": "skitty",
-  "smogo": "koffing",
-  "smogogo": "weezing",
-  "snubbull": "snubbull",
-  "solaroc": "solrock",
-  "solgaleo": "solgaleo",
-  "solochi": "deino",
-  "sonistrelle": "noibat",
-  "soporifik": "drowzee",
-  "sorbebe": "vanillite",
-  "sorbouboul": "vanilluxe",
-  "sorboul": "vanillish",
-  "sorcilence": "hatterene",
-  "sovkipou": "wimpod",
-  "spectreval": "spectrier",
-  "spectrum": "haunter",
-  "spinda": "spinda",
-  "spiritomb": "spiritomb",
-  "spododo": "morelull",
-  "spoink": "spoink",
-  "stalgamin": "snorunt",
-  "stari": "staryu",
-  "staross": "starmie",
-  "statitik": "joltik",
-  "steelix": "steelix",
-  "strassie": "carbink",
-  "sucreine": "tsareena",
-  "sucroquin": "swirlix",
-  "suicune": "suicune",
-  "sulfura": "moltres",
-  "superdofin": "palafin-zero",
-  "sylveroy": "calyrex",
-  "symbios": "reuniclus",
-  "tadmorv": "grimer",
-  "tag-tag": "grafaiai",
-  "tapatoes": "squawkabilly-green-plumage",
-  "tarenbulle": "araquanid",
-  "tarinor": "nosepass",
-  "tarinorme": "probopass",
-  "tarpaud": "politoed",
-  "tarsal": "ralts",
-  "tartard": "poliwrath",
-  "taupikeau": "wiglett",
-  "taupiqueur": "diglett",
-  "tauros": "tauros",
-  "teddiursa": "teddiursa",
-  "tenefix": "sableye",
-  "tengalice": "shiftry",
-  "tentacool": "tentacool",
-  "tentacruel": "tentacruel",
-  "teraclope": "dusclops",
-  "terapagos": "terapagos",
-  "terhal": "beldum",
-  "terracool": "toedscool",
-  "terracruel": "toedscruel",
-  "terraiste": "clodsire",
-  "terrakium": "terrakion",
-  "tetampoule": "tadbulb",
-  "tetarte": "poliwhirl",
-  "tetes-de-fer": "iron-jugulis",
-  "theffroi": "sinistea",
-  "theffroyable": "sinistcha",
-  "tiboudet": "mudbray",
-  "tic": "klink",
-  "tiplouf": "piplup",
-  "tissenboule": "tarountula",
-  "togedemaru": "togedemaru",
-  "togekiss": "togekiss",
-  "togepi": "togepi",
-  "togetic": "togetic",
-  "tokopisco": "tapu-fini",
-  "tokopiyon": "tapu-lele",
-  "tokorico": "tapu-koko",
-  "tokotoro": "tapu-bulu",
-  "tomberro": "houndstone",
-  "torgamord": "drednaw",
-  "tortank": "blastoise",
-  "torterra": "torterra",
-  "tortipouss": "turtwig",
-  "toudoudou": "igglybuff",
-  "tournegrin": "sunkern",
-  "tournicoton": "gossifleur",
-  "toutombe": "greavard",
-  "toxizap": "toxel",
-  "tranchodon": "haxorus",
-  "trepassable": "palossand",
-  "triopikeau": "wugtrio",
-  "triopikeur": "dugtrio",
-  "trioxhydre": "hydreigon",
-  "tritonde": "tympole",
-  "tritosor": "gastrodon",
-  "tritox": "salandit",
-  "trompignon": "foongus",
-  "tropius": "tropius",
-  "trousselin": "klefki",
-  "tutafeh": "yamask",
-  "tutankafer": "cofagrigus",
-  "tutetekri": "runerigus",
-  "tygnon": "hitmonchan",
-  "tylton": "swablu",
-  "type:0": "type-null",
-  "typhlosion": "typhlosion",
-  "tyranocif": "tyranitar",
-  "ursaking": "ursaluna",
-  "ursaring": "ursaring",
-  "vacilys": "cradily",
-  "vaututrice": "mandibuzz",
-  "vemini": "poipole",
-  "venalgue": "skrelp",
-  "venipatte": "venipede",
-  "verpom": "applin",
-  "vert-de-fer": "iron-leaves",
-  "vibraninf": "vibrava",
-  "victini": "victini",
-  "vigoroth": "vigoroth",
-  "vipelierre": "snivy",
-  "virevorreur": "brambleghast",
-  "viridium": "virizion",
-  "virovent": "bramblin",
-  "viskuse": "frillish-male",
-  "vivaldaim": "deerling",
-  "volcanion": "volcanion",
-  "volcaropod": "magcargo",
-  "voltali": "jolteon",
-  "voltorbe": "voltorb",
-  "voltoutou": "yamper",
-  "vorasterie": "mareanie",
-  "vortente": "carnivine",
-  "vostourno": "vullaby",
-  "vrombi": "varoom",
-  "vrombotor": "revavroom",
-  "wagomine": "carkol",
-  "wailmer": "wailmer",
-  "wailord": "wailord",
-  "wattapik": "pincurchin",
-  "wattouat": "mareep",
-  "wimessir": "indeedee-male",
-  "wushours": "kubfu",
-  "xatu": "xatu",
-  "xerneas": "xerneas",
-  "yanma": "yanma",
-  "yanmega": "yanmega",
-  "ymphect": "pupitar",
-  "yuyu": "chi-yu",
-  "yveltal": "yveltal",
-  "zacian": "zacian",
-  "zamazenta": "zamazenta",
-  "zapetrel": "wattrel",
-  "zarbi": "unown",
-  "zarude": "zarude",
-  "zebibron": "blitzle",
-  "zeblitz": "zebstrika",
-  "zekrom": "zekrom",
-  "zeraora": "zeraora",
-  "zeroid": "nihilego",
-  "zigzaton": "zigzagoon",
-  "zoroark": "zoroark",
-  "zorua": "zorua",
-  "zygarde": "zygarde-50"
+  "abo": {
+    "en": "ekans",
+    "fr": "Abo"
+  },
+  "abra": {
+    "en": "abra",
+    "fr": "Abra"
+  },
+  "absol": {
+    "en": "absol",
+    "fr": "Absol"
+  },
+  "aeromite": {
+    "en": "venomoth",
+    "fr": "Aéromite"
+  },
+  "aeropteryx": {
+    "en": "archeops",
+    "fr": "Aéroptéryx"
+  },
+  "aflamanoir": {
+    "en": "heatmor",
+    "fr": "Aflamanoir"
+  },
+  "airmure": {
+    "en": "skarmory",
+    "fr": "Airmure"
+  },
+  "akwakwak": {
+    "en": "golduck",
+    "fr": "Akwakwak"
+  },
+  "alakazam": {
+    "en": "alakazam",
+    "fr": "Alakazam"
+  },
+  "aligatueur": {
+    "en": "feraligatr",
+    "fr": "Aligatueur"
+  },
+  "altaria": {
+    "en": "altaria",
+    "fr": "Altaria"
+  },
+  "ama-ama": {
+    "en": "stakataka",
+    "fr": "Ama-Ama"
+  },
+  "amagara": {
+    "en": "amaura",
+    "fr": "Amagara"
+  },
+  "amassel": {
+    "en": "naclstack",
+    "fr": "Amassel"
+  },
+  "amonistar": {
+    "en": "omastar",
+    "fr": "Amonistar"
+  },
+  "amonita": {
+    "en": "omanyte",
+    "fr": "Amonita"
+  },
+  "amovenus": {
+    "en": "enamorus-incarnate",
+    "fr": "Amovénus"
+  },
+  "amphinobi": {
+    "en": "greninja",
+    "fr": "Amphinobi"
+  },
+  "ampibidou": {
+    "en": "bellibolt",
+    "fr": "Ampibidou"
+  },
+  "anchwatt": {
+    "en": "tynamo",
+    "fr": "Anchwatt"
+  },
+  "angoliath": {
+    "en": "grimmsnarl",
+    "fr": "Angoliath"
+  },
+  "anorith": {
+    "en": "anorith",
+    "fr": "Anorith"
+  },
+  "apireine": {
+    "en": "vespiquen",
+    "fr": "Apireine"
+  },
+  "apitrini": {
+    "en": "combee",
+    "fr": "Apitrini"
+  },
+  "aquali": {
+    "en": "vaporeon",
+    "fr": "Aquali"
+  },
+  "arakdo": {
+    "en": "surskit",
+    "fr": "Arakdo"
+  },
+  "araqua": {
+    "en": "dewpider",
+    "fr": "Araqua"
+  },
+  "arbok": {
+    "en": "arbok",
+    "fr": "Arbok"
+  },
+  "arboliva": {
+    "en": "arboliva",
+    "fr": "Arboliva"
+  },
+  "arcanin": {
+    "en": "arcanine",
+    "fr": "Arcanin"
+  },
+  "arceus": {
+    "en": "arceus",
+    "fr": "Arceus"
+  },
+  "archeduc": {
+    "en": "decidueye",
+    "fr": "Archéduc"
+  },
+  "archeodong": {
+    "en": "bronzong",
+    "fr": "Archéodong"
+  },
+  "archeomire": {
+    "en": "bronzor",
+    "fr": "Archéomire"
+  },
+  "arcko": {
+    "en": "treecko",
+    "fr": "Arcko"
+  },
+  "argouste": {
+    "en": "gumshoos",
+    "fr": "Argouste"
+  },
+  "arkeapti": {
+    "en": "archen",
+    "fr": "Arkéapti"
+  },
+  "armaldo": {
+    "en": "armaldo",
+    "fr": "Armaldo"
+  },
+  "armulys": {
+    "en": "silcoon",
+    "fr": "Armulys"
+  },
+  "arrozard": {
+    "en": "drizzile",
+    "fr": "Arrozard"
+  },
+  "artikodin": {
+    "en": "articuno",
+    "fr": "Artikodin"
+  },
+  "aspicot": {
+    "en": "weedle",
+    "fr": "Aspicot"
+  },
+  "astronelle": {
+    "en": "orbeetle",
+    "fr": "Astronelle"
+  },
+  "avaltout": {
+    "en": "swalot",
+    "fr": "Avaltout"
+  },
+  "axoloto": {
+    "en": "wooper",
+    "fr": "Axoloto"
+  },
+  "azumarill": {
+    "en": "azumarill",
+    "fr": "Azumarill"
+  },
+  "azurill": {
+    "en": "azurill",
+    "fr": "Azurill"
+  },
+  "babimanta": {
+    "en": "mantyke",
+    "fr": "Babimanta"
+  },
+  "bacabouh": {
+    "en": "sandygast",
+    "fr": "Bacabouh"
+  },
+  "badabouin": {
+    "en": "thwackey",
+    "fr": "Badabouin"
+  },
+  "baggaid": {
+    "en": "scrafty",
+    "fr": "Baggaïd"
+  },
+  "baggiguane": {
+    "en": "scraggy",
+    "fr": "Baggiguane"
+  },
+  "balbaleze": {
+    "en": "cetitan",
+    "fr": "Balbalèze"
+  },
+  "balbuto": {
+    "en": "baltoy",
+    "fr": "Balbuto"
+  },
+  "balignon": {
+    "en": "shroomish",
+    "fr": "Balignon"
+  },
+  "bamboiselle": {
+    "en": "celesteela",
+    "fr": "Bamboiselle"
+  },
+  "banshitrouye": {
+    "en": "gourgeist-average",
+    "fr": "Banshitrouye"
+  },
+  "baojian": {
+    "en": "chien-pao",
+    "fr": "Baojian"
+  },
+  "barbicha": {
+    "en": "whiscash",
+    "fr": "Barbicha"
+  },
+  "bargantua": {
+    "en": "basculin-red-striped",
+    "fr": "Bargantua"
+  },
+  "barloche": {
+    "en": "barboach",
+    "fr": "Barloche"
+  },
+  "barpau": {
+    "en": "feebas",
+    "fr": "Barpau"
+  },
+  "bastiodon": {
+    "en": "bastiodon",
+    "fr": "Bastiodon"
+  },
+  "batracne": {
+    "en": "palpitoad",
+    "fr": "Batracné"
+  },
+  "baudrive": {
+    "en": "drifloon",
+    "fr": "Baudrive"
+  },
+  "bazoucan": {
+    "en": "toucannon",
+    "fr": "Bazoucan"
+  },
+  "bebecaille": {
+    "en": "jangmo-o",
+    "fr": "Bébécaille"
+  },
+  "bekaglacon": {
+    "en": "eiscue-ice",
+    "fr": "Bekaglaçon"
+  },
+  "bekipan": {
+    "en": "pelipper",
+    "fr": "Bekipan"
+  },
+  "beldeneige": {
+    "en": "frosmoth",
+    "fr": "Beldeneige"
+  },
+  "berasca": {
+    "en": "rabsca",
+    "fr": "Bérasca"
+  },
+  "berserkatt": {
+    "en": "perrserker",
+    "fr": "Berserkatt"
+  },
+  "betochef": {
+    "en": "conkeldurr",
+    "fr": "Bétochef"
+  },
+  "bibichut": {
+    "en": "hatenna",
+    "fr": "Bibichut"
+  },
+  "blancoton": {
+    "en": "eldegoss",
+    "fr": "Blancoton"
+  },
+  "bleuseille": {
+    "en": "corvisquire",
+    "fr": "Bleuseille"
+  },
+  "blindalys": {
+    "en": "cascoon",
+    "fr": "Blindalys"
+  },
+  "blindepique": {
+    "en": "chesnaught",
+    "fr": "Blindépique"
+  },
+  "blizzaroi": {
+    "en": "abomasnow",
+    "fr": "Blizzaroi"
+  },
+  "blizzeval": {
+    "en": "glastrier",
+    "fr": "Blizzeval"
+  },
+  "blizzi": {
+    "en": "snover",
+    "fr": "Blizzi"
+  },
+  "boguerisse": {
+    "en": "quilladin",
+    "fr": "Boguérisse"
+  },
+  "bombydou": {
+    "en": "cutiefly",
+    "fr": "Bombydou"
+  },
+  "boreas": {
+    "en": "tornadus-incarnate",
+    "fr": "Boréas"
+  },
+  "boskara": {
+    "en": "grotle",
+    "fr": "Boskara"
+  },
+  "bouldeneu": {
+    "en": "tangrowth",
+    "fr": "Bouldeneu"
+  },
+  "boumata": {
+    "en": "turtonator",
+    "fr": "Boumata"
+  },
+  "bourrinos": {
+    "en": "mudsdale",
+    "fr": "Bourrinos"
+  },
+  "boustiflor": {
+    "en": "weepinbell",
+    "fr": "Boustiflor"
+  },
+  "braisillon": {
+    "en": "fletchinder",
+    "fr": "Braisillon"
+  },
+  "branette": {
+    "en": "banette",
+    "fr": "Branette"
+  },
+  "brasegali": {
+    "en": "blaziken",
+    "fr": "Braségali"
+  },
+  "brindibou": {
+    "en": "rowlet",
+    "fr": "Brindibou"
+  },
+  "briochien": {
+    "en": "dachsbun",
+    "fr": "Briochien"
+  },
+  "brocelome": {
+    "en": "phantump",
+    "fr": "Brocélôme"
+  },
+  "brouhabam": {
+    "en": "exploud",
+    "fr": "Brouhabam"
+  },
+  "brutalibre": {
+    "en": "hawlucha",
+    "fr": "Brutalibré"
+  },
+  "brutapode": {
+    "en": "scolipede",
+    "fr": "Brutapode"
+  },
+  "bruyverne": {
+    "en": "noivern",
+    "fr": "Bruyverne"
+  },
+  "bulbizarre": {
+    "en": "bulbasaur",
+    "fr": "Bulbizarre"
+  },
+  "cablifere": {
+    "en": "xurkitree",
+    "fr": "Câblifère"
+  },
+  "cabriolaine": {
+    "en": "skiddo",
+    "fr": "Cabriolaine"
+  },
+  "cacnea": {
+    "en": "cacnea",
+    "fr": "Cacnea"
+  },
+  "cacturne": {
+    "en": "cacturne",
+    "fr": "Cacturne"
+  },
+  "cadoizo": {
+    "en": "delibird",
+    "fr": "Cadoizo"
+  },
+  "camerupt": {
+    "en": "camerupt",
+    "fr": "Camérupt"
+  },
+  "canarbello": {
+    "en": "quaxwell",
+    "fr": "Canarbello"
+  },
+  "canarticho": {
+    "en": "farfetchd",
+    "fr": "Canarticho"
+  },
+  "cancrelove": {
+    "en": "pheromosa",
+    "fr": "Cancrelove"
+  },
+  "candine": {
+    "en": "steenee",
+    "fr": "Candine"
+  },
+  "caninos": {
+    "en": "growlithe",
+    "fr": "Caninos"
+  },
+  "capidextre": {
+    "en": "ambipom",
+    "fr": "Capidextre"
+  },
+  "capumain": {
+    "en": "aipom",
+    "fr": "Capumain"
+  },
+  "carabaffe": {
+    "en": "wartortle",
+    "fr": "Carabaffe"
+  },
+  "carabing": {
+    "en": "karrablast",
+    "fr": "Carabing"
+  },
+  "carapagos": {
+    "en": "tirtouga",
+    "fr": "Carapagos"
+  },
+  "carapuce": {
+    "en": "squirtle",
+    "fr": "Carapuce"
+  },
+  "caratroc": {
+    "en": "shuckle",
+    "fr": "Caratroc"
+  },
+  "carchacrok": {
+    "en": "garchomp",
+    "fr": "Carchacrok"
+  },
+  "carmache": {
+    "en": "gabite",
+    "fr": "Carmache"
+  },
+  "carmadura": {
+    "en": "armarouge",
+    "fr": "Carmadura"
+  },
+  "carvanha": {
+    "en": "carvanha",
+    "fr": "Carvanha"
+  },
+  "castorno": {
+    "en": "bibarel",
+    "fr": "Castorno"
+  },
+  "celebi": {
+    "en": "celebi",
+    "fr": "Celebi"
+  },
+  "cerbyllin": {
+    "en": "wyrdeer",
+    "fr": "Cerbyllin"
+  },
+  "cerfrousse": {
+    "en": "stantler",
+    "fr": "Cerfrousse"
+  },
+  "ceribou": {
+    "en": "cherubi",
+    "fr": "Ceribou"
+  },
+  "ceriflor": {
+    "en": "cherrim",
+    "fr": "Ceriflor"
+  },
+  "chacripan": {
+    "en": "purrloin",
+    "fr": "Chacripan"
+  },
+  "chaffreux": {
+    "en": "purugly",
+    "fr": "Chaffreux"
+  },
+  "chaglam": {
+    "en": "glameow",
+    "fr": "Chaglam"
+  },
+  "chamallot": {
+    "en": "numel",
+    "fr": "Chamallot"
+  },
+  "chapignon": {
+    "en": "breloom",
+    "fr": "Chapignon"
+  },
+  "chapotus": {
+    "en": "hattrem",
+    "fr": "Chapotus"
+  },
+  "charbambin": {
+    "en": "charcadet",
+    "fr": "Charbambin"
+  },
+  "charbi": {
+    "en": "rolycoly",
+    "fr": "Charbi"
+  },
+  "charibari": {
+    "en": "cufant",
+    "fr": "Charibari"
+  },
+  "charkos": {
+    "en": "rampardos",
+    "fr": "Charkos"
+  },
+  "charmillon": {
+    "en": "beautifly",
+    "fr": "Charmillon"
+  },
+  "charmilly": {
+    "en": "alcremie",
+    "fr": "Charmilly"
+  },
+  "charmina": {
+    "en": "medicham",
+    "fr": "Charmina"
+  },
+  "charpenti": {
+    "en": "timburr",
+    "fr": "Charpenti"
+  },
+  "chartor": {
+    "en": "torkoal",
+    "fr": "Chartor"
+  },
+  "chef-de-fer": {
+    "en": "iron-crown",
+    "fr": "Chef-de-Fer"
+  },
+  "chelours": {
+    "en": "bewear",
+    "fr": "Chelours"
+  },
+  "chenipan": {
+    "en": "caterpie",
+    "fr": "Chenipan"
+  },
+  "chenipotte": {
+    "en": "wurmple",
+    "fr": "Chenipotte"
+  },
+  "cheniselle": {
+    "en": "wormadam-plant",
+    "fr": "Cheniselle"
+  },
+  "cheniti": {
+    "en": "burmy",
+    "fr": "Cheniti"
+  },
+  "chetiflor": {
+    "en": "bellsprout",
+    "fr": "Chétiflor"
+  },
+  "chevroum": {
+    "en": "gogoat",
+    "fr": "Chevroum"
+  },
+  "chimpenfeu": {
+    "en": "monferno",
+    "fr": "Chimpenfeu"
+  },
+  "chinchidou": {
+    "en": "minccino",
+    "fr": "Chinchidou"
+  },
+  "chlorobule": {
+    "en": "petilil",
+    "fr": "Chlorobule"
+  },
+  "chochodile": {
+    "en": "fuecoco",
+    "fr": "Chochodile"
+  },
+  "chongjian": {
+    "en": "wo-chien",
+    "fr": "Chongjian"
+  },
+  "chovsourir": {
+    "en": "woobat",
+    "fr": "Chovsourir"
+  },
+  "chrysacier": {
+    "en": "metapod",
+    "fr": "Chrysacier"
+  },
+  "chrysapile": {
+    "en": "charjabug",
+    "fr": "Chrysapile"
+  },
+  "chuchmur": {
+    "en": "whismur",
+    "fr": "Chuchmur"
+  },
+  "cizayox": {
+    "en": "scizor",
+    "fr": "Cizayox"
+  },
+  "clamiral": {
+    "en": "samurott",
+    "fr": "Clamiral"
+  },
+  "cleopsytra": {
+    "en": "espathra",
+    "fr": "Cléopsytra"
+  },
+  "clic": {
+    "en": "klang",
+    "fr": "Clic"
+  },
+  "cliticlic": {
+    "en": "klinklang",
+    "fr": "Cliticlic"
+  },
+  "coatox": {
+    "en": "toxicroak",
+    "fr": "Coatox"
+  },
+  "cobaltium": {
+    "en": "cobalion",
+    "fr": "Cobaltium"
+  },
+  "cochignon": {
+    "en": "piloswine",
+    "fr": "Cochignon"
+  },
+  "coconfort": {
+    "en": "kakuna",
+    "fr": "Coconfort"
+  },
+  "cocotine": {
+    "en": "aromatisse",
+    "fr": "Cocotine"
+  },
+  "coiffeton": {
+    "en": "quaxly",
+    "fr": "Coiffeton"
+  },
+  "coleodome": {
+    "en": "dottler",
+    "fr": "Coléodôme"
+  },
+  "colhomard": {
+    "en": "crawdaunt",
+    "fr": "Colhomard"
+  },
+  "colimucus": {
+    "en": "sliggoo",
+    "fr": "Colimucus"
+  },
+  "colombeau": {
+    "en": "tranquill",
+    "fr": "Colombeau"
+  },
+  "colossinge": {
+    "en": "primeape",
+    "fr": "Colossinge"
+  },
+  "compagnol": {
+    "en": "tandemaus",
+    "fr": "Compagnol"
+  },
+  "concombaffe": {
+    "en": "pyukumuku",
+    "fr": "Concombaffe"
+  },
+  "coquiperl": {
+    "en": "clamperl",
+    "fr": "Coquiperl"
+  },
+  "corayome": {
+    "en": "cursola",
+    "fr": "Corayôme"
+  },
+  "corayon": {
+    "en": "corsola",
+    "fr": "Corayon"
+  },
+  "corboss": {
+    "en": "honchkrow",
+    "fr": "Corboss"
+  },
+  "cornebre": {
+    "en": "murkrow",
+    "fr": "Cornèbre"
+  },
+  "corvaillus": {
+    "en": "corviknight",
+    "fr": "Corvaillus"
+  },
+  "cosmog": {
+    "en": "cosmog",
+    "fr": "Cosmog"
+  },
+  "cosmovum": {
+    "en": "cosmoem",
+    "fr": "Cosmovum"
+  },
+  "cotovol": {
+    "en": "jumpluff",
+    "fr": "Cotovol"
+  },
+  "couafarel": {
+    "en": "furfrou",
+    "fr": "Couafarel"
+  },
+  "couaneton": {
+    "en": "ducklett",
+    "fr": "Couaneton"
+  },
+  "coudlangue": {
+    "en": "lickilicky",
+    "fr": "Coudlangue"
+  },
+  "coupenotte": {
+    "en": "axew",
+    "fr": "Coupenotte"
+  },
+  "courrousinge": {
+    "en": "annihilape",
+    "fr": "Courrousinge"
+  },
+  "couverdure": {
+    "en": "swadloon",
+    "fr": "Couverdure"
+  },
+  "coxy": {
+    "en": "ledyba",
+    "fr": "Coxy"
+  },
+  "coxyclaque": {
+    "en": "ledian",
+    "fr": "Coxyclaque"
+  },
+  "crabagarre": {
+    "en": "crabrawler",
+    "fr": "Crabagarre"
+  },
+  "crabaraque": {
+    "en": "crustle",
+    "fr": "Crabaraque"
+  },
+  "crabicoque": {
+    "en": "dwebble",
+    "fr": "Crabicoque"
+  },
+  "crabominable": {
+    "en": "crabominable",
+    "fr": "Crabominable"
+  },
+  "cradopaud": {
+    "en": "croagunk",
+    "fr": "Cradopaud"
+  },
+  "craparoi": {
+    "en": "klawf",
+    "fr": "Craparoi"
+  },
+  "crapustule": {
+    "en": "seismitoad",
+    "fr": "Crapustule"
+  },
+  "crefadet": {
+    "en": "azelf",
+    "fr": "Créfadet"
+  },
+  "crefollet": {
+    "en": "mesprit",
+    "fr": "Créfollet"
+  },
+  "crehelf": {
+    "en": "uxie",
+    "fr": "Créhelf"
+  },
+  "cremy": {
+    "en": "milcery",
+    "fr": "Crèmy"
+  },
+  "cresselia": {
+    "en": "cresselia",
+    "fr": "Cresselia"
+  },
+  "crikzik": {
+    "en": "kricketot",
+    "fr": "Crikzik"
+  },
+  "croaporal": {
+    "en": "frogadier",
+    "fr": "Croâporal"
+  },
+  "crocogril": {
+    "en": "crocalor",
+    "fr": "Crocogril"
+  },
+  "crocorible": {
+    "en": "krookodile",
+    "fr": "Crocorible"
+  },
+  "crocrodil": {
+    "en": "croconaw",
+    "fr": "Crocrodil"
+  },
+  "croquine": {
+    "en": "bounsweet",
+    "fr": "Croquine"
+  },
+  "crustabri": {
+    "en": "cloyster",
+    "fr": "Crustabri"
+  },
+  "cryodo": {
+    "en": "arctibax",
+    "fr": "Cryodo"
+  },
+  "cryptero": {
+    "en": "sigilyph",
+    "fr": "Cryptéro"
+  },
+  "cupcanaille": {
+    "en": "slurpuff",
+    "fr": "Cupcanaille"
+  },
+  "dardargnan": {
+    "en": "beedrill",
+    "fr": "Dardargnan"
+  },
+  "darkrai": {
+    "en": "darkrai",
+    "fr": "Darkrai"
+  },
+  "darumacho": {
+    "en": "darmanitan-standard",
+    "fr": "Darumacho"
+  },
+  "darumarond": {
+    "en": "darumaka",
+    "fr": "Darumarond"
+  },
+  "debugant": {
+    "en": "tyrogue",
+    "fr": "Debugant"
+  },
+  "dedenne": {
+    "en": "dedenne",
+    "fr": "Dedenne"
+  },
+  "deflaisan": {
+    "en": "unfezant",
+    "fr": "Déflaisan"
+  },
+  "delcatty": {
+    "en": "delcatty",
+    "fr": "Delcatty"
+  },
+  "delestin": {
+    "en": "veluza",
+    "fr": "Délestin"
+  },
+  "demanta": {
+    "en": "mantine",
+    "fr": "Démanta"
+  },
+  "demeteros": {
+    "en": "landorus-incarnate",
+    "fr": "Démétéros"
+  },
+  "demolosse": {
+    "en": "houndoom",
+    "fr": "Démolosse"
+  },
+  "denticrisse": {
+    "en": "bruxish",
+    "fr": "Denticrisse"
+  },
+  "deoxys": {
+    "en": "deoxys-normal",
+    "fr": "Deoxys"
+  },
+  "desseliande": {
+    "en": "trevenant",
+    "fr": "Desséliande"
+  },
+  "deusolourdo": {
+    "en": "dudunsparce-two-segment",
+    "fr": "Deusolourdo"
+  },
+  "dialga": {
+    "en": "dialga",
+    "fr": "Dialga"
+  },
+  "diamat": {
+    "en": "zweilous",
+    "fr": "Diamat"
+  },
+  "diancie": {
+    "en": "diancie",
+    "fr": "Diancie"
+  },
+  "dimocles": {
+    "en": "doublade",
+    "fr": "Dimoclès"
+  },
+  "dimoret": {
+    "en": "weavile",
+    "fr": "Dimoret"
+  },
+  "dinglu": {
+    "en": "ting-lu",
+    "fr": "Dinglu"
+  },
+  "dinoclier": {
+    "en": "shieldon",
+    "fr": "Dinoclier"
+  },
+  "dispareptil": {
+    "en": "drakloak",
+    "fr": "Dispareptil"
+  },
+  "dodoala": {
+    "en": "komala",
+    "fr": "Dodoala"
+  },
+  "dodrio": {
+    "en": "dodrio",
+    "fr": "Dodrio"
+  },
+  "doduo": {
+    "en": "doduo",
+    "fr": "Doduo"
+  },
+  "dofin": {
+    "en": "finizen",
+    "fr": "Dofin"
+  },
+  "dogrino": {
+    "en": "mabosstiff",
+    "fr": "Dogrino"
+  },
+  "dolman": {
+    "en": "stonjourner",
+    "fr": "Dolman"
+  },
+  "donphan": {
+    "en": "donphan",
+    "fr": "Donphan"
+  },
+  "doudouvet": {
+    "en": "cottonee",
+    "fr": "Doudouvet"
+  },
+  "draby": {
+    "en": "bagon",
+    "fr": "Draby"
+  },
+  "dracaufeu": {
+    "en": "charizard",
+    "fr": "Dracaufeu"
+  },
+  "drackhaus": {
+    "en": "shelgon",
+    "fr": "Drackhaus"
+  },
+  "draco": {
+    "en": "dragonair",
+    "fr": "Draco"
+  },
+  "dracolosse": {
+    "en": "dragonite",
+    "fr": "Dracolosse"
+  },
+  "dragmara": {
+    "en": "aurorus",
+    "fr": "Dragmara"
+  },
+  "draieul": {
+    "en": "drampa",
+    "fr": "Draïeul"
+  },
+  "drakkarmin": {
+    "en": "druddigon",
+    "fr": "Drakkarmin"
+  },
+  "drascore": {
+    "en": "drapion",
+    "fr": "Drascore"
+  },
+  "dratatin": {
+    "en": "appletun",
+    "fr": "Dratatin"
+  },
+  "drattak": {
+    "en": "salamence",
+    "fr": "Drattak"
+  },
+  "dunaconda": {
+    "en": "sandaconda",
+    "fr": "Dunaconda"
+  },
+  "dunaja": {
+    "en": "silicobra",
+    "fr": "Dunaja"
+  },
+  "duralugon": {
+    "en": "duraludon",
+    "fr": "Duralugon"
+  },
+  "dynavolt": {
+    "en": "electrike",
+    "fr": "Dynavolt"
+  },
+  "ecaid": {
+    "en": "hakamo-o",
+    "fr": "Écaïd"
+  },
+  "ecayon": {
+    "en": "finneon",
+    "fr": "Écayon"
+  },
+  "ecrapince": {
+    "en": "corphish",
+    "fr": "Écrapince"
+  },
+  "ecremeuh": {
+    "en": "miltank",
+    "fr": "Écrémeuh"
+  },
+  "ectoplasma": {
+    "en": "gengar",
+    "fr": "Ectoplasma"
+  },
+  "effleche": {
+    "en": "dartrix",
+    "fr": "Efflèche"
+  },
+  "ekaiser": {
+    "en": "kommo-o",
+    "fr": "Ékaïser"
+  },
+  "elecsprint": {
+    "en": "manectric",
+    "fr": "Élecsprint"
+  },
+  "electhor": {
+    "en": "zapdos",
+    "fr": "Électhor"
+  },
+  "electrode": {
+    "en": "electrode",
+    "fr": "Électrode"
+  },
+  "elekable": {
+    "en": "electivire",
+    "fr": "Élekable"
+  },
+  "elekid": {
+    "en": "elekid",
+    "fr": "Élekid"
+  },
+  "elektek": {
+    "en": "electabuzz",
+    "fr": "Élektek"
+  },
+  "embrochet": {
+    "en": "arrokuda",
+    "fr": "Embrochet"
+  },
+  "embrylex": {
+    "en": "larvitar",
+    "fr": "Embrylex"
+  },
+  "emolga": {
+    "en": "emolga",
+    "fr": "Emolga"
+  },
+  "empiflor": {
+    "en": "victreebel",
+    "fr": "Empiflor"
+  },
+  "engloutyran": {
+    "en": "guzzlord",
+    "fr": "Engloutyran"
+  },
+  "entei": {
+    "en": "entei",
+    "fr": "Entei"
+  },
+  "eoko": {
+    "en": "chimecho",
+    "fr": "Éoko"
+  },
+  "epine-de-fer": {
+    "en": "iron-thorns",
+    "fr": "Épine-de-Fer"
+  },
+  "escargaume": {
+    "en": "shelmet",
+    "fr": "Escargaume"
+  },
+  "escroco": {
+    "en": "krokorok",
+    "fr": "Escroco"
+  },
+  "ethernatos": {
+    "en": "eternatus",
+    "fr": "Éthernatos"
+  },
+  "etouraptor": {
+    "en": "staraptor",
+    "fr": "Étouraptor"
+  },
+  "etourmi": {
+    "en": "starly",
+    "fr": "Étourmi"
+  },
+  "etourvol": {
+    "en": "staravia",
+    "fr": "Étourvol"
+  },
+  "evoli": {
+    "en": "eevee",
+    "fr": "Évoli"
+  },
+  "exagide": {
+    "en": "aegislash-shield",
+    "fr": "Exagide"
+  },
+  "excavarenne": {
+    "en": "diggersby",
+    "fr": "Excavarenne"
+  },
+  "excelangue": {
+    "en": "lickitung",
+    "fr": "Excelangue"
+  },
+  "famignol": {
+    "en": "maushold-family-of-four",
+    "fr": "Famignol"
+  },
+  "fantominus": {
+    "en": "gastly",
+    "fr": "Fantominus"
+  },
+  "fantyrm": {
+    "en": "dreepy",
+    "fr": "Fantyrm"
+  },
+  "farfaduvet": {
+    "en": "whimsicott",
+    "fr": "Farfaduvet"
+  },
+  "farfuret": {
+    "en": "sneasel",
+    "fr": "Farfuret"
+  },
+  "farfurex": {
+    "en": "sneasler",
+    "fr": "Farfurex"
+  },
+  "farigiraf": {
+    "en": "farigiraf",
+    "fr": "Farigiraf"
+  },
+  "favianos": {
+    "en": "fezandipiti",
+    "fr": "Favianos"
+  },
+  "felicanis": {
+    "en": "okidogi",
+    "fr": "Félicanis"
+  },
+  "felinferno": {
+    "en": "incineroar",
+    "fr": "Félinferno"
+  },
+  "ferdeter": {
+    "en": "orthworm",
+    "fr": "Ferdeter"
+  },
+  "fermite": {
+    "en": "durant",
+    "fr": "Fermite"
+  },
+  "ferosinge": {
+    "en": "mankey",
+    "fr": "Férosinge"
+  },
+  "feu-percant": {
+    "en": "gouging-fire",
+    "fr": "Feu-Perçant"
+  },
+  "feuforeve": {
+    "en": "misdreavus",
+    "fr": "Feuforêve"
+  },
+  "feuillajou": {
+    "en": "pansage",
+    "fr": "Feuillajou"
+  },
+  "feuiloutan": {
+    "en": "simisage",
+    "fr": "Feuiloutan"
+  },
+  "feunard": {
+    "en": "ninetales",
+    "fr": "Feunard"
+  },
+  "feunnec": {
+    "en": "fennekin",
+    "fr": "Feunnec"
+  },
+  "feurisson": {
+    "en": "quilava",
+    "fr": "Feurisson"
+  },
+  "filentrappe": {
+    "en": "spidops",
+    "fr": "Filentrappe"
+  },
+  "flabebe": {
+    "en": "flabebe",
+    "fr": "Flabébé"
+  },
+  "flagadoss": {
+    "en": "slowbro",
+    "fr": "Flagadoss"
+  },
+  "flamajou": {
+    "en": "pansear",
+    "fr": "Flamajou"
+  },
+  "flambino": {
+    "en": "scorbunny",
+    "fr": "Flambino"
+  },
+  "flambusard": {
+    "en": "talonflame",
+    "fr": "Flambusard"
+  },
+  "flamenroule": {
+    "en": "flamigo",
+    "fr": "Flamenroule"
+  },
+  "flamiaou": {
+    "en": "litten",
+    "fr": "Flamiaou"
+  },
+  "flamigator": {
+    "en": "skeledirge",
+    "fr": "Flâmigator"
+  },
+  "flamoutan": {
+    "en": "simisear",
+    "fr": "Flamoutan"
+  },
+  "flingouste": {
+    "en": "clauncher",
+    "fr": "Flingouste"
+  },
+  "flobio": {
+    "en": "marshtomp",
+    "fr": "Flobio"
+  },
+  "floette": {
+    "en": "floette",
+    "fr": "Floette"
+  },
+  "floramantis": {
+    "en": "lurantis",
+    "fr": "Floramantis"
+  },
+  "floravol": {
+    "en": "skiploom",
+    "fr": "Floravol"
+  },
+  "floreclat": {
+    "en": "glimmora",
+    "fr": "Floréclat"
+  },
+  "florges": {
+    "en": "florges",
+    "fr": "Florges"
+  },
+  "florizarre": {
+    "en": "venusaur",
+    "fr": "Florizarre"
+  },
+  "flotajou": {
+    "en": "panpour",
+    "fr": "Flotajou"
+  },
+  "flotillon": {
+    "en": "flittle",
+    "fr": "Flotillon"
+  },
+  "flotoutan": {
+    "en": "simipour",
+    "fr": "Flotoutan"
+  },
+  "flotte-meche": {
+    "en": "flutter-mane",
+    "fr": "Flotte-Mèche"
+  },
+  "fluvetin": {
+    "en": "spritzee",
+    "fr": "Fluvetin"
+  },
+  "fongus-furie": {
+    "en": "brute-bonnet",
+    "fr": "Fongus-Furie"
+  },
+  "foretress": {
+    "en": "forretress",
+    "fr": "Foretress"
+  },
+  "forgelina": {
+    "en": "tinkaton",
+    "fr": "Forgelina"
+  },
+  "forgella": {
+    "en": "tinkatuff",
+    "fr": "Forgella"
+  },
+  "forgerette": {
+    "en": "tinkatink",
+    "fr": "Forgerette"
+  },
+  "fort-ivoire": {
+    "en": "great-tusk",
+    "fr": "Fort-Ivoire"
+  },
+  "fortusimia": {
+    "en": "munkidori",
+    "fr": "Fortusimia"
+  },
+  "fouinar": {
+    "en": "furret",
+    "fr": "Fouinar"
+  },
+  "fouinette": {
+    "en": "sentret",
+    "fr": "Fouinette"
+  },
+  "fourbelin": {
+    "en": "morgrem",
+    "fr": "Fourbelin"
+  },
+  "fragilady": {
+    "en": "lilligant",
+    "fr": "Fragilady"
+  },
+  "fragroin": {
+    "en": "oinkologne-male",
+    "fr": "Fragroin"
+  },
+  "frigodo": {
+    "en": "frigibax",
+    "fr": "Frigodo"
+  },
+  "frison": {
+    "en": "bouffalant",
+    "fr": "Frison"
+  },
+  "frissonille": {
+    "en": "snom",
+    "fr": "Frissonille"
+  },
+  "froussardine": {
+    "en": "wishiwashi-solo",
+    "fr": "Froussardine"
+  },
+  "fulgudog": {
+    "en": "boltund",
+    "fr": "Fulgudog"
+  },
+  "fulgulairo": {
+    "en": "kilowattrel",
+    "fr": "Fulgulairo"
+  },
+  "fulguris": {
+    "en": "thundurus-incarnate",
+    "fr": "Fulguris"
+  },
+  "funecire": {
+    "en": "litwick",
+    "fr": "Funécire"
+  },
+  "furaiglon": {
+    "en": "rufflet",
+    "fr": "Furaiglon"
+  },
+  "galegon": {
+    "en": "lairon",
+    "fr": "Galegon"
+  },
+  "galekid": {
+    "en": "aron",
+    "fr": "Galekid"
+  },
+  "galeking": {
+    "en": "aggron",
+    "fr": "Galeking"
+  },
+  "galifeu": {
+    "en": "combusken",
+    "fr": "Galifeu"
+  },
+  "gallame": {
+    "en": "gallade",
+    "fr": "Gallame"
+  },
+  "galopa": {
+    "en": "rapidash",
+    "fr": "Galopa"
+  },
+  "galvagla": {
+    "en": "arctozolt",
+    "fr": "Galvagla"
+  },
+  "galvagon": {
+    "en": "dracozolt",
+    "fr": "Galvagon"
+  },
+  "galvaran": {
+    "en": "helioptile",
+    "fr": "Galvaran"
+  },
+  "gambex": {
+    "en": "lokix",
+    "fr": "Gambex"
+  },
+  "gamblast": {
+    "en": "clawitzer",
+    "fr": "Gamblast"
+  },
+  "garde-de-fer": {
+    "en": "iron-valiant",
+    "fr": "Garde-de-Fer"
+  },
+  "gardevoir": {
+    "en": "gardevoir",
+    "fr": "Gardevoir"
+  },
+  "gaulet": {
+    "en": "amoonguss",
+    "fr": "Gaulet"
+  },
+  "genesect": {
+    "en": "genesect",
+    "fr": "Genesect"
+  },
+  "geolithe": {
+    "en": "boldore",
+    "fr": "Géolithe"
+  },
+  "germeclat": {
+    "en": "glimmet",
+    "fr": "Germéclat"
+  },
+  "germignon": {
+    "en": "chikorita",
+    "fr": "Germignon"
+  },
+  "gigalithe": {
+    "en": "gigalith",
+    "fr": "Gigalithe"
+  },
+  "gigansel": {
+    "en": "garganacl",
+    "fr": "Gigansel"
+  },
+  "girafarig": {
+    "en": "girafarig",
+    "fr": "Girafarig"
+  },
+  "giratina": {
+    "en": "giratina-altered",
+    "fr": "Giratina"
+  },
+  "givrali": {
+    "en": "glaceon",
+    "fr": "Givrali"
+  },
+  "glaivodo": {
+    "en": "baxcalibur",
+    "fr": "Glaivodo"
+  },
+  "gloupti": {
+    "en": "gulpin",
+    "fr": "Gloupti"
+  },
+  "gobou": {
+    "en": "mudkip",
+    "fr": "Gobou"
+  },
+  "goelise": {
+    "en": "wingull",
+    "fr": "Goélise"
+  },
+  "goinfrex": {
+    "en": "munchlax",
+    "fr": "Goinfrex"
+  },
+  "golemastoc": {
+    "en": "golurk",
+    "fr": "Golemastoc"
+  },
+  "golgopathe": {
+    "en": "barbaracle",
+    "fr": "Golgopathe"
+  },
+  "gorythmic": {
+    "en": "rillaboom",
+    "fr": "Gorythmic"
+  },
+  "goupelin": {
+    "en": "delphox",
+    "fr": "Goupelin"
+  },
+  "goupilou": {
+    "en": "nickit",
+    "fr": "Goupilou"
+  },
+  "goupix": {
+    "en": "vulpix",
+    "fr": "Goupix"
+  },
+  "gourmelet": {
+    "en": "lechonk",
+    "fr": "Gourmelet"
+  },
+  "gouroutan": {
+    "en": "oranguru",
+    "fr": "Gouroutan"
+  },
+  "grahyena": {
+    "en": "mightyena",
+    "fr": "Grahyèna"
+  },
+  "grainipiot": {
+    "en": "seedot",
+    "fr": "Grainipiot"
+  },
+  "granbull": {
+    "en": "granbull",
+    "fr": "Granbull"
+  },
+  "granivol": {
+    "en": "hoppip",
+    "fr": "Granivol"
+  },
+  "gravalanch": {
+    "en": "graveler",
+    "fr": "Gravalanch"
+  },
+  "grelacon": {
+    "en": "bergmite",
+    "fr": "Grelaçon"
+  },
+  "grenousse": {
+    "en": "froakie",
+    "fr": "Grenousse"
+  },
+  "gribouraigne": {
+    "en": "shroodle",
+    "fr": "Gribouraigne"
+  },
+  "griknot": {
+    "en": "gible",
+    "fr": "Griknot"
+  },
+  "grillepattes": {
+    "en": "sizzlipede",
+    "fr": "Grillepattes"
+  },
+  "grimalin": {
+    "en": "impidimp",
+    "fr": "Grimalin"
+  },
+  "grindur": {
+    "en": "ferroseed",
+    "fr": "Grindur"
+  },
+  "gringolem": {
+    "en": "golett",
+    "fr": "Gringolem"
+  },
+  "grodoudou": {
+    "en": "wigglytuff",
+    "fr": "Grodoudou"
+  },
+  "grodrive": {
+    "en": "drifblim",
+    "fr": "Grodrive"
+  },
+  "grolem": {
+    "en": "golem",
+    "fr": "Grolem"
+  },
+  "gromago": {
+    "en": "gholdengo",
+    "fr": "Gromago"
+  },
+  "grondogue": {
+    "en": "maschiff",
+    "fr": "Grondogue"
+  },
+  "groret": {
+    "en": "grumpig",
+    "fr": "Groret"
+  },
+  "grotadmorv": {
+    "en": "muk",
+    "fr": "Grotadmorv"
+  },
+  "grotichon": {
+    "en": "pignite",
+    "fr": "Grotichon"
+  },
+  "groudon": {
+    "en": "groudon",
+    "fr": "Groudon"
+  },
+  "gruikui": {
+    "en": "tepig",
+    "fr": "Gruikui"
+  },
+  "gueriaigle": {
+    "en": "braviary",
+    "fr": "Gueriaigle"
+  },
+  "guerilande": {
+    "en": "comfey",
+    "fr": "Guérilande"
+  },
+  "hachecateur": {
+    "en": "kleavor",
+    "fr": "Hachécateur"
+  },
+  "hariyama": {
+    "en": "hariyama",
+    "fr": "Hariyama"
+  },
+  "hastacuda": {
+    "en": "barraskewda",
+    "fr": "Hastacuda"
+  },
+  "haydaim": {
+    "en": "sawsbuck",
+    "fr": "Haydaim"
+  },
+  "heatran": {
+    "en": "heatran",
+    "fr": "Heatran"
+  },
+  "heledelle": {
+    "en": "swellow",
+    "fr": "Hélédelle"
+  },
+  "heliatronc": {
+    "en": "sunflora",
+    "fr": "Héliatronc"
+  },
+  "helionceau": {
+    "en": "litleo",
+    "fr": "Hélionceau"
+  },
+  "herbizarre": {
+    "en": "ivysaur",
+    "fr": "Herbizarre"
+  },
+  "hericendre": {
+    "en": "cyndaquil",
+    "fr": "Héricendre"
+  },
+  "hexadron": {
+    "en": "falinks",
+    "fr": "Hexadron"
+  },
+  "hexagel": {
+    "en": "cryogonal",
+    "fr": "Hexagel"
+  },
+  "hippodocus": {
+    "en": "hippowdon",
+    "fr": "Hippodocus"
+  },
+  "hippopotas": {
+    "en": "hippopotas",
+    "fr": "Hippopotas"
+  },
+  "ho-oh": {
+    "en": "ho-oh",
+    "fr": "Ho-Oh"
+  },
+  "hoopa": {
+    "en": "hoopa",
+    "fr": "Hoopa"
+  },
+  "hoothoot": {
+    "en": "hoothoot",
+    "fr": "Hoothoot"
+  },
+  "hotte-de-fer": {
+    "en": "iron-bundle",
+    "fr": "Hotte-de-Fer"
+  },
+  "hurle-queue": {
+    "en": "scream-tail",
+    "fr": "Hurle-Queue"
+  },
+  "hydragla": {
+    "en": "arctovish",
+    "fr": "Hydragla"
+  },
+  "hydragon": {
+    "en": "dracovish",
+    "fr": "Hydragon"
+  },
+  "hypnomade": {
+    "en": "hypno",
+    "fr": "Hypnomade"
+  },
+  "hypocean": {
+    "en": "seadra",
+    "fr": "Hypocéan"
+  },
+  "hyporoi": {
+    "en": "kingdra",
+    "fr": "Hyporoi"
+  },
+  "hypotrempe": {
+    "en": "horsea",
+    "fr": "Hypotrempe"
+  },
+  "iguolta": {
+    "en": "heliolisk",
+    "fr": "Iguolta"
+  },
+  "incisache": {
+    "en": "fraxure",
+    "fr": "Incisache"
+  },
+  "insecateur": {
+    "en": "scyther",
+    "fr": "Insécateur"
+  },
+  "insolourdo": {
+    "en": "dunsparce",
+    "fr": "Insolourdo"
+  },
+  "ire-foudre": {
+    "en": "raging-bolt",
+    "fr": "Ire-Foudre"
+  },
+  "ixon": {
+    "en": "obstagoon",
+    "fr": "Ixon"
+  },
+  "jirachi": {
+    "en": "jirachi",
+    "fr": "Jirachi"
+  },
+  "joliflor": {
+    "en": "bellossom",
+    "fr": "Joliflor"
+  },
+  "judokrak": {
+    "en": "throh",
+    "fr": "Judokrak"
+  },
+  "jungko": {
+    "en": "sceptile",
+    "fr": "Jungko"
+  },
+  "kabuto": {
+    "en": "kabuto",
+    "fr": "Kabuto"
+  },
+  "kabutops": {
+    "en": "kabutops",
+    "fr": "Kabutops"
+  },
+  "kadabra": {
+    "en": "kadabra",
+    "fr": "Kadabra"
+  },
+  "kaiminus": {
+    "en": "totodile",
+    "fr": "Kaiminus"
+  },
+  "kaimorse": {
+    "en": "walrein",
+    "fr": "Kaimorse"
+  },
+  "kangourex": {
+    "en": "kangaskhan",
+    "fr": "Kangourex"
+  },
+  "kaorine": {
+    "en": "claydol",
+    "fr": "Kaorine"
+  },
+  "kapoera": {
+    "en": "hitmontop",
+    "fr": "Kapoera"
+  },
+  "karaclee": {
+    "en": "sawk",
+    "fr": "Karaclée"
+  },
+  "katagami": {
+    "en": "kartana",
+    "fr": "Katagami"
+  },
+  "kecleon": {
+    "en": "kecleon",
+    "fr": "Kecleon"
+  },
+  "keldeo": {
+    "en": "keldeo-ordinary",
+    "fr": "Keldeo"
+  },
+  "keunotor": {
+    "en": "bidoof",
+    "fr": "Keunotor"
+  },
+  "khelocrok": {
+    "en": "chewtle",
+    "fr": "Khélocrok"
+  },
+  "kicklee": {
+    "en": "hitmonlee",
+    "fr": "Kicklee"
+  },
+  "kirlia": {
+    "en": "kirlia",
+    "fr": "Kirlia"
+  },
+  "kokiyas": {
+    "en": "shellder",
+    "fr": "Kokiyas"
+  },
+  "koraidon": {
+    "en": "koraidon",
+    "fr": "Koraidon"
+  },
+  "korillon": {
+    "en": "chingling",
+    "fr": "Korillon"
+  },
+  "krabboss": {
+    "en": "kingler",
+    "fr": "Krabboss"
+  },
+  "krabby": {
+    "en": "krabby",
+    "fr": "Krabby"
+  },
+  "kraknoix": {
+    "en": "trapinch",
+    "fr": "Kraknoix"
+  },
+  "krakos": {
+    "en": "grapploct",
+    "fr": "Krakos"
+  },
+  "kranidos": {
+    "en": "cranidos",
+    "fr": "Kranidos"
+  },
+  "kravarech": {
+    "en": "dragalge",
+    "fr": "Kravarech"
+  },
+  "kungfouine": {
+    "en": "mienfoo",
+    "fr": "Kungfouine"
+  },
+  "kyogre": {
+    "en": "kyogre",
+    "fr": "Kyogre"
+  },
+  "kyurem": {
+    "en": "kyurem",
+    "fr": "Kyurem"
+  },
+  "laggron": {
+    "en": "swampert",
+    "fr": "Laggron"
+  },
+  "lainergie": {
+    "en": "flaaffy",
+    "fr": "Lainergie"
+  },
+  "lakmecygne": {
+    "en": "swanna",
+    "fr": "Lakmécygne"
+  },
+  "lamantine": {
+    "en": "dewgong",
+    "fr": "Lamantine"
+  },
+  "lamperoie": {
+    "en": "eelektrik",
+    "fr": "Lampéroie"
+  },
+  "lampignon": {
+    "en": "shiinotic",
+    "fr": "Lampignon"
+  },
+  "lancargot": {
+    "en": "escavalier",
+    "fr": "Lançargot"
+  },
+  "lanssorien": {
+    "en": "dragapult",
+    "fr": "Lanssorien"
+  },
+  "lanturn": {
+    "en": "lanturn",
+    "fr": "Lanturn"
+  },
+  "laporeille": {
+    "en": "buneary",
+    "fr": "Laporeille"
+  },
+  "lapyro": {
+    "en": "raboot",
+    "fr": "Lapyro"
+  },
+  "larmeleon": {
+    "en": "sobble",
+    "fr": "Larméléon"
+  },
+  "larvadar": {
+    "en": "blipbug",
+    "fr": "Larvadar"
+  },
+  "larveyette": {
+    "en": "sewaddle",
+    "fr": "Larveyette"
+  },
+  "larvibule": {
+    "en": "grubbin",
+    "fr": "Larvibule"
+  },
+  "latias": {
+    "en": "latias",
+    "fr": "Latias"
+  },
+  "latios": {
+    "en": "latios",
+    "fr": "Latios"
+  },
+  "leboulerou": {
+    "en": "rellor",
+    "fr": "Léboulérou"
+  },
+  "leopardus": {
+    "en": "liepard",
+    "fr": "Léopardus"
+  },
+  "lepidonille": {
+    "en": "scatterbug",
+    "fr": "Lépidonille"
+  },
+  "lestombaile": {
+    "en": "bombirdier",
+    "fr": "Lestombaile"
+  },
+  "leuphorie": {
+    "en": "blissey",
+    "fr": "Leuphorie"
+  },
+  "leveinard": {
+    "en": "chansey",
+    "fr": "Leveinard"
+  },
+  "leviator": {
+    "en": "gyarados",
+    "fr": "Léviator"
+  },
+  "lewsor": {
+    "en": "elgyem",
+    "fr": "Lewsor"
+  },
+  "lezargus": {
+    "en": "inteleon",
+    "fr": "Lézargus"
+  },
+  "lianaja": {
+    "en": "servine",
+    "fr": "Lianaja"
+  },
+  "libegon": {
+    "en": "flygon",
+    "fr": "Libégon"
+  },
+  "lilia": {
+    "en": "lileep",
+    "fr": "Lilia"
+  },
+  "lilliterelle": {
+    "en": "nymble",
+    "fr": "Lilliterelle"
+  },
+  "limagma": {
+    "en": "slugma",
+    "fr": "Limagma"
+  },
+  "limaspeed": {
+    "en": "accelgor",
+    "fr": "Limaspeed"
+  },
+  "limonde": {
+    "en": "stunfisk",
+    "fr": "Limonde"
+  },
+  "lineon": {
+    "en": "linoone",
+    "fr": "Linéon"
+  },
+  "lippouti": {
+    "en": "smoochum",
+    "fr": "Lippouti"
+  },
+  "lippoutou": {
+    "en": "jynx",
+    "fr": "Lippoutou"
+  },
+  "lixy": {
+    "en": "shinx",
+    "fr": "Lixy"
+  },
+  "lockpin": {
+    "en": "lopunny",
+    "fr": "Lockpin"
+  },
+  "lokhlass": {
+    "en": "lapras",
+    "fr": "Lokhlass"
+  },
+  "lombre": {
+    "en": "lombre",
+    "fr": "Lombre"
+  },
+  "lougaroc": {
+    "en": "lycanroc-midday",
+    "fr": "Lougaroc"
+  },
+  "loupio": {
+    "en": "chinchou",
+    "fr": "Loupio"
+  },
+  "lovdisc": {
+    "en": "luvdisc",
+    "fr": "Lovdisc"
+  },
+  "lucanon": {
+    "en": "vikavolt",
+    "fr": "Lucanon"
+  },
+  "lucario": {
+    "en": "lucario",
+    "fr": "Lucario"
+  },
+  "ludicolo": {
+    "en": "ludicolo",
+    "fr": "Ludicolo"
+  },
+  "lugia": {
+    "en": "lugia",
+    "fr": "Lugia"
+  },
+  "lugulabre": {
+    "en": "chandelure",
+    "fr": "Lugulabre"
+  },
+  "lumineon": {
+    "en": "lumineon",
+    "fr": "Luminéon"
+  },
+  "lumivole": {
+    "en": "illumise",
+    "fr": "Lumivole"
+  },
+  "lunala": {
+    "en": "lunala",
+    "fr": "Lunala"
+  },
+  "luxio": {
+    "en": "luxio",
+    "fr": "Luxio"
+  },
+  "luxray": {
+    "en": "luxray",
+    "fr": "Luxray"
+  },
+  "m. glaquette": {
+    "en": "mr-rime",
+    "fr": "M. Glaquette"
+  },
+  "m. mime": {
+    "en": "mr-mime",
+    "fr": "M. Mime"
+  },
+  "machoc": {
+    "en": "machop",
+    "fr": "Machoc"
+  },
+  "machopeur": {
+    "en": "machoke",
+    "fr": "Machopeur"
+  },
+  "mackogneur": {
+    "en": "machamp",
+    "fr": "Mackogneur"
+  },
+  "macronium": {
+    "en": "bayleef",
+    "fr": "Macronium"
+  },
+  "maganon": {
+    "en": "magmortar",
+    "fr": "Maganon"
+  },
+  "magby": {
+    "en": "magby",
+    "fr": "Magby"
+  },
+  "magearna": {
+    "en": "magearna",
+    "fr": "Magearna"
+  },
+  "magicarpe": {
+    "en": "magikarp",
+    "fr": "Magicarpe"
+  },
+  "magireve": {
+    "en": "mismagius",
+    "fr": "Magirêve"
+  },
+  "magmar": {
+    "en": "magmar",
+    "fr": "Magmar"
+  },
+  "magneti": {
+    "en": "magnemite",
+    "fr": "Magnéti"
+  },
+  "magneton": {
+    "en": "magneton",
+    "fr": "Magnéton"
+  },
+  "magnezone": {
+    "en": "magnezone",
+    "fr": "Magnézone"
+  },
+  "majaspic": {
+    "en": "serperior",
+    "fr": "Majaspic"
+  },
+  "makuhita": {
+    "en": "makuhita",
+    "fr": "Makuhita"
+  },
+  "malamandre": {
+    "en": "salazzle",
+    "fr": "Malamandre"
+  },
+  "malosse": {
+    "en": "houndour",
+    "fr": "Malosse"
+  },
+  "malvalame": {
+    "en": "ceruledge",
+    "fr": "Malvalame"
+  },
+  "mamanbo": {
+    "en": "alomomola",
+    "fr": "Mamanbo"
+  },
+  "mammochon": {
+    "en": "mamoswine",
+    "fr": "Mammochon"
+  },
+  "manaphy": {
+    "en": "manaphy",
+    "fr": "Manaphy"
+  },
+  "mandrillon": {
+    "en": "naganadel",
+    "fr": "Mandrillon"
+  },
+  "manglouton": {
+    "en": "yungoos",
+    "fr": "Manglouton"
+  },
+  "mangriff": {
+    "en": "zangoose",
+    "fr": "Mangriff"
+  },
+  "manternel": {
+    "en": "leavanny",
+    "fr": "Manternel"
+  },
+  "manzai": {
+    "en": "bonsly",
+    "fr": "Manzaï"
+  },
+  "maracachi": {
+    "en": "maractus",
+    "fr": "Maracachi"
+  },
+  "maraiste": {
+    "en": "quagsire",
+    "fr": "Maraiste"
+  },
+  "marcacrin": {
+    "en": "swinub",
+    "fr": "Marcacrin"
+  },
+  "marill": {
+    "en": "marill",
+    "fr": "Marill"
+  },
+  "marisson": {
+    "en": "chespin",
+    "fr": "Marisson"
+  },
+  "marshadow": {
+    "en": "marshadow",
+    "fr": "Marshadow"
+  },
+  "mascaiman": {
+    "en": "sandile",
+    "fr": "Mascaïman"
+  },
+  "maskadra": {
+    "en": "masquerain",
+    "fr": "Maskadra"
+  },
+  "massko": {
+    "en": "grovyle",
+    "fr": "Massko"
+  },
+  "mastouffe": {
+    "en": "stoutland",
+    "fr": "Mastouffe"
+  },
+  "mateloutre": {
+    "en": "dewott",
+    "fr": "Mateloutre"
+  },
+  "matoufeu": {
+    "en": "torracat",
+    "fr": "Matoufeu"
+  },
+  "matourgeon": {
+    "en": "floragato",
+    "fr": "Matourgeon"
+  },
+  "medhyena": {
+    "en": "poochyena",
+    "fr": "Medhyèna"
+  },
+  "meditikka": {
+    "en": "meditite",
+    "fr": "Méditikka"
+  },
+  "meganium": {
+    "en": "meganium",
+    "fr": "Méganium"
+  },
+  "megapagos": {
+    "en": "carracosta",
+    "fr": "Mégapagos"
+  },
+  "meios": {
+    "en": "duosion",
+    "fr": "Méios"
+  },
+  "melancolux": {
+    "en": "lampent",
+    "fr": "Mélancolux"
+  },
+  "melmetal": {
+    "en": "melmetal",
+    "fr": "Melmetal"
+  },
+  "melo": {
+    "en": "cleffa",
+    "fr": "Mélo"
+  },
+  "melodelfe": {
+    "en": "clefable",
+    "fr": "Mélodelfe"
+  },
+  "meloetta": {
+    "en": "meloetta-aria",
+    "fr": "Meloetta"
+  },
+  "melofee": {
+    "en": "clefairy",
+    "fr": "Mélofée"
+  },
+  "melokrik": {
+    "en": "kricketune",
+    "fr": "Mélokrik"
+  },
+  "meltan": {
+    "en": "meltan",
+    "fr": "Meltan"
+  },
+  "mentali": {
+    "en": "espeon",
+    "fr": "Mentali"
+  },
+  "mesmerella": {
+    "en": "gothorita",
+    "fr": "Mesmérella"
+  },
+  "metalosse": {
+    "en": "metagross",
+    "fr": "Métalosse"
+  },
+  "metamorph": {
+    "en": "ditto",
+    "fr": "Métamorph"
+  },
+  "metang": {
+    "en": "metang",
+    "fr": "Métang"
+  },
+  "meteno": {
+    "en": "minior-red-meteor",
+    "fr": "Météno"
+  },
+  "mew": {
+    "en": "mew",
+    "fr": "Mew"
+  },
+  "mewtwo": {
+    "en": "mewtwo",
+    "fr": "Mewtwo"
+  },
+  "miamiasme": {
+    "en": "trubbish",
+    "fr": "Miamiasme"
+  },
+  "miaouss": {
+    "en": "meowth",
+    "fr": "Miaouss"
+  },
+  "miascarade": {
+    "en": "meowscarada",
+    "fr": "Miascarade"
+  },
+  "miasmax": {
+    "en": "garbodor",
+    "fr": "Miasmax"
+  },
+  "migalos": {
+    "en": "ariados",
+    "fr": "Migalos"
+  },
+  "milobellus": {
+    "en": "milotic",
+    "fr": "Milobellus"
+  },
+  "mimantis": {
+    "en": "fomantis",
+    "fr": "Mimantis"
+  },
+  "mime jr.": {
+    "en": "mime-jr",
+    "fr": "Mime Jr."
+  },
+  "mimigal": {
+    "en": "spinarak",
+    "fr": "Mimigal"
+  },
+  "mimiqui": {
+    "en": "mimikyu-disguised",
+    "fr": "Mimiqui"
+  },
+  "mimitoss": {
+    "en": "venonat",
+    "fr": "Mimitoss"
+  },
+  "minidraco": {
+    "en": "dratini",
+    "fr": "Minidraco"
+  },
+  "minisange": {
+    "en": "rookidee",
+    "fr": "Minisange"
+  },
+  "minotaupe": {
+    "en": "excadrill",
+    "fr": "Minotaupe"
+  },
+  "miradar": {
+    "en": "watchog",
+    "fr": "Miradar"
+  },
+  "miraidon": {
+    "en": "miraidon",
+    "fr": "Miraidon"
+  },
+  "mistigrix": {
+    "en": "meowstic-male",
+    "fr": "Mistigrix"
+  },
+  "mite-de-fer": {
+    "en": "iron-moth",
+    "fr": "Mite-de-Fer"
+  },
+  "momartik": {
+    "en": "froslass",
+    "fr": "Momartik"
+  },
+  "monaflemit": {
+    "en": "slaking",
+    "fr": "Monaflèmit"
+  },
+  "monorpale": {
+    "en": "honedge",
+    "fr": "Monorpale"
+  },
+  "monthracite": {
+    "en": "coalossal",
+    "fr": "Monthracite"
+  },
+  "mordudor": {
+    "en": "gimmighoul",
+    "fr": "Mordudor"
+  },
+  "morpeko": {
+    "en": "morpeko-full-belly",
+    "fr": "Morpeko"
+  },
+  "morpheo": {
+    "en": "castform",
+    "fr": "Morphéo"
+  },
+  "motisma": {
+    "en": "rotom",
+    "fr": "Motisma"
+  },
+  "motorizard": {
+    "en": "cyclizar",
+    "fr": "Motorizard"
+  },
+  "moufflair": {
+    "en": "skuntank",
+    "fr": "Moufflair"
+  },
+  "moufouette": {
+    "en": "stunky",
+    "fr": "Moufouette"
+  },
+  "moumouflon": {
+    "en": "dubwool",
+    "fr": "Moumouflon"
+  },
+  "moumouton": {
+    "en": "wooloo",
+    "fr": "Moumouton"
+  },
+  "mouscoto": {
+    "en": "buzzwole",
+    "fr": "Mouscoto"
+  },
+  "moustillon": {
+    "en": "oshawott",
+    "fr": "Moustillon"
+  },
+  "moyade": {
+    "en": "jellicent-male",
+    "fr": "Moyade"
+  },
+  "muciole": {
+    "en": "volbeat",
+    "fr": "Muciole"
+  },
+  "mucuscule": {
+    "en": "goomy",
+    "fr": "Mucuscule"
+  },
+  "munja": {
+    "en": "shedinja",
+    "fr": "Munja"
+  },
+  "munna": {
+    "en": "munna",
+    "fr": "Munna"
+  },
+  "muplodocus": {
+    "en": "goodra",
+    "fr": "Muplodocus"
+  },
+  "mushana": {
+    "en": "musharna",
+    "fr": "Mushana"
+  },
+  "mustebouee": {
+    "en": "buizel",
+    "fr": "Mustébouée"
+  },
+  "musteflott": {
+    "en": "floatzel",
+    "fr": "Mustéflott"
+  },
+  "mygavolt": {
+    "en": "galvantula",
+    "fr": "Mygavolt"
+  },
+  "mysdibule": {
+    "en": "mawile",
+    "fr": "Mysdibule"
+  },
+  "mystherbe": {
+    "en": "oddish",
+    "fr": "Mystherbe"
+  },
+  "nanmeouie": {
+    "en": "audino",
+    "fr": "Nanméouïe"
+  },
+  "natu": {
+    "en": "natu",
+    "fr": "Natu"
+  },
+  "necrozma": {
+    "en": "necrozma",
+    "fr": "Necrozma"
+  },
+  "negapi": {
+    "en": "minun",
+    "fr": "Négapi"
+  },
+  "neitram": {
+    "en": "beheeyem",
+    "fr": "Neitram"
+  },
+  "nemelios": {
+    "en": "pyroar-male",
+    "fr": "Némélios"
+  },
+  "nenupiot": {
+    "en": "lotad",
+    "fr": "Nénupiot"
+  },
+  "nidoking": {
+    "en": "nidoking",
+    "fr": "Nidoking"
+  },
+  "nidoqueen": {
+    "en": "nidoqueen",
+    "fr": "Nidoqueen"
+  },
+  "nidoran♀": {
+    "en": "nidoran-f",
+    "fr": "Nidoran♀"
+  },
+  "nidoran♂": {
+    "en": "nidoran-m",
+    "fr": "Nidoran♂"
+  },
+  "nidorina": {
+    "en": "nidorina",
+    "fr": "Nidorina"
+  },
+  "nidorino": {
+    "en": "nidorino",
+    "fr": "Nidorino"
+  },
+  "nigirigon": {
+    "en": "tatsugiri-curly",
+    "fr": "Nigirigon"
+  },
+  "nigosier": {
+    "en": "cramorant",
+    "fr": "Nigosier"
+  },
+  "ningale": {
+    "en": "nincada",
+    "fr": "Ningale"
+  },
+  "ninjask": {
+    "en": "ninjask",
+    "fr": "Ninjask"
+  },
+  "nirondelle": {
+    "en": "taillow",
+    "fr": "Nirondelle"
+  },
+  "noacier": {
+    "en": "ferrothorn",
+    "fr": "Noacier"
+  },
+  "noadkoko": {
+    "en": "exeggutor",
+    "fr": "Noadkoko"
+  },
+  "noarfang": {
+    "en": "noctowl",
+    "fr": "Noarfang"
+  },
+  "noctali": {
+    "en": "umbreon",
+    "fr": "Noctali"
+  },
+  "noctunoir": {
+    "en": "dusknoir",
+    "fr": "Noctunoir"
+  },
+  "nodulithe": {
+    "en": "roggenrola",
+    "fr": "Nodulithe"
+  },
+  "noeunoeuf": {
+    "en": "exeggcute",
+    "fr": "Noeunoeuf"
+  },
+  "nosferalto": {
+    "en": "golbat",
+    "fr": "Nosferalto"
+  },
+  "nosferapti": {
+    "en": "zubat",
+    "fr": "Nosferapti"
+  },
+  "nostenfer": {
+    "en": "crobat",
+    "fr": "Nostenfer"
+  },
+  "nounourson": {
+    "en": "stufful",
+    "fr": "Nounourson"
+  },
+  "nucleos": {
+    "en": "solosis",
+    "fr": "Nucléos"
+  },
+  "nymphali": {
+    "en": "sylveon",
+    "fr": "Nymphali"
+  },
+  "obalie": {
+    "en": "spheal",
+    "fr": "Obalie"
+  },
+  "octillery": {
+    "en": "octillery",
+    "fr": "Octillery"
+  },
+  "ogerpon": {
+    "en": "ogerpon",
+    "fr": "Ogerpon"
+  },
+  "ohmassacre": {
+    "en": "eelektross",
+    "fr": "Ohmassacre"
+  },
+  "okeoke": {
+    "en": "wynaut",
+    "fr": "Okéoké"
+  },
+  "olivado": {
+    "en": "dolliv",
+    "fr": "Olivado"
+  },
+  "olivini": {
+    "en": "smoliv",
+    "fr": "Olivini"
+  },
+  "oniglali": {
+    "en": "glalie",
+    "fr": "Oniglali"
+  },
+  "onix": {
+    "en": "onix",
+    "fr": "Onix"
+  },
+  "opermine": {
+    "en": "binacle",
+    "fr": "Opermine"
+  },
+  "oratoria": {
+    "en": "primarina",
+    "fr": "Oratoria"
+  },
+  "ortide": {
+    "en": "gloom",
+    "fr": "Ortide"
+  },
+  "ossatueur": {
+    "en": "marowak",
+    "fr": "Ossatueur"
+  },
+  "osselait": {
+    "en": "cubone",
+    "fr": "Osselait"
+  },
+  "otaquin": {
+    "en": "popplio",
+    "fr": "Otaquin"
+  },
+  "otaria": {
+    "en": "seel",
+    "fr": "Otaria"
+  },
+  "otarlette": {
+    "en": "brionne",
+    "fr": "Otarlette"
+  },
+  "ouistempo": {
+    "en": "grookey",
+    "fr": "Ouistempo"
+  },
+  "ouisticram": {
+    "en": "chimchar",
+    "fr": "Ouisticram"
+  },
+  "ouvrifier": {
+    "en": "gurdurr",
+    "fr": "Ouvrifier"
+  },
+  "oyacata": {
+    "en": "dondozo",
+    "fr": "Oyacata"
+  },
+  "pachirisu": {
+    "en": "pachirisu",
+    "fr": "Pachirisu"
+  },
+  "pachyradjah": {
+    "en": "copperajah",
+    "fr": "Pachyradjah"
+  },
+  "palarticho": {
+    "en": "sirfetchd",
+    "fr": "Palarticho"
+  },
+  "palkia": {
+    "en": "palkia",
+    "fr": "Palkia"
+  },
+  "palmaval": {
+    "en": "quaquaval",
+    "fr": "Palmaval"
+  },
+  "pandarbare": {
+    "en": "pangoro",
+    "fr": "Pandarbare"
+  },
+  "pandespiegle": {
+    "en": "pancham",
+    "fr": "Pandespiègle"
+  },
+  "papilord": {
+    "en": "mothim",
+    "fr": "Papilord"
+  },
+  "papilusion": {
+    "en": "butterfree",
+    "fr": "Papilusion"
+  },
+  "papinox": {
+    "en": "dustox",
+    "fr": "Papinox"
+  },
+  "paragruel": {
+    "en": "basculegion-male",
+    "fr": "Paragruel"
+  },
+  "paras": {
+    "en": "paras",
+    "fr": "Paras"
+  },
+  "parasect": {
+    "en": "parasect",
+    "fr": "Parasect"
+  },
+  "parecool": {
+    "en": "slakoth",
+    "fr": "Parecool"
+  },
+  "pashmilla": {
+    "en": "cinccino",
+    "fr": "Pashmilla"
+  },
+  "passerouge": {
+    "en": "fletchling",
+    "fr": "Passerouge"
+  },
+  "patachiot": {
+    "en": "fidough",
+    "fr": "Pâtachiot"
+  },
+  "paume-de-fer": {
+    "en": "iron-hands",
+    "fr": "Paume-de-Fer"
+  },
+  "pechaminus": {
+    "en": "pecharunt",
+    "fr": "Pêchaminus"
+  },
+  "pelage-sable": {
+    "en": "sandy-shocks",
+    "fr": "Pelage-Sablé"
+  },
+  "peregrain": {
+    "en": "spewpa",
+    "fr": "Pérégrain"
+  },
+  "persian": {
+    "en": "persian",
+    "fr": "Persian"
+  },
+  "phanpy": {
+    "en": "phanpy",
+    "fr": "Phanpy"
+  },
+  "pharamp": {
+    "en": "ampharos",
+    "fr": "Pharamp"
+  },
+  "phione": {
+    "en": "phione",
+    "fr": "Phione"
+  },
+  "phogleur": {
+    "en": "sealeo",
+    "fr": "Phogleur"
+  },
+  "phyllali": {
+    "en": "leafeon",
+    "fr": "Phyllali"
+  },
+  "piafabec": {
+    "en": "spearow",
+    "fr": "Piafabec"
+  },
+  "picassaut": {
+    "en": "pikipek",
+    "fr": "Picassaut"
+  },
+  "pichu": {
+    "en": "pichu",
+    "fr": "Pichu"
+  },
+  "piclairon": {
+    "en": "trumbeak",
+    "fr": "Piclairon"
+  },
+  "pierroteknik": {
+    "en": "blacephalon",
+    "fr": "Pierroteknik"
+  },
+  "pietace": {
+    "en": "cetoddle",
+    "fr": "Piétacé"
+  },
+  "pifeuil": {
+    "en": "nuzleaf",
+    "fr": "Pifeuil"
+  },
+  "pijako": {
+    "en": "chatot",
+    "fr": "Pijako"
+  },
+  "pikachu": {
+    "en": "pikachu",
+    "fr": "Pikachu"
+  },
+  "pimito": {
+    "en": "capsakid",
+    "fr": "Pimito"
+  },
+  "pingoleon": {
+    "en": "empoleon",
+    "fr": "Pingoléon"
+  },
+  "pitrouille": {
+    "en": "pumpkaboo-average",
+    "fr": "Pitrouille"
+  },
+  "plumeline": {
+    "en": "oricorio-baile",
+    "fr": "Plumeline"
+  },
+  "pohm": {
+    "en": "pawmi",
+    "fr": "Pohm"
+  },
+  "pohmarmotte": {
+    "en": "pawmot",
+    "fr": "Pohmarmotte"
+  },
+  "pohmotte": {
+    "en": "pawmo",
+    "fr": "Pohmotte"
+  },
+  "poichigeon": {
+    "en": "pidove",
+    "fr": "Poichigeon"
+  },
+  "poissirene": {
+    "en": "goldeen",
+    "fr": "Poissirène"
+  },
+  "poissoroy": {
+    "en": "seaking",
+    "fr": "Poissoroy"
+  },
+  "polagriffe": {
+    "en": "beartic",
+    "fr": "Polagriffe"
+  },
+  "polarhume": {
+    "en": "cubchoo",
+    "fr": "Polarhume"
+  },
+  "polichombr": {
+    "en": "shuppet",
+    "fr": "Polichombr"
+  },
+  "poltchageist": {
+    "en": "poltchageist",
+    "fr": "Poltchageist"
+  },
+  "polthegeist": {
+    "en": "polteageist",
+    "fr": "Polthégeist"
+  },
+  "pomdepik": {
+    "en": "pineco",
+    "fr": "Pomdepik"
+  },
+  "pomdorochi": {
+    "en": "hydrapple",
+    "fr": "Pomdorochi"
+  },
+  "pomdramour": {
+    "en": "dipplin",
+    "fr": "Pomdramour"
+  },
+  "pomdrapi": {
+    "en": "flapple",
+    "fr": "Pomdrapi"
+  },
+  "ponchien": {
+    "en": "herdier",
+    "fr": "Ponchien"
+  },
+  "ponchiot": {
+    "en": "lillipup",
+    "fr": "Ponchiot"
+  },
+  "pondralugon": {
+    "en": "archaludon",
+    "fr": "Pondralugon"
+  },
+  "ponyta": {
+    "en": "ponyta",
+    "fr": "Ponyta"
+  },
+  "porygon": {
+    "en": "porygon",
+    "fr": "Porygon"
+  },
+  "porygon-z": {
+    "en": "porygon-z",
+    "fr": "Porygon-Z"
+  },
+  "porygon2": {
+    "en": "porygon2",
+    "fr": "Porygon2"
+  },
+  "posipi": {
+    "en": "plusle",
+    "fr": "Posipi"
+  },
+  "poulpaf": {
+    "en": "clobbopus",
+    "fr": "Poulpaf"
+  },
+  "poussacha": {
+    "en": "sprigatito",
+    "fr": "Poussacha"
+  },
+  "poussifeu": {
+    "en": "torchic",
+    "fr": "Poussifeu"
+  },
+  "predasterie": {
+    "en": "toxapex",
+    "fr": "Prédastérie"
+  },
+  "prinplouf": {
+    "en": "prinplup",
+    "fr": "Prinplouf"
+  },
+  "prismillon": {
+    "en": "vivillon",
+    "fr": "Prismillon"
+  },
+  "psykokwak": {
+    "en": "psyduck",
+    "fr": "Psykokwak"
+  },
+  "psystigri": {
+    "en": "espurr",
+    "fr": "Psystigri"
+  },
+  "ptera": {
+    "en": "aerodactyl",
+    "fr": "Ptéra"
+  },
+  "ptiravi": {
+    "en": "happiny",
+    "fr": "Ptiravi"
+  },
+  "ptitard": {
+    "en": "poliwag",
+    "fr": "Ptitard"
+  },
+  "ptyranidur": {
+    "en": "tyrunt",
+    "fr": "Ptyranidur"
+  },
+  "pyrax": {
+    "en": "volcarona",
+    "fr": "Pyrax"
+  },
+  "pyrobut": {
+    "en": "cinderace",
+    "fr": "Pyrobut"
+  },
+  "pyroli": {
+    "en": "flareon",
+    "fr": "Pyroli"
+  },
+  "pyronille": {
+    "en": "larvesta",
+    "fr": "Pyronille"
+  },
+  "quartermac": {
+    "en": "passimian",
+    "fr": "Quartermac"
+  },
+  "queulorior": {
+    "en": "smeargle",
+    "fr": "Queulorior"
+  },
+  "qulbutoke": {
+    "en": "wobbuffet",
+    "fr": "Qulbutoké"
+  },
+  "qwilfish": {
+    "en": "qwilfish",
+    "fr": "Qwilfish"
+  },
+  "qwilpik": {
+    "en": "overqwil",
+    "fr": "Qwilpik"
+  },
+  "racaillou": {
+    "en": "geodude",
+    "fr": "Racaillou"
+  },
+  "rafflesia": {
+    "en": "vileplume",
+    "fr": "Rafflesia"
+  },
+  "raichu": {
+    "en": "raichu",
+    "fr": "Raichu"
+  },
+  "raikou": {
+    "en": "raikou",
+    "fr": "Raikou"
+  },
+  "ramboum": {
+    "en": "loudred",
+    "fr": "Ramboum"
+  },
+  "ramoloss": {
+    "en": "slowpoke",
+    "fr": "Ramoloss"
+  },
+  "rampe-ailes": {
+    "en": "slither-wing",
+    "fr": "Rampe-Ailes"
+  },
+  "rapasdepic": {
+    "en": "fearow",
+    "fr": "Rapasdepic"
+  },
+  "rapion": {
+    "en": "skorupi",
+    "fr": "Rapion"
+  },
+  "ratentif": {
+    "en": "patrat",
+    "fr": "Ratentif"
+  },
+  "rattata": {
+    "en": "rattata",
+    "fr": "Rattata"
+  },
+  "rattatac": {
+    "en": "raticate",
+    "fr": "Rattatac"
+  },
+  "rayquaza": {
+    "en": "rayquaza",
+    "fr": "Rayquaza"
+  },
+  "regice": {
+    "en": "regice",
+    "fr": "Regice"
+  },
+  "regidrago": {
+    "en": "regidrago",
+    "fr": "Regidrago"
+  },
+  "regieleki": {
+    "en": "regieleki",
+    "fr": "Regieleki"
+  },
+  "regigigas": {
+    "en": "regigigas",
+    "fr": "Regigigas"
+  },
+  "regirock": {
+    "en": "regirock",
+    "fr": "Regirock"
+  },
+  "registeel": {
+    "en": "registeel",
+    "fr": "Registeel"
+  },
+  "relicanth": {
+    "en": "relicanth",
+    "fr": "Relicanth"
+  },
+  "remoraid": {
+    "en": "remoraid",
+    "fr": "Rémoraid"
+  },
+  "reptincel": {
+    "en": "charmeleon",
+    "fr": "Reptincel"
+  },
+  "reshiram": {
+    "en": "reshiram",
+    "fr": "Reshiram"
+  },
+  "rexillius": {
+    "en": "tyrantrum",
+    "fr": "Rexillius"
+  },
+  "rhinastoc": {
+    "en": "rhyperior",
+    "fr": "Rhinastoc"
+  },
+  "rhinocorne": {
+    "en": "rhyhorn",
+    "fr": "Rhinocorne"
+  },
+  "rhinoferos": {
+    "en": "rhydon",
+    "fr": "Rhinoféros"
+  },
+  "rhinolove": {
+    "en": "swoobat",
+    "fr": "Rhinolove"
+  },
+  "riolu": {
+    "en": "riolu",
+    "fr": "Riolu"
+  },
+  "roc-de-fer": {
+    "en": "iron-boulder",
+    "fr": "Roc-de-Fer"
+  },
+  "rocabot": {
+    "en": "rockruff",
+    "fr": "Rocabot"
+  },
+  "roigada": {
+    "en": "slowking",
+    "fr": "Roigada"
+  },
+  "roitiflam": {
+    "en": "emboar",
+    "fr": "Roitiflam"
+  },
+  "rondoudou": {
+    "en": "jigglypuff",
+    "fr": "Rondoudou"
+  },
+  "ronflex": {
+    "en": "snorlax",
+    "fr": "Ronflex"
+  },
+  "rongourmand": {
+    "en": "skwovet",
+    "fr": "Rongourmand"
+  },
+  "rongrigou": {
+    "en": "greedent",
+    "fr": "Rongrigou"
+  },
+  "rosabyss": {
+    "en": "gorebyss",
+    "fr": "Rosabyss"
+  },
+  "roselia": {
+    "en": "roselia",
+    "fr": "Rosélia"
+  },
+  "roserade": {
+    "en": "roserade",
+    "fr": "Roserade"
+  },
+  "rototaupe": {
+    "en": "drilbur",
+    "fr": "Rototaupe"
+  },
+  "roublenard": {
+    "en": "thievul",
+    "fr": "Roublenard"
+  },
+  "roucarnage": {
+    "en": "pidgeot",
+    "fr": "Roucarnage"
+  },
+  "roucool": {
+    "en": "pidgey",
+    "fr": "Roucool"
+  },
+  "roucoups": {
+    "en": "pidgeotto",
+    "fr": "Roucoups"
+  },
+  "roue-de-fer": {
+    "en": "iron-treads",
+    "fr": "Roue-de-Fer"
+  },
+  "roussil": {
+    "en": "braixen",
+    "fr": "Roussil"
+  },
+  "rozbouton": {
+    "en": "budew",
+    "fr": "Rozbouton"
+  },
+  "rubombelle": {
+    "en": "ribombee",
+    "fr": "Rubombelle"
+  },
+  "rugit-lune": {
+    "en": "roaring-moon",
+    "fr": "Rugit-Lune"
+  },
+  "sabelette": {
+    "en": "sandshrew",
+    "fr": "Sabelette"
+  },
+  "sablaireau": {
+    "en": "sandslash",
+    "fr": "Sablaireau"
+  },
+  "salameche": {
+    "en": "charmander",
+    "fr": "Salamèche"
+  },
+  "salarsen": {
+    "en": "toxtricity-amped",
+    "fr": "Salarsen"
+  },
+  "sancoki": {
+    "en": "shellos",
+    "fr": "Sancoki"
+  },
+  "sapereau": {
+    "en": "bunnelby",
+    "fr": "Sapereau"
+  },
+  "saquedeneu": {
+    "en": "tangela",
+    "fr": "Saquedeneu"
+  },
+  "sarmurai": {
+    "en": "golisopod",
+    "fr": "Sarmuraï"
+  },
+  "scalpereur": {
+    "en": "kingambit",
+    "fr": "Scalpereur"
+  },
+  "scalpion": {
+    "en": "pawniard",
+    "fr": "Scalpion"
+  },
+  "scalproie": {
+    "en": "bisharp",
+    "fr": "Scalproie"
+  },
+  "scarabrute": {
+    "en": "pinsir",
+    "fr": "Scarabrute"
+  },
+  "scarhino": {
+    "en": "heracross",
+    "fr": "Scarhino"
+  },
+  "scobolide": {
+    "en": "whirlipede",
+    "fr": "Scobolide"
+  },
+  "scolocendre": {
+    "en": "centiskorch",
+    "fr": "Scolocendre"
+  },
+  "scorplane": {
+    "en": "gligar",
+    "fr": "Scorplane"
+  },
+  "scorvol": {
+    "en": "gliscor",
+    "fr": "Scorvol"
+  },
+  "scovilain": {
+    "en": "scovillain",
+    "fr": "Scovilain"
+  },
+  "scrutella": {
+    "en": "gothita",
+    "fr": "Scrutella"
+  },
+  "seleroc": {
+    "en": "lunatone",
+    "fr": "Séléroc"
+  },
+  "selutin": {
+    "en": "nacli",
+    "fr": "Selutin"
+  },
+  "sepiatop": {
+    "en": "inkay",
+    "fr": "Sepiatop"
+  },
+  "sepiatroce": {
+    "en": "malamar",
+    "fr": "Sepiatroce"
+  },
+  "seracrawl": {
+    "en": "avalugg",
+    "fr": "Séracrawl"
+  },
+  "serpang": {
+    "en": "huntail",
+    "fr": "Serpang"
+  },
+  "serpente-eau": {
+    "en": "walking-wake",
+    "fr": "Serpente-Eau"
+  },
+  "seviper": {
+    "en": "seviper",
+    "fr": "Séviper"
+  },
+  "shaofouine": {
+    "en": "mienshao",
+    "fr": "Shaofouine"
+  },
+  "sharpedo": {
+    "en": "sharpedo",
+    "fr": "Sharpedo"
+  },
+  "shaymin": {
+    "en": "shaymin-land",
+    "fr": "Shaymin"
+  },
+  "shifours": {
+    "en": "urshifu-single-strike",
+    "fr": "Shifours"
+  },
+  "siderella": {
+    "en": "gothitelle",
+    "fr": "Sidérella"
+  },
+  "silvallie": {
+    "en": "silvally",
+    "fr": "Silvallié"
+  },
+  "simiabraz": {
+    "en": "infernape",
+    "fr": "Simiabraz"
+  },
+  "simularbre": {
+    "en": "sudowoodo",
+    "fr": "Simularbre"
+  },
+  "sinistrail": {
+    "en": "dhelmise",
+    "fr": "Sinistrail"
+  },
+  "skelenox": {
+    "en": "duskull",
+    "fr": "Skelénox"
+  },
+  "skitty": {
+    "en": "skitty",
+    "fr": "Skitty"
+  },
+  "smogo": {
+    "en": "koffing",
+    "fr": "Smogo"
+  },
+  "smogogo": {
+    "en": "weezing",
+    "fr": "Smogogo"
+  },
+  "snubbull": {
+    "en": "snubbull",
+    "fr": "Snubbull"
+  },
+  "solaroc": {
+    "en": "solrock",
+    "fr": "Solaroc"
+  },
+  "solgaleo": {
+    "en": "solgaleo",
+    "fr": "Solgaleo"
+  },
+  "solochi": {
+    "en": "deino",
+    "fr": "Solochi"
+  },
+  "sonistrelle": {
+    "en": "noibat",
+    "fr": "Sonistrelle"
+  },
+  "soporifik": {
+    "en": "drowzee",
+    "fr": "Soporifik"
+  },
+  "sorbebe": {
+    "en": "vanillite",
+    "fr": "Sorbébé"
+  },
+  "sorbouboul": {
+    "en": "vanilluxe",
+    "fr": "Sorbouboul"
+  },
+  "sorboul": {
+    "en": "vanillish",
+    "fr": "Sorboul"
+  },
+  "sorcilence": {
+    "en": "hatterene",
+    "fr": "Sorcilence"
+  },
+  "sovkipou": {
+    "en": "wimpod",
+    "fr": "Sovkipou"
+  },
+  "spectreval": {
+    "en": "spectrier",
+    "fr": "Spectreval"
+  },
+  "spectrum": {
+    "en": "haunter",
+    "fr": "Spectrum"
+  },
+  "spinda": {
+    "en": "spinda",
+    "fr": "Spinda"
+  },
+  "spiritomb": {
+    "en": "spiritomb",
+    "fr": "Spiritomb"
+  },
+  "spododo": {
+    "en": "morelull",
+    "fr": "Spododo"
+  },
+  "spoink": {
+    "en": "spoink",
+    "fr": "Spoink"
+  },
+  "stalgamin": {
+    "en": "snorunt",
+    "fr": "Stalgamin"
+  },
+  "stari": {
+    "en": "staryu",
+    "fr": "Stari"
+  },
+  "staross": {
+    "en": "starmie",
+    "fr": "Staross"
+  },
+  "statitik": {
+    "en": "joltik",
+    "fr": "Statitik"
+  },
+  "steelix": {
+    "en": "steelix",
+    "fr": "Steelix"
+  },
+  "strassie": {
+    "en": "carbink",
+    "fr": "Strassie"
+  },
+  "sucreine": {
+    "en": "tsareena",
+    "fr": "Sucreine"
+  },
+  "sucroquin": {
+    "en": "swirlix",
+    "fr": "Sucroquin"
+  },
+  "suicune": {
+    "en": "suicune",
+    "fr": "Suicune"
+  },
+  "sulfura": {
+    "en": "moltres",
+    "fr": "Sulfura"
+  },
+  "superdofin": {
+    "en": "palafin-zero",
+    "fr": "Superdofin"
+  },
+  "sylveroy": {
+    "en": "calyrex",
+    "fr": "Sylveroy"
+  },
+  "symbios": {
+    "en": "reuniclus",
+    "fr": "Symbios"
+  },
+  "tadmorv": {
+    "en": "grimer",
+    "fr": "Tadmorv"
+  },
+  "tag-tag": {
+    "en": "grafaiai",
+    "fr": "Tag-Tag"
+  },
+  "tapatoes": {
+    "en": "squawkabilly-green-plumage",
+    "fr": "Tapatoès"
+  },
+  "tarenbulle": {
+    "en": "araquanid",
+    "fr": "Tarenbulle"
+  },
+  "tarinor": {
+    "en": "nosepass",
+    "fr": "Tarinor"
+  },
+  "tarinorme": {
+    "en": "probopass",
+    "fr": "Tarinorme"
+  },
+  "tarpaud": {
+    "en": "politoed",
+    "fr": "Tarpaud"
+  },
+  "tarsal": {
+    "en": "ralts",
+    "fr": "Tarsal"
+  },
+  "tartard": {
+    "en": "poliwrath",
+    "fr": "Tartard"
+  },
+  "taupikeau": {
+    "en": "wiglett",
+    "fr": "Taupikeau"
+  },
+  "taupiqueur": {
+    "en": "diglett",
+    "fr": "Taupiqueur"
+  },
+  "tauros": {
+    "en": "tauros",
+    "fr": "Tauros"
+  },
+  "teddiursa": {
+    "en": "teddiursa",
+    "fr": "Teddiursa"
+  },
+  "tenefix": {
+    "en": "sableye",
+    "fr": "Ténéfix"
+  },
+  "tengalice": {
+    "en": "shiftry",
+    "fr": "Tengalice"
+  },
+  "tentacool": {
+    "en": "tentacool",
+    "fr": "Tentacool"
+  },
+  "tentacruel": {
+    "en": "tentacruel",
+    "fr": "Tentacruel"
+  },
+  "teraclope": {
+    "en": "dusclops",
+    "fr": "Téraclope"
+  },
+  "terapagos": {
+    "en": "terapagos",
+    "fr": "Terapagos"
+  },
+  "terhal": {
+    "en": "beldum",
+    "fr": "Terhal"
+  },
+  "terracool": {
+    "en": "toedscool",
+    "fr": "Terracool"
+  },
+  "terracruel": {
+    "en": "toedscruel",
+    "fr": "Terracruel"
+  },
+  "terraiste": {
+    "en": "clodsire",
+    "fr": "Terraiste"
+  },
+  "terrakium": {
+    "en": "terrakion",
+    "fr": "Terrakium"
+  },
+  "tetampoule": {
+    "en": "tadbulb",
+    "fr": "Têtampoule"
+  },
+  "tetarte": {
+    "en": "poliwhirl",
+    "fr": "Têtarte"
+  },
+  "tetes-de-fer": {
+    "en": "iron-jugulis",
+    "fr": "Têtes-de-Fer"
+  },
+  "theffroi": {
+    "en": "sinistea",
+    "fr": "Théffroi"
+  },
+  "theffroyable": {
+    "en": "sinistcha",
+    "fr": "Théffroyable"
+  },
+  "tiboudet": {
+    "en": "mudbray",
+    "fr": "Tiboudet"
+  },
+  "tic": {
+    "en": "klink",
+    "fr": "Tic"
+  },
+  "tiplouf": {
+    "en": "piplup",
+    "fr": "Tiplouf"
+  },
+  "tissenboule": {
+    "en": "tarountula",
+    "fr": "Tissenboule"
+  },
+  "togedemaru": {
+    "en": "togedemaru",
+    "fr": "Togedemaru"
+  },
+  "togekiss": {
+    "en": "togekiss",
+    "fr": "Togekiss"
+  },
+  "togepi": {
+    "en": "togepi",
+    "fr": "Togepi"
+  },
+  "togetic": {
+    "en": "togetic",
+    "fr": "Togetic"
+  },
+  "tokopisco": {
+    "en": "tapu-fini",
+    "fr": "Tokopisco"
+  },
+  "tokopiyon": {
+    "en": "tapu-lele",
+    "fr": "Tokopiyon"
+  },
+  "tokorico": {
+    "en": "tapu-koko",
+    "fr": "Tokorico"
+  },
+  "tokotoro": {
+    "en": "tapu-bulu",
+    "fr": "Tokotoro"
+  },
+  "tomberro": {
+    "en": "houndstone",
+    "fr": "Tomberro"
+  },
+  "torgamord": {
+    "en": "drednaw",
+    "fr": "Torgamord"
+  },
+  "tortank": {
+    "en": "blastoise",
+    "fr": "Tortank"
+  },
+  "torterra": {
+    "en": "torterra",
+    "fr": "Torterra"
+  },
+  "tortipouss": {
+    "en": "turtwig",
+    "fr": "Tortipouss"
+  },
+  "toudoudou": {
+    "en": "igglybuff",
+    "fr": "Toudoudou"
+  },
+  "tournegrin": {
+    "en": "sunkern",
+    "fr": "Tournegrin"
+  },
+  "tournicoton": {
+    "en": "gossifleur",
+    "fr": "Tournicoton"
+  },
+  "toutombe": {
+    "en": "greavard",
+    "fr": "Toutombe"
+  },
+  "toxizap": {
+    "en": "toxel",
+    "fr": "Toxizap"
+  },
+  "tranchodon": {
+    "en": "haxorus",
+    "fr": "Tranchodon"
+  },
+  "trepassable": {
+    "en": "palossand",
+    "fr": "Trépassable"
+  },
+  "triopikeau": {
+    "en": "wugtrio",
+    "fr": "Triopikeau"
+  },
+  "triopikeur": {
+    "en": "dugtrio",
+    "fr": "Triopikeur"
+  },
+  "trioxhydre": {
+    "en": "hydreigon",
+    "fr": "Trioxhydre"
+  },
+  "tritonde": {
+    "en": "tympole",
+    "fr": "Tritonde"
+  },
+  "tritosor": {
+    "en": "gastrodon",
+    "fr": "Tritosor"
+  },
+  "tritox": {
+    "en": "salandit",
+    "fr": "Tritox"
+  },
+  "trompignon": {
+    "en": "foongus",
+    "fr": "Trompignon"
+  },
+  "tropius": {
+    "en": "tropius",
+    "fr": "Tropius"
+  },
+  "trousselin": {
+    "en": "klefki",
+    "fr": "Trousselin"
+  },
+  "tutafeh": {
+    "en": "yamask",
+    "fr": "Tutafeh"
+  },
+  "tutankafer": {
+    "en": "cofagrigus",
+    "fr": "Tutankafer"
+  },
+  "tutetekri": {
+    "en": "runerigus",
+    "fr": "Tutétékri"
+  },
+  "tygnon": {
+    "en": "hitmonchan",
+    "fr": "Tygnon"
+  },
+  "tylton": {
+    "en": "swablu",
+    "fr": "Tylton"
+  },
+  "type:0": {
+    "en": "type-null",
+    "fr": "Type:0"
+  },
+  "typhlosion": {
+    "en": "typhlosion",
+    "fr": "Typhlosion"
+  },
+  "tyranocif": {
+    "en": "tyranitar",
+    "fr": "Tyranocif"
+  },
+  "ursaking": {
+    "en": "ursaluna",
+    "fr": "Ursaking"
+  },
+  "ursaring": {
+    "en": "ursaring",
+    "fr": "Ursaring"
+  },
+  "vacilys": {
+    "en": "cradily",
+    "fr": "Vacilys"
+  },
+  "vaututrice": {
+    "en": "mandibuzz",
+    "fr": "Vaututrice"
+  },
+  "vemini": {
+    "en": "poipole",
+    "fr": "Vémini"
+  },
+  "venalgue": {
+    "en": "skrelp",
+    "fr": "Venalgue"
+  },
+  "venipatte": {
+    "en": "venipede",
+    "fr": "Venipatte"
+  },
+  "verpom": {
+    "en": "applin",
+    "fr": "Verpom"
+  },
+  "vert-de-fer": {
+    "en": "iron-leaves",
+    "fr": "Vert-de-Fer"
+  },
+  "vibraninf": {
+    "en": "vibrava",
+    "fr": "Vibraninf"
+  },
+  "victini": {
+    "en": "victini",
+    "fr": "Victini"
+  },
+  "vigoroth": {
+    "en": "vigoroth",
+    "fr": "Vigoroth"
+  },
+  "vipelierre": {
+    "en": "snivy",
+    "fr": "Vipélierre"
+  },
+  "virevorreur": {
+    "en": "brambleghast",
+    "fr": "Virevorreur"
+  },
+  "viridium": {
+    "en": "virizion",
+    "fr": "Viridium"
+  },
+  "virovent": {
+    "en": "bramblin",
+    "fr": "Virovent"
+  },
+  "viskuse": {
+    "en": "frillish-male",
+    "fr": "Viskuse"
+  },
+  "vivaldaim": {
+    "en": "deerling",
+    "fr": "Vivaldaim"
+  },
+  "volcanion": {
+    "en": "volcanion",
+    "fr": "Volcanion"
+  },
+  "volcaropod": {
+    "en": "magcargo",
+    "fr": "Volcaropod"
+  },
+  "voltali": {
+    "en": "jolteon",
+    "fr": "Voltali"
+  },
+  "voltorbe": {
+    "en": "voltorb",
+    "fr": "Voltorbe"
+  },
+  "voltoutou": {
+    "en": "yamper",
+    "fr": "Voltoutou"
+  },
+  "vorasterie": {
+    "en": "mareanie",
+    "fr": "Vorastérie"
+  },
+  "vortente": {
+    "en": "carnivine",
+    "fr": "Vortente"
+  },
+  "vostourno": {
+    "en": "vullaby",
+    "fr": "Vostourno"
+  },
+  "vrombi": {
+    "en": "varoom",
+    "fr": "Vrombi"
+  },
+  "vrombotor": {
+    "en": "revavroom",
+    "fr": "Vrombotor"
+  },
+  "wagomine": {
+    "en": "carkol",
+    "fr": "Wagomine"
+  },
+  "wailmer": {
+    "en": "wailmer",
+    "fr": "Wailmer"
+  },
+  "wailord": {
+    "en": "wailord",
+    "fr": "Wailord"
+  },
+  "wattapik": {
+    "en": "pincurchin",
+    "fr": "Wattapik"
+  },
+  "wattouat": {
+    "en": "mareep",
+    "fr": "Wattouat"
+  },
+  "wimessir": {
+    "en": "indeedee-male",
+    "fr": "Wimessir"
+  },
+  "wushours": {
+    "en": "kubfu",
+    "fr": "Wushours"
+  },
+  "xatu": {
+    "en": "xatu",
+    "fr": "Xatu"
+  },
+  "xerneas": {
+    "en": "xerneas",
+    "fr": "Xerneas"
+  },
+  "yanma": {
+    "en": "yanma",
+    "fr": "Yanma"
+  },
+  "yanmega": {
+    "en": "yanmega",
+    "fr": "Yanmega"
+  },
+  "ymphect": {
+    "en": "pupitar",
+    "fr": "Ymphect"
+  },
+  "yuyu": {
+    "en": "chi-yu",
+    "fr": "Yuyu"
+  },
+  "yveltal": {
+    "en": "yveltal",
+    "fr": "Yveltal"
+  },
+  "zacian": {
+    "en": "zacian",
+    "fr": "Zacian"
+  },
+  "zamazenta": {
+    "en": "zamazenta",
+    "fr": "Zamazenta"
+  },
+  "zapetrel": {
+    "en": "wattrel",
+    "fr": "Zapétrel"
+  },
+  "zarbi": {
+    "en": "unown",
+    "fr": "Zarbi"
+  },
+  "zarude": {
+    "en": "zarude",
+    "fr": "Zarude"
+  },
+  "zebibron": {
+    "en": "blitzle",
+    "fr": "Zébibron"
+  },
+  "zeblitz": {
+    "en": "zebstrika",
+    "fr": "Zéblitz"
+  },
+  "zekrom": {
+    "en": "zekrom",
+    "fr": "Zekrom"
+  },
+  "zeraora": {
+    "en": "zeraora",
+    "fr": "Zeraora"
+  },
+  "zeroid": {
+    "en": "nihilego",
+    "fr": "Zéroïd"
+  },
+  "zigzaton": {
+    "en": "zigzagoon",
+    "fr": "Zigzaton"
+  },
+  "zoroark": {
+    "en": "zoroark",
+    "fr": "Zoroark"
+  },
+  "zorua": {
+    "en": "zorua",
+    "fr": "Zorua"
+  },
+  "zygarde": {
+    "en": "zygarde-50",
+    "fr": "Zygarde"
+  }
 }

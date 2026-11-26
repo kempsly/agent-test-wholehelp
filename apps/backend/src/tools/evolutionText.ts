@@ -8,11 +8,19 @@ import { PokeApiError, fetchPokeApi } from "./pokeapi";
 import type { EvolutionCondition } from "./pokemon";
 import { versionRank } from "./versionGroups";
 
+/**
+ * Legends: Arceus has its own evolution methods (Onix: an item instead of a trade holding Metal Coat): it is not used
+ * as the most recent game, unless it is the only one that gives a condition.
+ */
+const SPECIAL_VERSION_GROUP = "legends-arceus";
+
 /** The conditions of the most recent version group (several when that game has several ways, e.g. stone or place). */
 export function latestConditions(conditions: EvolutionCondition[]): EvolutionCondition[] {
-  if (conditions.length === 0) return [];
-  const best = Math.max(...conditions.map((c) => versionRank(c.version_group)));
-  return conditions.filter((c) => versionRank(c.version_group) === best);
+  const usual = conditions.filter((c) => c.version_group !== SPECIAL_VERSION_GROUP);
+  const pool = usual.length > 0 ? usual : conditions;
+  if (pool.length === 0) return [];
+  const best = Math.max(...pool.map((c) => versionRank(c.version_group)));
+  return pool.filter((c) => versionRank(c.version_group) === best);
 }
 
 // ---------- French names of items, moves and locations (PokeAPI) ----------

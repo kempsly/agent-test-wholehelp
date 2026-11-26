@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { defineTool } from "./types";
 import { PokeApiError, fetchPokeApi } from "./pokeapi";
+import { frenchNameOf } from "./frenchNames";
 import { fetchPokemonTypes, nameOrId } from "./pokemon";
 import { POKEMON_TYPES, TYPE_FR, type PokemonType } from "./pokemonTypes";
 
@@ -37,6 +38,22 @@ export function computeMultipliers(defenders: DefenderRelations[]): Record<Pokem
 }
 
 const entry = (type: PokemonType, multiplicateur: number) => ({ type_fr: TYPE_FR[type], type_en: type, multiplicateur });
+type Entry = ReturnType<typeof entry>;
+
+/** "x4", "x0,25": French decimal comma. */
+const formatMultiplier = (m: number) => `x${String(m).replace(".", ",")}`;
+const line = (label: string, entries: Entry[]) =>
+  `${label} : ${entries.length ? entries.map((e) => `${e.type_fr} (${formatMultiplier(e.multiplicateur)})`).join(", ") : "aucune"}`;
+
+/** The lists as the user reads them, written in code from the multipliers (added to the answer as it is). */
+export function matchupSummaryFr(lists: { faiblesses: Entry[]; resistances: Entry[]; immunites: Entry[] }): string {
+  return [
+    line("Faiblesses", lists.faiblesses),
+    line("Résistances", lists.resistances),
+    line("Immunités", lists.immunites),
+    "Les autres types infligent des dégâts normaux (x1).",
+  ].join("\n");
+}
 
 /** How one defending type is hit, from PokeAPI (shared with the battle tool). */
 export async function fetchDefenderRelations(type: PokemonType): Promise<DefenderRelations> {
@@ -75,13 +92,17 @@ export const getTypeMatchups = defineTool({
 
     const multipliers = computeMultipliers(relations);
     const attackers = POKEMON_TYPES.map((type) => ({ type, multiplier: multipliers[type] }));
-    return {
-      ...(defender.name && { pokemon: defender.name }),
-      defender_types: defender.types,
-      defender_types_fr: defender.types.map((t) => TYPE_FR[t]),
+    const lists = {
       faiblesses: attackers.filter((a) => a.multiplier > 1).sort((a, b) => b.multiplier - a.multiplier).map((a) => entry(a.type, a.multiplier)),
       resistances: attackers.filter((a) => a.multiplier > 0 && a.multiplier < 1).sort((a, b) => a.multiplier - b.multiplier).map((a) => entry(a.type, a.multiplier)),
       immunites: attackers.filter((a) => a.multiplier === 0).map((a) => entry(a.type, 0)),
+    };
+    return {
+      ...(defender.name && { pokemon: defender.name, pokemon_fr: frenchNameOf(defender.name) ?? defender.name }),
+      defender_types: defender.types,
+      defender_types_fr: defender.types.map((t) => TYPE_FR[t]),
+      ...lists,
+      summary_fr: matchupSummaryFr(lists),
     };
   },
 });

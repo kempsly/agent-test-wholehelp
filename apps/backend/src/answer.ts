@@ -8,7 +8,10 @@ import { MAX_ASSISTANT_CHARS } from "./chatRequest";
 import { withGrounding } from "./grounding";
 import { signReply } from "./history";
 import { ollamaChat, type ChatFn } from "./ollama";
-import { addEvolutionSummaries } from "./evolutionAnswer";
+import { addEvolutionSummaries, evolutionResults } from "./evolutionAnswer";
+import { addMatchupSummaries } from "./matchupAnswer";
+import { makeSimulateBattleTool } from "./tools/battle";
+import { toolsByName } from "./tools";
 import { LEAK_REFUSAL, guardReply } from "./outputGuard";
 import { needsTool, withToolReminder } from "./toolReminder";
 
@@ -89,12 +92,16 @@ export function wrapUserMessages(messages: ChatMessage[]): ChatMessage[] {
 
 /**
  * The text the user gets, the same in the stream and in the response: output check (leak, Markdown, Chinese
- * characters), then the code-written list of evolutions if get_evolution_chain was called, then the length limit
+ * characters, English type names), then the code-written lists of evolutions (get_evolution_chain) and of weaknesses
+ * (get_type_matchups), then the length limit
  * (the front sends the reply back in the history, where an assistant message is limited to MAX_ASSISTANT_CHARS).
  */
 export function finalizeReply(reply: string, toolCalls: ToolTrace[]): string {
   const guarded = guardReply(reply);
-  const text = guarded === LEAK_REFUSAL ? guarded : addEvolutionSummaries(guarded, toolCalls);
+  const text =
+    guarded === LEAK_REFUSAL
+      ? guarded
+      : addMatchupSummaries(addEvolutionSummaries(guarded, toolCalls), toolCalls, evolutionResults(toolCalls).length > 0);
   return text.length > MAX_ASSISTANT_CHARS ? `${text.slice(0, MAX_ASSISTANT_CHARS - 1)}…` : text;
 }
 
@@ -113,12 +120,15 @@ export function withTokenCount(chat: ChatFn): { chat: ChatFn; tokens: TokenUsage
 export async function answer(history: ChatMessage[], options: AgentOptions = {}): Promise<SignedChatResponse> {
   // The reply also goes out in the "token" event of the stream: the tool results seen so far give the same final text.
   const onEvent = options.onEvent;
+  const question = [...history].reverse().find((m) => m.role === "user")?.content ?? "";
   const traces: ToolTrace[] = [];
   const counter = withTokenCount(options.chat ?? ollamaChat);
   const reminder = withToolReminder(counter.chat);
   const guardedOptions: AgentOptions = {
     ...options,
     chat: reminder.chat,
+    // The battle tool sees the question: it refuses a Pokedex number the user did not write (same schema, same spec).
+    tools: options.tools ?? new Map([...toolsByName, ["simulate_battle", makeSimulateBattleTool(question)]]),
     onEvent:
       onEvent &&
       ((e) => {
@@ -130,13 +140,12 @@ export async function answer(history: ChatMessage[], options: AgentOptions = {})
   // tool results of earlier turns are never sent back). The front keeps and shows the whole conversation.
   const raw = await runAgent(wrapUserMessages(recentHistory(history)), guardedOptions);
   const reply = finalizeReply(raw.reply, raw.toolCalls);
-  const grounded = withGrounding({ ...raw, reply });
+  const grounded = withGrounding({ ...raw, reply }, question);
   // Retried and still no tool: an answer that cites data comes from memory, it is never shown as verified. A polite
   // refusal (the leak refusal, or a reply without number, type or Pokemon) is not flagged.
   const fromMemory = reminder.state.retried && raw.toolCalls.length === 0 && reply !== LEAK_REFUSAL && needsTool(reply);
   const response = fromMemory ? { ...grounded, grounded: false } : grounded;
   // The front sends this signature back with the reply; without it the reply is refused in the history. It is bound
   // to the question of this turn (the last user message), as checked in chatRequest.ts.
-  const question = [...history].reverse().find((m) => m.role === "user")?.content ?? "";
   return { ...response, signature: signReply(question, reply), tokens: counter.tokens };
 }

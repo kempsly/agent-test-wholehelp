@@ -42,6 +42,13 @@
     "expected": ["dracaufeu|charizard", "78"]
   },
   {
+    "id": "normal-combat-ronflex-ectoplasma",
+    "category": "normal",
+    "question": "Qui gagne entre Ronflex et Ectoplasma ?",
+    "expected_tools": ["simulate_battle"],
+    "expected_in_tools": ["snorlax", "gengar"]
+  },
+  {
     "id": "introuvable-pikachoux",
     "category": "not_found",
     "question": "Fiche de Pikachoux",

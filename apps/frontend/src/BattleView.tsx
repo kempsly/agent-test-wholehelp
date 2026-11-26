@@ -1,7 +1,8 @@
 import { useEffect, useMemo, useState } from "react";
 
 // Shows the result of the simulate_battle tool: two Pokemon, HP bars, turn-by-turn replay, log and winner.
-// Only the data of the tool result is used, and everything is rendered as plain text (no HTML injected).
+// Only the data of the tool result is used (names in French, as the engine writes them), and everything is rendered
+// as plain text (no HTML injected).
 
 const TURN_DURATION_MS = 800;
 
@@ -20,10 +21,7 @@ interface LogEntry {
 interface Battle {
   names: [string, string];
   finalHp: [number, number];
-  /**
-   * Starting HP, deduced from the log (the tool result does not give it): HP left + damage of the first hit received.
-   * Exact, except when the very first hit is already a KO (then the damage of that hit is shown).
-   */
+  /** Starting HP (initial_hp of the tool result): the maximum of each HP bar. */
   initialHp: [number, number];
   turns: LogEntry[][];
   /** Attack types used by each side, from the log. */
@@ -41,6 +39,9 @@ export function parseBattle(result: unknown): Battle | null {
   );
   if (final[0] === null || final[1] === null) return null;
   const [a, b] = final as [{ name: string; hp: number }, { name: string; hp: number }];
+  if (!Array.isArray(result.initial_hp) || result.initial_hp.length !== 2) return null;
+  const initial = result.initial_hp.map((f) => (isRecord(f) && typeof f.hp === "number" ? f.hp : null));
+  if (initial[0] === null || initial[1] === null) return null;
 
   const log: LogEntry[] = [];
   for (const [i, raw] of result.log.entries()) {
@@ -71,11 +72,6 @@ export function parseBattle(result: unknown): Battle | null {
   }
   if (log.length === 0) return null;
 
-  // The last hit of a KO can deal more damage than the HP left, so the damage is not simply summed.
-  const startHp = (side: 0 | 1) => {
-    const firstHit = log.find((e) => e.side !== side);
-    return firstHit ? firstHit.defenderHpLeft + firstHit.damage : side === 0 ? a.hp : b.hp;
-  };
   const turns: LogEntry[][] = [];
   for (const entry of log) (turns[entry.turn - 1] ??= []).push(entry);
 
@@ -83,7 +79,7 @@ export function parseBattle(result: unknown): Battle | null {
   return {
     names: [a.name, b.name],
     finalHp: [a.hp, b.hp],
-    initialHp: [startHp(0), startHp(1)],
+    initialHp: [initial[0], initial[1]],
     turns: turns.filter(Boolean),
     attackTypes: [typesOf(0), typesOf(1)],
   };

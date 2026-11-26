@@ -35,7 +35,7 @@ const dracaufeuMatchups = trace("get_type_matchups", {
 describe("grounding check", () => {
   test("an answer built from the tool results is grounded", () => {
     const reply = "Nom : Pikachu\nTypes : Électrik\nStatistiques : PV 35, Attaque 55, Vitesse 90\nTaille et poids : 0,4 m, 6 kg\nNuméro : 25";
-    expect(checkGrounding(reply, [pikachu])).toEqual({ grounded: true, unverified_numbers: [], unverified_types: [], unverified_evolutions: [] });
+    expect(checkGrounding(reply, [pikachu])).toEqual({ grounded: true, unverified_numbers: [], unverified_types: [], unverified_evolutions: [], unverified_battle: [] });
   });
 
   test("an invented number is reported", () => {
@@ -95,7 +95,7 @@ describe("grounding check", () => {
 
   test("withGrounding adds the fields to the agent response without changing it", () => {
     const response: ChatResponse = { reply: "Pikachu a 99 PV.", toolCalls: [pikachu], model: "m", iterations: 2, durationMs: 10 };
-    expect(withGrounding(response)).toEqual({ ...response, grounded: false, unverified_numbers: ["99"], unverified_types: [], unverified_evolutions: [] });
+    expect(withGrounding(response)).toEqual({ ...response, grounded: false, unverified_numbers: ["99"], unverified_types: [], unverified_evolutions: [], unverified_battle: [] });
   });
 
   // ---------- evolutions: each one with its own condition ----------
@@ -126,7 +126,7 @@ describe("grounding check", () => {
 
   test("pair check: each evolution with its own condition is grounded, accents and case ignored; the base Pokemon is free", () => {
     const reply = "Évoli a plusieurs évolutions.\nAquali (évolution d'Évoli) : Pierre Eau\nmentali : AMITIE ELEVEE, LE JOUR";
-    expect(checkGrounding(reply, [eevee])).toMatchObject({ grounded: true, unverified_evolutions: [] });
+    expect(checkGrounding(reply, [eevee])).toMatchObject({ grounded: true, unverified_evolutions: [], unverified_battle: [] });
   });
 
   // ---------- battles (real answers of qwen2.5:7b, before the fix all flagged "à vérifier") ----------
@@ -156,7 +156,7 @@ describe("grounding check", () => {
       "Le Tortank gagne le combat. Voici un résumé du combat :\n1. Tour 1 : Dracaufeu attaque avec Vol, 16 dégâts, il reste 63 PV.\n" +
       "2. Tour 1 : Tortank attaque avec Eau (efficacité x2), 42 dégâts.\n3. Tour 2 : Dracaufeu attaque avec Vol, il reste 47 PV.\n" +
       "4. Tour 2 : Tortank inflige 42 dégâts.\nDracaufeu avait 78 PV au départ.";
-    expect(checkGrounding(reply, [battle])).toEqual({ grounded: true, unverified_numbers: [], unverified_types: [], unverified_evolutions: [] });
+    expect(checkGrounding(reply, [battle])).toEqual({ grounded: true, unverified_numbers: [], unverified_types: [], unverified_evolutions: [], unverified_battle: [] });
   });
 
   test("battle: a real Fighting type mention is still checked, an invented number is still flagged", () => {
@@ -164,5 +164,16 @@ describe("grounding check", () => {
     expect(checkGrounding("Faiblesses : Plante, Combat (x2)", [battle]).unverified_types).toEqual(["grass", "fighting"]);
     expect(checkGrounding("Tortank inflige 99 dégâts.", [battle]).unverified_numbers).toEqual(["99"]);
   });
-});
 
+  test("battle check: Pokemon other than those of the question are flagged (Ronflex et Ectoplasma simulated as caterpie and relicanth)", () => {
+    const fight = (a: string, b: string) => trace("simulate_battle", { pokemon_a: a, pokemon_b: b, winner: null, log: [], initial_hp: [], final_hp: [] });
+    const question = "Qui gagne entre Ronflex et Ectoplasma ?";
+    const wrong = checkGrounding("Le vainqueur est Chenipan.", [fight("caterpie", "relicanth")], question);
+    expect(wrong.grounded).toBe(false);
+    expect(wrong.unverified_battle).toEqual(["Chenipan", "Relicanth"]);
+    expect(checkGrounding("Le vainqueur est Ronflex.", [fight("snorlax", "gengar")], question)).toMatchObject({ grounded: true, unverified_battle: [] });
+    // English names in the question count too; without a question nothing is checked.
+    expect(checkGrounding("Snorlax gagne.", [fight("snorlax", "gengar")], "Snorlax vs Gengar ?").unverified_battle).toEqual([]);
+    expect(checkGrounding("Chenipan gagne.", [fight("caterpie", "relicanth")]).unverified_battle).toEqual([]);
+  });
+});

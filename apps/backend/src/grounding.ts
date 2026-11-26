@@ -3,7 +3,8 @@
 // it detects numbers and types that no tool returned.
 
 import type { ChatResponse, GroundedChatResponse, ToolTrace } from "@app/shared";
-import { evolutionPairs, nameIndex, normalizeForMatch } from "./evolutionAnswer";
+import { citesName, evolutionPairs, nameIndex, normalizeForMatch } from "./evolutionAnswer";
+import { frenchNameOf } from "./tools/frenchNames";
 import { POKEMON_TYPES, TYPE_FR, type PokemonType } from "./tools/pokemonTypes";
 
 /** Numbers up to this value are not checked (multipliers like x2, counts like "2 types", stage numbers). */
@@ -79,6 +80,8 @@ export interface GroundingResult {
   unverified_types: string[];
   /** Evolutions cited on a line without their own condition_fr (a condition put on another Pokemon). */
   unverified_evolutions: string[];
+  /** Pokemon of a simulated battle that the question does not cite (the model passed other names or numbers). */
+  unverified_battle: string[];
 }
 
 /** Numbers of an ordered list ("3. Tour 2 : ...") are not data. */
@@ -100,8 +103,34 @@ function unverifiedEvolutionPairs(reply: string, toolCalls: ToolTrace[]): string
   return [...flagged];
 }
 
-/** Compares the answer with what the tools returned during the turn: results, or the error message of a failed call. */
-export function checkGrounding(reply: string, toolCalls: ToolTrace[]): GroundingResult {
+/** True if the question cites this Pokemon by its English name (hyphen or space) or its French name. */
+function questionCites(question: string, english: string): boolean {
+  const french = frenchNameOf(english);
+  return citesName(question, english) || citesName(question, english.replace(/-/g, " ")) || (french !== null && citesName(question, french));
+}
+
+/**
+ * Battle check: both Pokemon of each successful simulate_battle must be cited in the question (French or English
+ * name). "Qui gagne entre Ronflex et Ectoplasma ?" simulated as caterpie against relicanth is flagged.
+ */
+function unverifiedBattlePokemon(question: string, toolCalls: ToolTrace[]): string[] {
+  if (!question) return [];
+  const flagged = new Set<string>();
+  for (const t of toolCalls) {
+    if (t.name !== "simulate_battle" || t.error || typeof t.result !== "object" || t.result === null) continue;
+    const r = t.result as Record<string, unknown>;
+    for (const english of [r.pokemon_a, r.pokemon_b]) {
+      if (typeof english === "string" && !questionCites(question, english)) flagged.add(frenchNameOf(english) ?? english);
+    }
+  }
+  return [...flagged];
+}
+
+/**
+ * Compares the answer with what the tools returned during the turn: results, or the error message of a failed call.
+ * question: the user question of the turn, for the battle check (empty: not checked).
+ */
+export function checkGrounding(reply: string, toolCalls: ToolTrace[], question = ""): GroundingResult {
   const results = toolCalls.map((t) => (t.error ? t.error : t.result));
   const knownNumbers = numbersInResults(results);
   const knownTypes = new Set(citedTypes(JSON.stringify(results), false));
@@ -111,16 +140,18 @@ export function checkGrounding(reply: string, toolCalls: ToolTrace[]): Grounding
   ];
   const unverifiedTypes = citedTypes(reply).filter((type) => !knownTypes.has(type));
   const unverifiedEvolutions = unverifiedEvolutionPairs(reply, toolCalls);
+  const unverifiedBattle = unverifiedBattlePokemon(question, toolCalls);
 
   return {
-    grounded: unverifiedNumbers.length === 0 && unverifiedTypes.length === 0 && unverifiedEvolutions.length === 0,
+    grounded: unverifiedNumbers.length === 0 && unverifiedTypes.length === 0 && unverifiedEvolutions.length === 0 && unverifiedBattle.length === 0,
     unverified_numbers: unverifiedNumbers,
     unverified_types: unverifiedTypes,
     unverified_evolutions: unverifiedEvolutions,
+    unverified_battle: unverifiedBattle,
   };
 }
 
 /** Adds the grounding fields to the response of the agent (the agent loop itself is not involved). */
-export function withGrounding(response: ChatResponse): GroundedChatResponse {
-  return { ...response, ...checkGrounding(response.reply, response.toolCalls) };
+export function withGrounding(response: ChatResponse, question = ""): GroundedChatResponse {
+  return { ...response, ...checkGrounding(response.reply, response.toolCalls, question) };
 }

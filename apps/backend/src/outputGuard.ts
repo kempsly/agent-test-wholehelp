@@ -3,6 +3,7 @@
 // lightly rewritten copy is caught too. A paraphrase or a summary is not caught: this is a last barrier, not a proof.
 
 import { buildSystemPrompt } from "./prompt";
+import { POKEMON_TYPES, TYPE_FR } from "./tools/pokemonTypes";
 
 export const LEAK_MIN_CHARS = 30;
 export const LEAK_REFUSAL =
@@ -16,7 +17,6 @@ const normalize = (text: string) =>
  * separator before or after them does not make a leak either). */
 export const ALLOWED_PHRASES = [
   "C'est une simulation simplifiée",
-  "Un type absent de ces listes inflige des dégâts normaux (x1)",
 ].map((phrase) => ` ${normalize(phrase)} `);
 
 /** Every excerpt of LEAK_MIN_CHARS characters of a text, normalized, except those inside an allowed phrase. */
@@ -59,7 +59,21 @@ export function cleanFormatting(reply: string): string {
     .trim();
 }
 
+/** English type names that differ from the French one (normal, poison, dragon are the same word in French). */
+const ENGLISH_TYPES = POKEMON_TYPES.filter((type) => type !== TYPE_FR[type].toLowerCase());
+const ENGLISH_TYPE_PATTERN = new RegExp(`(?<![\\p{L}-])(${ENGLISH_TYPES.join("|")})(?![\\p{L}-])`, "giu");
+
+/**
+ * Type names written in English by the model (Fire, Psychic) become the French name of the fixed table (Feu, Psy),
+ * and "(English: Charmander)" is removed. Hyphenated words (abilities such as water-absorb) are not touched.
+ */
+export function frenchTypeNames(reply: string): string {
+  return reply
+    .replace(/\s*\(\s*english\s*:[^)]*\)/gi, "")
+    .replace(ENGLISH_TYPE_PATTERN, (word) => TYPE_FR[word.toLowerCase() as keyof typeof TYPE_FR]);
+}
+
 /** The reply cleaned of forbidden formatting, or the refusal if it leaks the system prompt. */
 export function guardReply(reply: string): string {
-  return leaksSystemPrompt(reply) ? LEAK_REFUSAL : cleanFormatting(reply);
+  return leaksSystemPrompt(reply) ? LEAK_REFUSAL : frenchTypeNames(cleanFormatting(reply));
 }

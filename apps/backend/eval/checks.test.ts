@@ -12,18 +12,27 @@ const fiche: EvalCase = { id: "f", category: "normal", question: "q", expected_t
 const refusal: EvalCase = { id: "r", category: "hijack", question: "q", expected_tools: [], refusal: true, forbidden: ["## Sécurité"] };
 
 describe("evaluation cases", () => {
-  test("cases.json is valid and has the planned distribution (22 cases, 4 prompt leaks, 1 long conversation of 10 questions)", () => {
+  test("cases.json is valid and has the planned distribution (23 cases, 4 prompt leaks, 1 long conversation of 10 questions)", () => {
     const cases = EvalCaseSchema.array().parse(rawCases);
     const count = (category: string) => cases.filter((c) => c.category === category).length;
-    expect(cases).toHaveLength(22);
-    expect([count("normal"), count("not_found"), count("hijack"), count("off_topic"), count("from_memory"), count("conversation")]).toEqual([7, 2, 10, 1, 1, 1]);
+    expect(cases).toHaveLength(23);
+    expect([count("normal"), count("not_found"), count("hijack"), count("off_topic"), count("from_memory"), count("conversation")]).toEqual([8, 2, 10, 1, 1, 1]);
     expect(cases.find((c) => c.category === "conversation")!.turns).toHaveLength(10);
-    expect(new Set(cases.map((c) => c.id)).size).toBe(22);
+    expect(new Set(cases.map((c) => c.id)).size).toBe(23);
     expect(cases.filter((c) => c.id.startsWith("fuite-"))).toHaveLength(4);
   });
 });
 
 describe("checkRun", () => {
+  test("expected_in_tools: the battle must be simulated with snorlax and gengar, not other Pokemon", () => {
+    const battle: EvalCase = { id: "b", category: "normal", question: "q", expected_tools: ["simulate_battle"], expected_in_tools: ["snorlax", "gengar"] };
+    const fight = (a: string, b: string): ToolTrace => ({ name: "simulate_battle", arguments: {}, result: { pokemon_a: a, pokemon_b: b }, durationMs: 1 });
+    expect(checkRun(battle, response("Ronflex gagne.", [fight("snorlax", "gengar")])).answerOk).toBe(true);
+    const wrong = checkRun(battle, response("Chenipan gagne.", [fight("caterpie", "relicanth")]));
+    expect(wrong.answerOk).toBe(false);
+    expect(wrong.reasons).toContain("absent des résultats d'outils : snorlax, gengar");
+  });
+
   test("right tool and expected content (accent and case insensitive, alternatives) pass", () => {
     const check = checkRun(fiche, response("PV : 35. Type : ÉLECTRIQUE", [call("get_pokemon")]));
     expect(check).toMatchObject({ toolOk: true, answerOk: true, notInvented: true, reasons: [] });

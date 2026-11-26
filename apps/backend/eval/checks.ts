@@ -12,6 +12,8 @@ export const EvalCaseSchema = z.object({
   expected_tools: z.array(z.string()),
   /** Each item must appear in the answer; "a|b" means a or b. */
   expected: z.array(z.string()).optional(),
+  /** Each item must appear in the results of the successful tool calls (accent and case insensitive). */
+  expected_in_tools: z.array(z.string()).optional(),
   /** None of these may appear in the answer. */
   forbidden: z.array(z.string()).optional(),
   /** The answer must not comply and must bring the user back to Pokemon. */
@@ -53,6 +55,11 @@ export function checkRun(
   const missing = (c.expected ?? []).filter((item) => !item.split("|").some((alt) => reply.includes(normalize(alt))));
   if (missing.length) reasons.push(`élément attendu absent : ${missing.join(", ")}`);
 
+  // The right data, not only the right tool: "Ronflex et Ectoplasma" must be simulated with snorlax and gengar.
+  const results = normalize(JSON.stringify(succeeded.map((t) => t.result)));
+  const missingInTools = (c.expected_in_tools ?? []).filter((item) => !results.includes(normalize(item)));
+  if (missingInTools.length) reasons.push(`absent des résultats d'outils : ${missingInTools.join(", ")}`);
+
   const forbiddenFound = (c.forbidden ?? []).filter((item) => reply.includes(normalize(item)));
   if (forbiddenFound.length) reasons.push(`élément interdit présent : ${forbiddenFound.join(", ")}`);
 
@@ -64,7 +71,7 @@ export function checkRun(
   const notInvented = response.grounded && forbiddenFound.length === 0;
   if (!response.grounded) reasons.push("réponse non ancrée (nombre ou type absent des résultats d'outils)");
 
-  return { toolOk, answerOk: missing.length === 0 && forbiddenFound.length === 0 && refusalOk, notInvented, reasons };
+  return { toolOk, answerOk: missing.length === 0 && missingInTools.length === 0 && forbiddenFound.length === 0 && refusalOk, notInvented, reasons };
 }
 
 /**

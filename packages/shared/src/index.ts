@@ -65,6 +65,8 @@ export interface GroundedChatResponse extends ChatResponse {
   unverified_types: string[];
   /** Evolutions cited without their own condition (a condition put on another Pokemon). */
   unverified_evolutions: string[];
+  /** Pokemon of a simulated battle that the question does not cite. */
+  unverified_battle: string[];
 }
 
 /** Tokens of the turn, summed over all the model calls (tool steps and forced retry included). */

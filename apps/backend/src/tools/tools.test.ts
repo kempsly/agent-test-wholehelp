@@ -6,7 +6,7 @@ import { flattenEvolutionChain, getEvolutionChain, getPokemon, type EvolutionSum
 import { conditionFr, latestConditions } from "./evolutionText";
 import { frenchNameOf } from "./frenchNames";
 import { getTypeMatchups } from "./typeMatchups";
-import { simulateBattleTool } from "./battle";
+import { makeSimulateBattleTool, simulateBattleTool } from "./battle";
 import { tools } from "./index";
 
 const realFetch = globalThis.fetch;
@@ -158,6 +158,8 @@ const typeRoutes = {
   "/type/fire": typeBody(["water", "ground", "rock"], ["fire", "grass", "ice", "bug", "steel", "fairy"], []),
   "/type/flying": typeBody(["electric", "ice", "rock"], ["grass", "fighting", "bug"], ["ground"]),
   "/type/ghost": typeBody(["ghost", "dark"], ["poison", "bug"], ["normal", "fighting"]),
+  "/type/poison": typeBody(["ground", "psychic"], ["fighting", "poison", "bug", "grass", "fairy"], []),
+  "/type/normal": typeBody(["fighting"], [], ["ghost"]),
 };
 
 type Entry = { type_fr: string; type_en: string; multiplicateur: number };
@@ -230,6 +232,30 @@ describe("get_type_matchups", () => {
   test("PokeAPI down: clear error", async () => {
     globalThis.fetch = (async () => new Response("oops", { status: 503 })) as unknown as typeof fetch;
     await expect(getTypeMatchups.execute({ types: ["fire"] })).rejects.toThrow("PokeAPI unavailable");
+  });
+
+  test("summary_fr written in code: Ectoplasma (ghost/poison) is immune to Normal and Combat, French name and decimal comma", async () => {
+    mockApi({
+      ...typeRoutes,
+      "/pokemon/gengar": { ...pikachu, id: 94, name: "gengar", types: [{ slot: 1, type: { name: "ghost" } }, { slot: 2, type: { name: "poison" } }] },
+    });
+    const parsed = getTypeMatchups.schema.parse({ pokemon: "Ectoplasma" });
+    const result = (await getTypeMatchups.execute(parsed)) as Matchups & { pokemon_fr: string; summary_fr: string };
+    expect(result.pokemon_fr).toBe("Ectoplasma");
+    expect(result.summary_fr.split("\n")).toEqual([
+      "Faiblesses : Sol (x2), Psy (x2), Spectre (x2), Ténèbres (x2)",
+      "Résistances : Poison (x0,25), Insecte (x0,25), Plante (x0,5), Fée (x0,5)",
+      "Immunités : Normal (x0), Combat (x0)",
+      "Les autres types infligent des dégâts normaux (x1).",
+    ]);
+  });
+
+  test("summary_fr: the Fire type resists Fire (x0,5), and an empty list says aucune", async () => {
+    mockApi(typeRoutes);
+    const fire = (await getTypeMatchups.execute({ types: ["fire"] })) as { summary_fr: string };
+    expect(fire.summary_fr).toContain("Résistances : ");
+    expect(fire.summary_fr.split("\n")[1]).toContain("Feu (x0,5)");
+    expect(fire.summary_fr).toContain("Immunités : aucune");
   });
 });
 
@@ -460,6 +486,14 @@ describe("evolution conditions", () => {
     expect(latestConditions([])).toEqual([]);
   });
 
+  test("latestConditions: Legends Arceus is skipped unless it is the only game (Onix: trade holding Peau Métal)", () => {
+    const trade = { version_group: "sword-shield", trigger: "trade", held_item: "metal-coat" };
+    const arceus = { version_group: "legends-arceus", trigger: "use-item", item: "linking-cord" };
+    expect(latestConditions([trade, arceus])).toEqual([trade]);
+    expect(conditionFr(latestConditions([trade, arceus]), new Map([["item:metal-coat", "Peau Métal"]]))).toBe("échange, en tenant Peau Métal");
+    expect(latestConditions([arceus])).toEqual([arceus]);
+  });
+
   test("French names of the chain, as displayed: the default form of a species is found, an unknown name gives no French name", () => {
     expect(frenchNameOf("eevee")).toBe("Évoli");
     expect(frenchNameOf("deoxys")).toBe("Deoxys");
@@ -493,9 +527,10 @@ describe("simulate_battle", () => {
       final_hp: { name: string; hp: number }[];
     };
     // charizard is faster: it attacks first even though it is Pokemon B. 20*84/50 = 33, then 33 again: KO at turn 2.
-    expect(result.log[0]).toMatchObject({ attacker: "charizard", damage: 33, effectiveness: 1, defender_hp_left: 27 });
-    expect(result).toMatchObject({ winner: "charizard", turns: 2 });
-    expect(result.final_hp).toEqual([{ name: "ghosty", hp: 0 }, { name: "charizard", hp: 62 }]);
+    // Names in French when the table has one (Dracaufeu), English otherwise (ghosty).
+    expect(result.log[0]).toMatchObject({ attacker: "Dracaufeu", damage: 33, effectiveness: 1, defender_hp_left: 27 });
+    expect(result).toMatchObject({ winner: "Dracaufeu", turns: 2, pokemon_b: "charizard", pokemon_b_fr: "Dracaufeu" });
+    expect(result.final_hp).toEqual([{ name: "ghosty", hp: 0 }, { name: "Dracaufeu", hp: 62 }]);
     expect(result.log).toHaveLength(3);
   });
 
@@ -503,6 +538,30 @@ describe("simulate_battle", () => {
     mockApi({ ...typeRoutes, "/pokemon/charizard": fighterBody("charizard", ["fire", "flying"], 78, 84, 78, 100) });
     await expect(simulateBattleTool.execute({ pokemon_a: "charizard", pokemon_b: "zorglub" })).rejects.toThrow(/not found.*English name.*number/);
     await expect(simulateBattleTool.execute({ pokemon_a: "../../users", pokemon_b: "charizard" })).rejects.toThrow(/Invalid name/);
+  });
+
+  test("names resolved as in get_pokemon: Ronflex and Ectoplasma give snorlax and gengar, start HP from PokeAPI", async () => {
+    mockApi({
+      ...typeRoutes,
+      "/pokemon/snorlax": fighterBody("snorlax", ["normal"], 160, 110, 65, 30),
+      "/pokemon/gengar": fighterBody("gengar", ["ghost", "poison"], 60, 65, 60, 110),
+    });
+    const tool = makeSimulateBattleTool("Qui gagne entre Ronflex et Ectoplasma ?");
+    const result = (await tool.execute(tool.schema.parse({ pokemon_a: "Ronflex", pokemon_b: "Ectoplasma" }))) as {
+      pokemon_a: string;
+      pokemon_b: string;
+      initial_hp: { name: string; hp: number }[];
+    };
+    expect([result.pokemon_a, result.pokemon_b]).toEqual(["snorlax", "gengar"]);
+    expect(result.initial_hp).toEqual([{ name: "Ronflex", hp: 160 }, { name: "Ectoplasma", hp: 60 }]);
+  });
+
+  test("a Pokedex number is refused when the question names the Pokemon, accepted when the user wrote that number", async () => {
+    mockApi({ ...typeRoutes, "/pokemon/143": fighterBody("snorlax", ["normal"], 160, 110, 65, 30), "/pokemon/94": fighterBody("gengar", ["ghost", "poison"], 60, 65, 60, 110) });
+    const named = makeSimulateBattleTool("Qui gagne entre Ronflex et Ectoplasma ?");
+    await expect(named.execute({ pokemon_a: "10", pokemon_b: "369" })).rejects.toThrow(/not a Pokedex number/);
+    const numbered = makeSimulateBattleTool("Qui gagne entre le numéro 143 et le 94 ?");
+    await expect(numbered.execute({ pokemon_a: "143", pokemon_b: "94" })).resolves.toMatchObject({ pokemon_a: "snorlax", pokemon_b: "gengar" });
   });
 });
 

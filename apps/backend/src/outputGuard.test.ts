@@ -1,7 +1,7 @@
 // Tests of the output check: a reply that contains 30 characters or more of the system prompt is refused.
 
 import { describe, expect, test } from "bun:test";
-import { LEAK_MIN_CHARS, LEAK_REFUSAL, guardReply, leaksSystemPrompt } from "./outputGuard";
+import { LEAK_MIN_CHARS, LEAK_REFUSAL, frenchTypeNames, guardReply, leaksSystemPrompt } from "./outputGuard";
 import { buildSystemPrompt } from "./prompt";
 
 const prompt = buildSystemPrompt();
@@ -43,5 +43,13 @@ describe("output check", () => {
     ]) {
       expect(guardReply(reply)).toBe(reply);
     }
+  });
+
+  test("English type names become the French names of the table; (English: ...) is removed; abilities are kept", () => {
+    expect(frenchTypeNames("Types : Fire, Flying. Faible contre water et Psychic.")).toBe("Types : Feu, Vol. Faible contre Eau et Psy.");
+    expect(frenchTypeNames("Nom : Salamèche (English: Charmander)")).toBe("Nom : Salamèche");
+    expect(frenchTypeNames("Talents : water-absorb, flash-fire. Type Normal, Poison.")).toBe("Talents : water-absorb, flash-fire. Type Normal, Poison.");
+    expect(frenchTypeNames("Type : Électrique, électricité")).toBe("Type : Électrique, électricité");
+    expect(guardReply("**Types** : Ghost, Poison")).toBe("Types : Spectre, Poison");
   });
 });

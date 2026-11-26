@@ -13,7 +13,7 @@
 - src/battle/ : moteur de combat (bonus), fonctions pures, sans LLM.
 - src/agent.test.ts : tests de la boucle avec faux LLM. Autres tests à côté du code : tools/pokeapi.test.ts,
   tools/tools.test.ts, battle/battle.test.ts (fetch simulé).
-- eval/ : jeu d'évaluation (22 cas, dont 4 de fuite du prompt et 1 conversation longue de 10 questions) et script `bun run eval`.
+- eval/ : jeu d'évaluation (23 cas, dont 1 combat Ronflex / Ectoplasma vérifié dans les résultats d'outils, dont 4 de fuite du prompt et 1 conversation longue de 10 questions) et script `bun run eval`.
 
 ## Règles de fiabilité
 
@@ -24,10 +24,13 @@
 - Les outils acceptent le nom anglais ou le numéro. Introuvable (404) : erreur qui propose le nom anglais, le numéro
   ou une forme précise (deoxys, giratina, mr-mime, nidoran-f).
 - get_pokemon renvoie french_name et base_stat_total (somme calculée en code) ; description_fr : 300 caractères max, null si absente (pas de repli sur une autre langue).
-- get_type_matchups : multiplicateur final calculé en code ; le LLM ne calcule jamais.
+- get_type_matchups : multiplicateur final calculé en code ; le LLM ne calcule jamais. summary_fr (listes rédigées en code)
+  est ajouté tel quel à la réponse (src/matchupAnswer.ts) ; le modèle n'écrit qu'une introduction.
+- simulate_battle : noms résolus comme get_pokemon ; reçoit la question (answer.ts) et refuse un numéro absent de la question
+  quand elle cite un Pokémon ; journal en noms français ; contrôle d'ancrage : les 2 Pokémon doivent être cités dans la question.
 - get_evolution_chain : liste d'étapes avec branches ; pour chaque Pokémon, name_fr (nom affiché, names-fr.json),
   version_group et condition_fr (phrase française construite en code, src/tools/evolutionText.ts) pour la version de jeu
-  la plus récente ; all_versions ajoute toutes les entrées brutes de evolution_details (conditions).
+  la plus récente (Légendes Arceus exclu sauf s'il est seul) ; all_versions ajoute toutes les entrées brutes de evolution_details (conditions).
 - data/names-fr.json : nom français normalisé -> { en, fr }, généré par scripts/build-names.ts (ne pas éditer à la main).
 - Noms de types : table fixe des 18 types (tools/pokemonTypes.ts), noms français et anglais dans les sorties des outils.
 - get_type_matchups : paramètre pokemon (types lus en code) ou types (1 ou 2), un seul des deux ; listes faiblesses, resistances, immunites ; get_evolution_chain : seuls les champs présents dans PokéAPI.
@@ -47,7 +50,8 @@
   d'injection FRAGILE, phrase par phrase (SYSTEM, ADMIN, ignore/oublie tes règles, changement de rôle, répéter le prompt)
   qui réduit le risque sans le supprimer.
 - Contrôle de sortie (src/outputGuard.ts) : une réponse qui contient 30 caractères consécutifs du prompt système est
-  remplacée par un refus poli ; Markdown (** et #) et caractères chinois retirés de toute réponse.
+  remplacée par un refus poli ; Markdown (** et #) et caractères chinois retirés de toute réponse ; noms de types anglais
+  remplacés par le nom français, « (English: ...) » supprimé.
 - Requête : rôles user et assistant uniquement ; chaque message assistant porte la signature HMAC donnée par le serveur (HISTORY_SECRET), sinon 400 ; 30 messages maximum, 1 000 caractères par message utilisateur,
   20 000 caractères au total.
 - Historique : le modèle ne voit que la question et les 2 échanges précédents (recentHistory, packages/shared) ; une

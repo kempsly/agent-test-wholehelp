@@ -3,6 +3,7 @@
 import { z } from "zod";
 import { defineTool } from "./types";
 import { frenchNameOf, resolvePokemonName } from "./frenchNames";
+import { conditionFr, fetchFrenchNames, latestConditions } from "./evolutionText";
 import { PokeApiError, fetchPokeApi } from "./pokeapi";
 import { POKEMON_TYPES, typeFr, type PokemonType } from "./pokemonTypes";
 
@@ -227,15 +228,53 @@ export function flattenEvolutionChain(root: ChainLink): EvolutionStage[] {
   return stages;
 }
 
+/** One Pokemon of the chain as the tool returns it: condition_fr is the sentence to copy (most recent game). */
+export interface EvolutionSummary {
+  name: string;
+  name_fr?: string;
+  evolves_from?: string;
+  /** Game of the conditions described by condition_fr (the most recent one in PokeAPI). */
+  version_group?: string;
+  condition_fr?: string;
+  /** Only with all_versions: every PokeAPI entry, all games. */
+  conditions?: EvolutionCondition[];
+}
+
+/** Keeps only the most recent game for each evolution and adds condition_fr (built in code). */
+export async function summarizeEvolutions(stages: EvolutionStage[], allVersions = false) {
+  const latest = new Map(stages.flatMap((s) => s.pokemon).map((p) => [p, latestConditions(p.conditions ?? [])] as const));
+  const names = await fetchFrenchNames([...latest.values()].flat());
+  return stages.map((stage) => ({
+    stage: stage.stage,
+    pokemon: stage.pokemon.map((p): EvolutionSummary => {
+      const { conditions, ...rest } = p;
+      if (!conditions) return rest; // first stage: nothing to evolve from
+      const kept = latest.get(p)!;
+      const version = kept[0]?.version_group;
+      return {
+        ...rest,
+        ...(typeof version === "string" && { version_group: version }),
+        condition_fr: conditionFr(kept, names),
+        ...(allVersions && { conditions }),
+      };
+    }),
+  }));
+}
+
 export const getEvolutionChain = defineTool({
   name: "get_evolution_chain",
   description:
     "Returns the evolution chain of a Pokemon as ordered stages (with branches, e.g. Eevee). Each Pokemon has its English name, its French name (name_fr) and, except the first stage, " +
-    "the list of its evolution conditions as PokeAPI gives them (one entry per version group, only the non-empty fields: trigger, min_level, item, gender, held_item, known_move, known_move_type, min_happiness, min_affection, time_of_day, location, trade_species..., version_group); " +
-    "a field that is absent means the condition is not specified. " +
+    "condition_fr: a short French sentence, built from PokeAPI, of how it evolves in the most recent game (version_group). Copy condition_fr as it is. " +
     "Use it for any question about evolutions, pre-evolutions or what a Pokemon evolves into.",
-  schema: z.object({ name_or_id: nameOrId }),
-  execute: async ({ name_or_id }) => {
+  schema: z.object({
+    name_or_id: nameOrId,
+    all_versions: z
+      .boolean()
+      .default(false)
+      .describe("Only when the user asks about older games: also return every raw PokeAPI condition of every game."),
+  }),
+  execute: async ({ name_or_id, all_versions }) => {
     const pokemon = await fetchPokemon(name_or_id);
     const species = parseApi(speciesResponse, await fetchPokeApi("pokemon-species", pokemon.species.name), "species");
 
@@ -244,6 +283,6 @@ export const getEvolutionChain = defineTool({
     if (!chainId) throw new PokeApiError("unavailable", "PokeAPI unavailable (unexpected evolution chain URL).");
 
     const { chain } = parseApi(evolutionChainResponse, await fetchPokeApi("evolution-chain", chainId), "evolution chain");
-    return { pokemon: pokemon.name, stages: flattenEvolutionChain(chain) };
+    return { pokemon: pokemon.name, stages: await summarizeEvolutions(flattenEvolutionChain(chain), all_versions) };
   },
 });

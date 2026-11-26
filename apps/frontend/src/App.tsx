@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from "react";
-import type { ChatMessage, ToolTrace } from "@app/shared";
+import { recentHistory, type ChatMessage, type ToolTrace } from "@app/shared";
 import { fetchHealth, streamChat } from "./api";
 import { BattleView } from "./BattleView";
 
@@ -19,7 +19,10 @@ const SUGGESTIONS = ["Fiche de Pikachu", "Contre quoi le type feu est-il faible 
 function GroundingBadge({ grounded, unverified, usedTools }: { grounded: boolean; unverified: string[]; usedTools: boolean }) {
   if (!grounded) {
     return (
-      <span className="badge warn" title={`Non retrouvé dans les outils : ${unverified.join(", ")}`}>
+      <span
+        className="badge warn"
+        title={unverified.length ? `Non retrouvé dans les outils : ${unverified.join(", ")}` : "Réponse donnée sans appel d'outil"}
+      >
         à vérifier
       </span>
     );
@@ -52,10 +55,11 @@ export function App() {
   async function send(text: string) {
     const content = text.trim();
     if (!content || loading) return;
-    const history: ChatMessage[] = [
+    // Only the window the model uses is sent (the last exchanges); the whole conversation stays on screen.
+    const history: ChatMessage[] = recentHistory([
       ...messages.filter((m) => !m.error).map(({ role, content, signature }) => ({ role, content, signature })),
       { role: "user", content },
-    ];
+    ]);
     setMessages((prev) => [...prev, { role: "user", content }]);
     setInput("");
     setLoading(true);

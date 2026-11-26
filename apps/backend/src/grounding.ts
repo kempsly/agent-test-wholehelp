@@ -39,7 +39,7 @@ function numbersInResults(value: unknown, found = new Set<number>()): Set<number
   return found;
 }
 
-function citedTypes(text: string): PokemonType[] {
+export function citedTypes(text: string): PokemonType[] {
   const normalized = normalizeText(text);
   // A hyphen counts as part of the word: "deoxys-normal" or "water-absorb" are names, not type mentions.
   return POKEMON_TYPES.filter((type) =>

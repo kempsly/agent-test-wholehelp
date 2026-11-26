@@ -28,6 +28,19 @@ export function frenchNameOf(english: string): string | null {
   return forms.length === 1 ? forms[0]![1] : null;
 }
 
+/**
+ * Every Pokemon name of one word, normalized: French (evoli) and English (eevee, deoxys-normal). English names are
+ * not cut at the hyphen: "type-null" or "mr-mime" would give common words ("type", "mr").
+ */
+const ONE_WORD_NAMES = new Set([...BY_FRENCH].flatMap(([french, { en }]) => [french, en]).filter((name) => !name.includes(" ")));
+
+/** True if the text cites a Pokemon by a one-word French or English name (accents and case ignored). */
+export function citesPokemon(text: string): boolean {
+  return normalizeFrenchName(text)
+    .split(/[^\p{L}\p{N}-]+/u)
+    .some((word) => ONE_WORD_NAMES.has(word));
+}
+
 /** English name if the input is a known French name (accents and case ignored), otherwise the input unchanged. */
 export function resolvePokemonName(input: string): string {
   return BY_FRENCH.get(normalizeFrenchName(input))?.en ?? input;

@@ -1,11 +1,15 @@
-// What the API does for one question: frame the user messages as untrusted data, run the agent loop
-// (unchanged), replace a reply that leaks the system prompt, then add the grounding check and the signature. Used by the routes and by the evaluation, so both test the same thing.
+// What the API does for one question: keep the last exchanges, frame the user messages as untrusted data, run the
+// agent loop (unchanged, with the forced tool retry), replace a reply that leaks the system prompt, then add the
+// grounding check and the signature. Used by the routes and by the evaluation, so both test the same thing.
 
-import type { ChatMessage, SignedChatResponse } from "@app/shared";
+import { recentHistory, type ChatMessage, type SignedChatResponse } from "@app/shared";
 import { runAgent, type AgentOptions } from "./agent";
+import { MAX_ASSISTANT_CHARS } from "./chatRequest";
 import { withGrounding } from "./grounding";
 import { signReply } from "./history";
+import { ollamaChat } from "./ollama";
 import { guardReply } from "./outputGuard";
+import { withToolReminder } from "./toolReminder";
 
 export const INJECTION_MARKER = "[texte retiré : instruction non autorisée]";
 
@@ -83,12 +87,21 @@ export function wrapUserMessages(messages: ChatMessage[]): ChatMessage[] {
 export async function answer(history: ChatMessage[], options: AgentOptions = {}): Promise<SignedChatResponse> {
   // The reply also goes out in the "token" event of the stream: it gets the same output check.
   const onEvent = options.onEvent;
+  const reminder = withToolReminder(options.chat ?? ollamaChat);
   const guardedOptions: AgentOptions = {
     ...options,
+    chat: reminder.chat,
     onEvent: onEvent && ((e) => onEvent(e.type === "token" ? { ...e, content: guardReply(e.content) } : e)),
   };
-  const raw = await runAgent(wrapUserMessages(history), guardedOptions);
-  const response = withGrounding({ ...raw, reply: guardReply(raw.reply) });
+  // A 7B model stops calling tools when the history is long: it only sees the last exchanges (text only, the
+  // tool results of earlier turns are never sent back). The front keeps and shows the whole conversation.
+  const raw = await runAgent(wrapUserMessages(recentHistory(history)), guardedOptions);
+  const grounded = withGrounding({ ...raw, reply: guardReply(raw.reply) });
+  // Retried and still no tool: the answer comes from memory, it is never shown as verified.
+  const response = reminder.state.retried && raw.toolCalls.length === 0 ? { ...grounded, grounded: false } : grounded;
+  // The front sends the reply back in the history, where an assistant message is limited to MAX_ASSISTANT_CHARS:
+  // a longer reply (a runaway generation) is cut here, before the signature, so the next request never fails.
+  const reply = response.reply.length > MAX_ASSISTANT_CHARS ? `${response.reply.slice(0, MAX_ASSISTANT_CHARS - 1)}…` : response.reply;
   // The front sends this signature back with the reply; without it the reply is refused in the history.
-  return { ...response, signature: signReply(response.reply) };
+  return { ...response, reply, signature: signReply(reply) };
 }

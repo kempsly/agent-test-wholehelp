@@ -13,7 +13,7 @@
 - src/battle/ : moteur de combat (bonus), fonctions pures, sans LLM.
 - src/agent.test.ts : tests de la boucle avec faux LLM. Autres tests à côté du code : tools/pokeapi.test.ts,
   tools/tools.test.ts, battle/battle.test.ts (fetch simulé).
-- eval/ : jeu d'évaluation (20 cas, dont 4 de fuite du prompt) et script `bun run eval`.
+- eval/ : jeu d'évaluation (22 cas, dont 4 de fuite du prompt et 1 conversation longue de 10 questions) et script `bun run eval`.
 
 ## Règles de fiabilité
 
@@ -25,8 +25,9 @@
   ou une forme précise (deoxys, giratina, mr-mime, nidoran-f).
 - get_pokemon renvoie french_name ; description_fr : 300 caractères max, null si absente (pas de repli sur une autre langue).
 - get_type_matchups : multiplicateur final calculé en code ; le LLM ne calcule jamais.
-- get_evolution_chain : liste d'étapes avec branches ; pour chaque Pokémon, name_fr (nom affiché, names-fr.json) et toutes
-  les entrées de evolution_details dans conditions (tous les champs non vides, sexe en clair, avec version_group).
+- get_evolution_chain : liste d'étapes avec branches ; pour chaque Pokémon, name_fr (nom affiché, names-fr.json),
+  version_group et condition_fr (phrase française construite en code, src/tools/evolutionText.ts) pour la version de jeu
+  la plus récente ; all_versions ajoute toutes les entrées brutes de evolution_details (conditions).
 - data/names-fr.json : nom français normalisé -> { en, fr }, généré par scripts/build-names.ts (ne pas éditer à la main).
 - Noms de types : table fixe des 18 types (tools/pokemonTypes.ts), noms français et anglais dans les sorties des outils.
 - get_type_matchups : paramètre pokemon (types lus en code) ou types (1 ou 2), un seul des deux ; listes faiblesses, resistances, immunites ; get_evolution_chain : seuls les champs présents dans PokéAPI.
@@ -45,6 +46,10 @@
   remplacée par un refus poli.
 - Requête : rôles user et assistant uniquement ; chaque message assistant porte la signature HMAC donnée par le serveur (HISTORY_SECRET), sinon 400 ; 30 messages maximum, 1 000 caractères par message utilisateur,
   20 000 caractères au total.
+- Historique : le modèle ne voit que la question et les 2 échanges précédents (recentHistory, packages/shared) ; une
+  réponse de plus de 8 000 caractères est coupée avant la signature.
+- Relance forcée (src/toolReminder.ts) : 1re étape sans outil qui cite un Pokémon, un type ou un chiffre -> une relance ;
+  toujours sans outil -> grounded = false.
 - Jamais d'eval() ni de new Function().
 
 ## Créer un outil

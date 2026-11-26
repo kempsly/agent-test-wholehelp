@@ -5,7 +5,7 @@ const BASE_URL = "https://pokeapi.co/api/v2";
 const TIMEOUT_MS = 8_000;
 
 /** Closed list of the resources we read. */
-export type Resource = "pokemon" | "pokemon-species" | "type" | "evolution-chain";
+export type Resource = "pokemon" | "pokemon-species" | "type" | "evolution-chain" | "item" | "move" | "location";
 
 export type PokeApiErrorKind = "invalid" | "not_found" | "unavailable";
 

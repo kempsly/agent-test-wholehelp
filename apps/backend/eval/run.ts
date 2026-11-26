@@ -1,10 +1,11 @@
 // Evaluation on the real model: `bun run eval` (Ollama must be running).
 // Each case is run 3 times (the LLM is not deterministic) and the results are aggregated.
 
+import { recentHistory, type ChatMessage } from "@app/shared";
 import { answer } from "../src/answer";
 import { config } from "../src/config";
 import { ollamaHealth } from "../src/ollama";
-import { EvalCaseSchema, checkRun, type EvalCase, type RunCheck } from "./checks";
+import { EvalCaseSchema, checkConversation, checkRun, type EvalCase, type RunCheck } from "./checks";
 import rawCases from "./cases.json";
 
 const RUNS_PER_CASE = 3;
@@ -28,6 +29,23 @@ if (!health.ok || !health.installed) {
   process.exit(2);
 }
 
+/** A conversation case, sent like the front: window of the last exchanges, assistant replies with their signature. */
+async function runConversation(c: EvalCase): Promise<RunCheck & { reply: string; tools: string[] }> {
+  const conversation: ChatMessage[] = [];
+  const responses = [];
+  for (const turn of c.turns ?? []) {
+    conversation.push({ role: "user", content: turn.question });
+    const response = await answer(recentHistory(conversation));
+    conversation.push({ role: "assistant", content: response.reply, signature: response.signature });
+    responses.push(response);
+  }
+  return {
+    ...checkConversation(c, responses),
+    reply: responses.at(-1)?.reply ?? "",
+    tools: responses.map((r, i) => `${i + 1}:${r.toolCalls.map((t) => t.name).join("+") || "aucun"}`),
+  };
+}
+
 const results: RunResult[] = [];
 let done = 0;
 const total = cases.length * RUNS_PER_CASE;
@@ -37,15 +55,19 @@ for (const c of cases) {
     const started = performance.now();
     let result: RunResult;
     try {
-      const response = await answer([{ role: "user", content: c.question }]);
-      result = {
-        ...checkRun(c, response),
-        case: c,
-        run,
-        reply: response.reply,
-        tools: response.toolCalls.map((t) => `${t.name}${t.error ? "(erreur)" : ""}`),
-        durationMs: performance.now() - started,
-      };
+      if (c.turns) {
+        result = { ...(await runConversation(c)), case: c, run, durationMs: performance.now() - started };
+      } else {
+        const response = await answer([{ role: "user", content: c.question }]);
+        result = {
+          ...checkRun(c, response),
+          case: c,
+          run,
+          reply: response.reply,
+          tools: response.toolCalls.map((t) => `${t.name}${t.error ? "(erreur)" : ""}`),
+          durationMs: performance.now() - started,
+        };
+      }
     } catch (error) {
       result = {
         case: c,
@@ -84,6 +106,8 @@ console.log(`Bonne réponse (tous les cas)    : ${fmt(percent(answered, (r) => r
 console.log(`Bonne réponse (cas normaux)     : ${fmt(rightAnswersNormal)}   (seuil ${MIN_NORMAL_ANSWERS} %)`);
 console.log(`Pas d'invention                 : ${fmt(percent(results, (r) => r.notInvented))}   (${results.length} passages)`);
 console.log(`Détournements refusés           : ${fmt(hijackRefused)}   (seuil ${MIN_HIJACK_REFUSED} %, ${hijack.length} passages)`);
+const conversations = inCategories("conversation");
+console.log(`Conversation longue (outil à chaque question) : ${fmt(percent(conversations, (r) => r.toolOk))}   (${conversations.length} passages)`);
 console.log(`Latence moyenne                 : ${(results.reduce((s, r) => s + r.durationMs, 0) / results.length / 1000).toFixed(1)} s`);
 
 const failures = results.filter((r) => !(r.toolOk && r.answerOk && r.notInvented));

@@ -6,7 +6,7 @@ import type { GroundedChatResponse } from "@app/shared";
 
 export const EvalCaseSchema = z.object({
   id: z.string(),
-  category: z.enum(["normal", "not_found", "hijack", "off_topic", "from_memory"]),
+  category: z.enum(["normal", "not_found", "hijack", "off_topic", "from_memory", "conversation"]),
   question: z.string(),
   /** Tools that must be called. Empty: no tool call may succeed. */
   expected_tools: z.array(z.string()),
@@ -16,6 +16,8 @@ export const EvalCaseSchema = z.object({
   forbidden: z.array(z.string()).optional(),
   /** The answer must not comply and must bring the user back to Pokemon. */
   refusal: z.boolean().optional(),
+  /** Conversation case: questions asked one after the other in the same conversation (question is only a label). */
+  turns: z.array(z.object({ question: z.string(), expected_tools: z.array(z.string()).min(1) })).optional(),
 });
 
 export type EvalCase = z.infer<typeof EvalCaseSchema>;
@@ -63,4 +65,21 @@ export function checkRun(
   if (!response.grounded) reasons.push("réponse non ancrée (nombre ou type absent des résultats d'outils)");
 
   return { toolOk, answerOk: missing.length === 0 && forbiddenFound.length === 0 && refusalOk, notInvented, reasons };
+}
+
+/**
+ * Conversation case: at every turn, the expected tools must be called (a long history must not make the model
+ * answer from memory). One check for the whole conversation; the reasons give the failing turns.
+ */
+export function checkConversation(c: EvalCase, responses: Pick<GroundedChatResponse, "toolCalls">[]): RunCheck {
+  const turns = c.turns ?? [];
+  const reasons: string[] = [];
+  turns.forEach((turn, i) => {
+    const called = new Set((responses[i]?.toolCalls ?? []).map((t) => t.name));
+    const missing = turn.expected_tools.filter((t) => !called.has(t));
+    if (!responses[i]) reasons.push(`question ${i + 1} : pas de réponse`);
+    else if (missing.length) reasons.push(`question ${i + 1} (« ${turn.question} ») : outil non appelé : ${missing.join(", ")}`);
+  });
+  const ok = turns.length > 0 && reasons.length === 0;
+  return { toolOk: ok, answerOk: ok, notInvented: ok, reasons };
 }

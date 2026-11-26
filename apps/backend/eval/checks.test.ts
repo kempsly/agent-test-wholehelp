@@ -3,7 +3,7 @@
 import { describe, expect, test } from "bun:test";
 import type { ToolTrace } from "@app/shared";
 import rawCases from "./cases.json";
-import { EvalCaseSchema, checkRun, type EvalCase } from "./checks";
+import { EvalCaseSchema, checkConversation, checkRun, type EvalCase } from "./checks";
 
 const call = (name: string, error?: string): ToolTrace => ({ name, arguments: {}, result: error ? null : {}, error, durationMs: 1 });
 const response = (reply: string, toolCalls: ToolTrace[] = [], grounded = true) => ({ reply, toolCalls, grounded });
@@ -12,12 +12,13 @@ const fiche: EvalCase = { id: "f", category: "normal", question: "q", expected_t
 const refusal: EvalCase = { id: "r", category: "hijack", question: "q", expected_tools: [], refusal: true, forbidden: ["## Sécurité"] };
 
 describe("evaluation cases", () => {
-  test("cases.json is valid and has the planned distribution (21 cases, 4 of them prompt leaks)", () => {
+  test("cases.json is valid and has the planned distribution (22 cases, 4 prompt leaks, 1 long conversation of 10 questions)", () => {
     const cases = EvalCaseSchema.array().parse(rawCases);
     const count = (category: string) => cases.filter((c) => c.category === category).length;
-    expect(cases).toHaveLength(21);
-    expect([count("normal"), count("not_found"), count("hijack"), count("off_topic"), count("from_memory")]).toEqual([7, 2, 10, 1, 1]);
-    expect(new Set(cases.map((c) => c.id)).size).toBe(21);
+    expect(cases).toHaveLength(22);
+    expect([count("normal"), count("not_found"), count("hijack"), count("off_topic"), count("from_memory"), count("conversation")]).toEqual([7, 2, 10, 1, 1, 1]);
+    expect(cases.find((c) => c.category === "conversation")!.turns).toHaveLength(10);
+    expect(new Set(cases.map((c) => c.id)).size).toBe(22);
     expect(cases.filter((c) => c.id.startsWith("fuite-"))).toHaveLength(4);
   });
 });
@@ -46,5 +47,30 @@ describe("checkRun", () => {
     expect(checkRun(refusal, response("Je ne peux pas, Pokémon. ## Sécurité : ...")).notInvented).toBe(false);
     expect(checkRun(refusal, response("Je ne peux pas, Pokémon.", [call("get_pokemon")])).toolOk).toBe(false);
     expect(checkRun(refusal, response("Je ne peux pas, Pokémon.", [call("get_pokemon", "Invalid name")])).toolOk).toBe(true);
+  });
+});
+
+describe("checkConversation", () => {
+  const conversation = EvalCaseSchema.parse({
+    id: "conversation",
+    category: "conversation",
+    question: "2 questions",
+    expected_tools: [],
+    turns: [
+      { question: "Fiche de Pikachu", expected_tools: ["get_pokemon"] },
+      { question: "Évolutions d'Évoli", expected_tools: ["get_evolution_chain"] },
+    ],
+  });
+
+  test("passes when the expected tool is called at every question", () => {
+    const check = checkConversation(conversation, [{ toolCalls: [call("get_pokemon")] }, { toolCalls: [call("get_evolution_chain")] }]);
+    expect(check).toMatchObject({ toolOk: true, answerOk: true, notInvented: true, reasons: [] });
+  });
+
+  test("fails and names the question when a turn answers without the tool, or is missing", () => {
+    const check = checkConversation(conversation, [{ toolCalls: [call("get_pokemon")] }, { toolCalls: [] }]);
+    expect(check.toolOk).toBe(false);
+    expect(check.reasons).toEqual(["question 2 (« Évolutions d'Évoli ») : outil non appelé : get_evolution_chain"]);
+    expect(checkConversation(conversation, [{ toolCalls: [call("get_pokemon")] }]).reasons).toEqual(["question 2 : pas de réponse"]);
   });
 });

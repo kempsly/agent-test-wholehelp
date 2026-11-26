@@ -16,7 +16,6 @@ const normalize = (text: string) =>
  * separator before or after them does not make a leak either). */
 export const ALLOWED_PHRASES = [
   "C'est une simulation simplifiée",
-  "la condition n'est pas précisée",
   "Un type absent de ces listes inflige des dégâts normaux (x1)",
 ].map((phrase) => ` ${normalize(phrase)} `);
 

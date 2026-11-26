@@ -19,6 +19,31 @@ export interface ToolTrace {
   durationMs: number;
 }
 
+/** Number of previous exchanges (question + answer) given to the model with the new question. */
+export const HISTORY_EXCHANGES = 2;
+
+/**
+ * The window of the history used for the model: the last message (the new question) and the HISTORY_EXCHANGES
+ * complete exchanges before it (a user message followed by an assistant message). A question left without answer
+ * (an error) is skipped. Used by the front (what it sends) and by the API (what the model sees), so both agree.
+ */
+export function recentHistory<M extends ChatMessage>(messages: M[], exchanges = HISTORY_EXCHANGES): M[] {
+  const last = messages.at(-1);
+  if (!last) return [];
+  const kept: M[] = [last];
+  let pairs = 0;
+  for (let i = messages.length - 2; i >= 1 && pairs < exchanges; i--) {
+    const answer = messages[i]!;
+    const question = messages[i - 1]!;
+    if (answer.role === "assistant" && question.role === "user") {
+      kept.unshift(question, answer);
+      pairs++;
+      i--;
+    }
+  }
+  return kept;
+}
+
 export interface ChatRequest {
   /** Full conversation history: the API is stateless, the front keeps the history. */
   messages: ChatMessage[];

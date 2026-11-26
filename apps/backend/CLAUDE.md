@@ -27,7 +27,8 @@
 - get_type_matchups : multiplicateur final calculé en code ; le LLM ne calcule jamais. summary_fr (listes rédigées en code)
   est ajouté tel quel à la réponse (src/matchupAnswer.ts) ; le modèle n'écrit qu'une introduction.
 - simulate_battle : noms résolus comme get_pokemon ; reçoit la question (answer.ts) et refuse un numéro absent de la question
-  quand elle cite un Pokémon ; journal en noms français ; contrôle d'ancrage : les 2 Pokémon doivent être cités dans la question.
+  quand elle cite un Pokémon ; journal en noms français ; contrôle d'ancrage : les 2 Pokémon doivent être cités dans la question ;
+  réponse = 2 phrases rédigées en code (src/battleAnswer.ts), le texte du modèle est ignoré.
 - get_evolution_chain : liste d'étapes avec branches ; pour chaque Pokémon, name_fr (nom affiché, names-fr.json),
   version_group et condition_fr (phrase française construite en code, src/tools/evolutionText.ts) pour la version de jeu
   la plus récente (Légendes Arceus exclu sauf s'il est seul) ; all_versions ajoute toutes les entrées brutes de evolution_details (conditions).

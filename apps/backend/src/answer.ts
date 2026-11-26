@@ -10,6 +10,7 @@ import { signReply } from "./history";
 import { ollamaChat, type ChatFn } from "./ollama";
 import { addEvolutionSummaries, evolutionResults } from "./evolutionAnswer";
 import { addMatchupSummaries } from "./matchupAnswer";
+import { battleAnswer } from "./battleAnswer";
 import { makeSimulateBattleTool } from "./tools/battle";
 import { toolsByName } from "./tools";
 import { LEAK_REFUSAL, guardReply } from "./outputGuard";
@@ -93,15 +94,17 @@ export function wrapUserMessages(messages: ChatMessage[]): ChatMessage[] {
 /**
  * The text the user gets, the same in the stream and in the response: output check (leak, Markdown, Chinese
  * characters, English type names), then the code-written lists of evolutions (get_evolution_chain) and of weaknesses
- * (get_type_matchups), then the length limit
+ * (get_type_matchups), then the length limit. With a battle (simulate_battle), the answer is the code-written summary
+ * of the battle and the text of the model is ignored
  * (the front sends the reply back in the history, where an assistant message is limited to MAX_ASSISTANT_CHARS).
  */
 export function finalizeReply(reply: string, toolCalls: ToolTrace[]): string {
   const guarded = guardReply(reply);
   const text =
-    guarded === LEAK_REFUSAL
+    battleAnswer(toolCalls) ??
+    (guarded === LEAK_REFUSAL
       ? guarded
-      : addMatchupSummaries(addEvolutionSummaries(guarded, toolCalls), toolCalls, evolutionResults(toolCalls).length > 0);
+      : addMatchupSummaries(addEvolutionSummaries(guarded, toolCalls), toolCalls, evolutionResults(toolCalls).length > 0));
   return text.length > MAX_ASSISTANT_CHARS ? `${text.slice(0, MAX_ASSISTANT_CHARS - 1)}…` : text;
 }
 

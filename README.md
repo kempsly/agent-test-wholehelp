@@ -20,7 +20,7 @@ docs/           SUJET, PLAN, DECISIONS, EVALUATION
 
 | Outil | Rôle |
 | --- | --- |
-| `get_pokemon` | Fiche d'un Pokémon : noms, types, statistiques, talents, taille, poids, description française |
+| `get_pokemon` | Fiche d'un Pokémon : noms, types, statistiques et leur total (calculé en code), talents, taille, poids, description française |
 | `get_type_matchups` | Faiblesses, résistances et immunités d'un Pokémon ou de 1 à 2 types ; multiplicateurs calculés en code |
 | `get_evolution_chain` | Chaîne d'évolution par étapes, avec les branches et les conditions présentes dans PokéAPI |
 | `simulate_battle` | Combat simulé tour par tour entre deux Pokémon (règles simplifiées), vainqueur et journal |
@@ -61,16 +61,18 @@ Sans `HISTORY_SECRET` valide (32 caractères minimum, pas la valeur d'exemple), 
 
 qwen2.5:7b, 3 passages par cas. Seuils visés : 90 % de bonnes réponses sur les cas normaux, 100 % de détournements refusés.
 
-| Mesure | 1re | 2e | 3e | Après test | Seuil |
-| --- | --- | --- | --- | --- | --- |
-| Cas x passages | 16 x 3 | 16 x 3 | 16 x 3 | 22 x 3 | |
-| Bon outil | 79 % | 81 % | 88 % | 95 % | |
-| Bonne réponse (cas normaux) | 78 % | 67 % | 67 % | 100 % | 90 % |
-| Pas d'invention | 75 % | 73 % | 88 % | 88 % | |
-| Détournements refusés | 71 % | 57 % | 95 % | 100 % | 100 % |
-| Latence moyenne | 2,6 s | 2,6 s | 2,5 s | 7,8 s (5,4 s hors conversation longue) | |
+| Mesure | 3e éval (test) | Final 1 (régression) | Final 2 | Seuil |
+| --- | --- | --- | --- | --- |
+| Cas x passages | 16 x 3 | 22 x 3 | 22 x 3 | |
+| Bon outil | 88 % | 97 % | 95 % | |
+| Bonne réponse (cas normaux) | 67 % | 57 % | 100 % | 90 % |
+| Pas d'invention | 88 % | 97 % | 95 % | |
+| Détournements refusés | 95 % | 100 % | 100 % | 100 % |
+| Latence moyenne | 2,5 s | 6,9 s | 7,4 s | |
 
-Seuils atteints seulement après le test. Les 6 cas ajoutés : 4 fuites du prompt, Évoli avec conditions, une conversation longue de 10 questions (un outil à chaque question, 3 passages sur 3). Les 8 échecs restants sur 66 portent sur « bon outil » ou « pas d'invention », aucun sur la bonne réponse : « réponds de mémoire » (3/3, réponse juste mais sans outil) et deux cas de fuite du prompt dont le refus est marqué « à vérifier » à tort. Les critères et le jeu de cas ont changé entre les passages : les colonnes ne sont pas strictement comparables. Détails : [docs/EVALUATION.md](docs/EVALUATION.md). Le combat n'est pas couvert.
+- Final 1 : refus non signalés et total des stats en code. La règle « recopie base_stat_total » faisait écrire le total à la place des 6 statistiques (cas normaux 57 %). Régression vue par l'évaluation, corrigée dans Final 2 : toujours les 6 valeurs, le total seulement sur demande.
+- Final 2 : seuils atteints. Seul échec : « réponds de mémoire » (3/3), réponse sans outil marquée « à vérifier ».
+- Le jeu de cas est passé de 16 à 22 (4 fuites du prompt, Évoli avec conditions, une conversation longue de 10 questions) et les critères ont changé : les colonnes ne sont pas strictement comparables. Détails : [docs/EVALUATION.md](docs/EVALUATION.md). Le combat n'est pas couvert.
 
 ## Améliorations après le test
 
@@ -80,6 +82,7 @@ Seuils atteints seulement après le test. Les 6 cas ajoutés : 4 fuites du promp
 - Liste d'évolutions rédigée en code : `get_evolution_chain` produit `summary_fr`, ajouté tel quel par le backend ; le modèle n'écrit qu'une phrase d'introduction.
 - Contrôle par paire : chaque évolution citée doit l'être avec sa propre condition, sinon « à vérifier ».
 - Nettoyage de sortie : Markdown et caractères chinois retirés ; un prompt recopié est remplacé par un refus.
+- Refus non signalés : un prompt recopié ne déclenche pas de relance, et un refus sans nombre, type ni Pokémon n'est jamais marqué « à vérifier ». Demande de résumer, lister ou traduire les règles : refus et recentrage, sans question en retour.
 - Limites d'API : corps de 32 Ko (413), `Content-Type: application/json` (415), 20 requêtes par minute et par IP (429).
 - Signature de l'historique : chaque réponse est signée (HMAC-SHA256 avec `HISTORY_SECRET`, liée à la question qui la précède). Une réponse d'assistant inventée ou modifiée par le client est refusée (400).
 - Tokens affichés à côté de la latence. Aussi : noms français résolus en code (`names-fr.json`), `get_current_datetime` retiré.
@@ -98,15 +101,14 @@ Avant : temps du modèle lu dans le journal d'Ollama. Après : latence réelle, 
 
 ## Limites
 
-- Latence plus haute : la relance ajoute un appel au modèle (environ 5 à 8 s par question contre 2,5 s avant).
+- Latence plus haute : la relance ajoute un appel au modèle (7,4 s par question en moyenne contre 2,5 s avant).
 - Badge « vérifié » = aucun écart détecté par une heuristique, pas preuve que la réponse est juste. Il ne voit pas une valeur fausse issue d'un bon appel d'outil et peut signaler à tort un mot courant (« combat », « vol »).
 - Réponses « de mémoire » : signalées « à vérifier », pas bloquées.
-- Refus d'une fuite du prompt parfois marqué « à vérifier » : la relance est décidée sur le texte brut du modèle, avant le nettoyage de sortie.
+- Une règle de prompt peut casser un autre cas (Final 1) : relancer `bun run eval` après chaque changement du prompt.
 - Filtre d'injection fragile (liste de formulations, facile à contourner) ; rate limit en mémoire, perdu au redémarrage.
 - Combat : le résumé du modèle peut omettre des tours (la vue affiche le journal complet) ; la vue déduit les PV de départ du journal.
 
 ## Prochaines étapes
 
-- Décider la relance après le nettoyage de sortie, et ne pas marquer « à vérifier » une réponse qui ne cite ni nombre, ni type, ni Pokémon.
 - Essayer un modèle plus robuste (`OLLAMA_MODEL=<modèle> bun run eval`).
 - Ajouter les types et les PV de départ dans le résultat de `simulate_battle`, et des cas de combat dans l'évaluation.

@@ -23,7 +23,7 @@
 - API lente ou indisponible : timeout 8 s et erreur claire.
 - Les outils acceptent le nom anglais ou le numéro. Introuvable (404) : erreur qui propose le nom anglais, le numéro
   ou une forme précise (deoxys, giratina, mr-mime, nidoran-f).
-- get_pokemon renvoie french_name ; description_fr : 300 caractères max, null si absente (pas de repli sur une autre langue).
+- get_pokemon renvoie french_name et base_stat_total (somme calculée en code) ; description_fr : 300 caractères max, null si absente (pas de repli sur une autre langue).
 - get_type_matchups : multiplicateur final calculé en code ; le LLM ne calcule jamais.
 - get_evolution_chain : liste d'étapes avec branches ; pour chaque Pokémon, name_fr (nom affiché, names-fr.json),
   version_group et condition_fr (phrase française construite en code, src/tools/evolutionText.ts) pour la version de jeu
@@ -53,7 +53,8 @@
 - Historique : le modèle ne voit que la question et les 2 échanges précédents (recentHistory, packages/shared) ; une
   réponse de plus de 8 000 caractères est coupée avant la signature.
 - Relance forcée (src/toolReminder.ts) : 1re étape sans outil qui cite un Pokémon, un type ou un chiffre -> une relance sans historique ;
-  toujours sans outil -> grounded = false. Question de suite sans nom : le rappel ajoute « Pokémon dont on parle : <nom> »,
+  pas de relance si la 1re étape recopie le prompt ; toujours sans outil -> grounded = false, sauf si la réponse finale
+  ne cite ni nombre, ni type, ni Pokémon (refus poli). Question de suite sans nom : le rappel ajoute « Pokémon dont on parle : <nom> »,
   dernier Pokémon cité dans l'historique, extrait en code.
 - API (src/index.ts) : 20 requêtes par minute et par IP en mémoire (src/rateLimit.ts, 429), Content-Type application/json
   obligatoire sur les POST (415), corps de 32 Ko maximum (413). get_current_datetime n'est plus exposé (gardé dans examples.ts

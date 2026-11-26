@@ -10,7 +10,7 @@ import { signReply } from "./history";
 import { ollamaChat, type ChatFn } from "./ollama";
 import { addEvolutionSummaries } from "./evolutionAnswer";
 import { LEAK_REFUSAL, guardReply } from "./outputGuard";
-import { withToolReminder } from "./toolReminder";
+import { needsTool, withToolReminder } from "./toolReminder";
 
 export const INJECTION_MARKER = "[texte retiré : instruction non autorisée]";
 
@@ -131,8 +131,10 @@ export async function answer(history: ChatMessage[], options: AgentOptions = {})
   const raw = await runAgent(wrapUserMessages(recentHistory(history)), guardedOptions);
   const reply = finalizeReply(raw.reply, raw.toolCalls);
   const grounded = withGrounding({ ...raw, reply });
-  // Retried and still no tool: the answer comes from memory, it is never shown as verified.
-  const response = reminder.state.retried && raw.toolCalls.length === 0 ? { ...grounded, grounded: false } : grounded;
+  // Retried and still no tool: an answer that cites data comes from memory, it is never shown as verified. A polite
+  // refusal (the leak refusal, or a reply without number, type or Pokemon) is not flagged.
+  const fromMemory = reminder.state.retried && raw.toolCalls.length === 0 && reply !== LEAK_REFUSAL && needsTool(reply);
+  const response = fromMemory ? { ...grounded, grounded: false } : grounded;
   // The front sends this signature back with the reply; without it the reply is refused in the history. It is bound
   // to the question of this turn (the last user message), as checked in chatRequest.ts.
   const question = [...history].reverse().find((m) => m.role === "user")?.content ?? "";

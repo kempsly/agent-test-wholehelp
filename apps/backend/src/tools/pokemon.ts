@@ -134,7 +134,7 @@ export async function fetchPokemonBattleData(nameOrIdValue: string) {
 export const getPokemon = defineTool({
   name: "get_pokemon",
   description:
-    "Returns the sheet of one Pokemon: id, English and French names, types (English in types, French in types_fr), base stats, abilities, height, weight and French description. " +
+    "Returns the sheet of one Pokemon: id, English and French names, types (English in types, French in types_fr), base stats and their total (base_stat_total), abilities, height, weight and French description. " +
     "Use it for any question about a Pokemon, and once per Pokemon when comparing several. Never answer about a Pokemon without it.",
   schema: z.object({ name_or_id: nameOrId }),
   execute: async ({ name_or_id }) => {
@@ -157,6 +157,8 @@ export const getPokemon = defineTool({
       types,
       types_fr: types.map(typeFr),
       base_stats: baseStats,
+      // Sum of all base stats, computed in code: the model never adds them up.
+      base_stat_total: pokemon.stats.reduce((sum, s) => sum + s.base_stat, 0),
       abilities: pokemon.abilities.map((a) => a.ability.name),
       height_m: pokemon.height / 10,
       weight_kg: pokemon.weight / 10,

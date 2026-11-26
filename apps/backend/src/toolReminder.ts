@@ -5,6 +5,7 @@
 
 import type { ChatFn, OllamaMessage } from "./ollama";
 import { citedTypes } from "./grounding";
+import { leaksSystemPrompt } from "./outputGuard";
 import { citesPokemon, lastCitedPokemon } from "./tools/frenchNames";
 
 export const TOOL_REMINDER =
@@ -47,6 +48,8 @@ export function withToolReminder(chat: ChatFn): { chat: ChatFn; state: ToolRemin
     if (!firstCall) return result;
     firstCall = false;
     if ((result.message.tool_calls?.length ?? 0) > 0 || !needsTool(result.message.content)) return result;
+    // A copy of the prompt is replaced by the polite refusal (output check): it is a refusal, not an answer from memory.
+    if (leaksSystemPrompt(result.message.content)) return result;
     state.retried = true;
     // Without the history: alone, the question gets its tool call (9 times out of 9 measured); with the history, the
     // model copies its previous answers. Only the system prompt, the current question and the reminder are sent.

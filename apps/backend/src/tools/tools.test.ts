@@ -86,6 +86,7 @@ describe("get_pokemon", () => {
       types: ["electric"],
       types_fr: ["Électrik"],
       base_stats: { hp: 35, attack: 55, defense: 40, special_attack: 50, special_defense: 50, speed: 90 },
+      base_stat_total: 320,
       abilities: ["static", "lightning-rod"],
       height_m: 0.4,
       weight_kg: 6,

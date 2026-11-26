@@ -1,7 +1,7 @@
 // API limits, tested without the model: every request here is refused before the agent runs.
 
-import { beforeEach, describe, expect, test } from "bun:test";
-import { MAX_BODY_BYTES, RATE_LIMIT, app, rateLimiter } from "./index";
+import { afterEach, beforeEach, describe, expect, spyOn, test } from "bun:test";
+import { MAX_BODY_BYTES, RATE_LIMIT, SERVICE_UNAVAILABLE, app, rateLimiter } from "./index";
 import { createRateLimiter } from "./rateLimit";
 import { tools } from "./tools";
 
@@ -9,6 +9,15 @@ const post = (body: string, contentType?: string) =>
   app.request("/api/chat", { method: "POST", body, headers: contentType ? { "Content-Type": contentType } : {} });
 
 beforeEach(() => rateLimiter.reset());
+
+// No real Ollama in these tests: fetch is replaced when a route would reach it.
+const realFetch = globalThis.fetch;
+afterEach(() => {
+  globalThis.fetch = realFetch;
+});
+const fakeFetch = (body: string, status: number) => {
+  globalThis.fetch = (async () => new Response(body, { status })) as unknown as typeof fetch;
+};
 
 describe("API limits", () => {
   test("refuses a body that is not declared as JSON (415)", async () => {
@@ -28,6 +37,35 @@ describe("API limits", () => {
   test("refuses the 21st request of the minute from the same IP (429)", async () => {
     for (let i = 0; i < RATE_LIMIT.requests; i++) expect((await post("{}", "text/plain")).status).toBe(415);
     expect((await post("{}", "text/plain")).status).toBe(429);
+  });
+
+  test("/api/health is not rate limited: 30 calls, no 429", async () => {
+    fakeFetch(JSON.stringify({ models: [] }), 200);
+    for (let i = 0; i < 30; i++) expect((await app.request("/api/health")).status).toBe(200);
+  });
+
+  test("an Ollama error stays in the server logs: the client gets no URL and no text of Ollama", async () => {
+    const ollamaText = "model runner crashed at http://localhost:11434/internal/runner";
+    fakeFetch(ollamaText, 500);
+    const logged = spyOn(console, "error").mockImplementation(() => {});
+    try {
+      const body = JSON.stringify({ messages: [{ role: "user", content: "Fiche de Pikachu" }] });
+      const headers = { "Content-Type": "application/json" };
+      const chat = await app.request("/api/chat", { method: "POST", body, headers });
+      const stream = await app.request("/api/chat/stream", { method: "POST", body, headers });
+      const chatText = await chat.text();
+      const streamText = await stream.text();
+
+      expect(chat.status).toBe(502);
+      expect(JSON.parse(chatText)).toEqual({ error: SERVICE_UNAVAILABLE });
+      expect(streamText).toContain(JSON.stringify({ type: "error", message: SERVICE_UNAVAILABLE }));
+      for (const text of [chatText, streamText]) {
+        expect(text).not.toMatch(/https?:|11434|ollama|runner/i);
+      }
+      expect(String(logged.mock.calls.flat().join(" "))).toContain(ollamaText);
+    } finally {
+      logged.mockRestore();
+    }
   });
 
   test("get_current_datetime is no longer exposed", () => {

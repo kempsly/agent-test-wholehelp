@@ -15,7 +15,7 @@ config.historySecret = "test-secret";
 function conversation(n: number, answerLength: number): ChatMessage[] {
   return Array.from({ length: n }, (_, i) => {
     const content = `Réponse ${i + 1} `.padEnd(answerLength, "x");
-    return [{ role: "user" as const, content: `Question ${i + 1}` }, { role: "assistant" as const, content, signature: signReply(content) }];
+    return [{ role: "user" as const, content: `Question ${i + 1}` }, { role: "assistant" as const, content, signature: signReply(`Question ${i + 1}`, content) }];
   }).flat();
 }
 

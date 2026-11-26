@@ -76,12 +76,14 @@ export function neutralizeInjections(text: string): string {
 /**
  * Frames each user message as untrusted data. The framing tags written by the user are removed,
  * so a message cannot close the frame and pass text as if it came from outside it.
+ * Assistant messages of the history are filtered too: a user could get the model to repeat an instruction, then send
+ * that signed reply back as an assistant turn. Their signature is not sent to the model.
  */
 export function wrapUserMessages(messages: ChatMessage[]): ChatMessage[] {
   return messages.map((m) =>
     m.role === "user"
       ? { role: "user", content: `<user_message>\n${neutralizeInjections(m.content.replace(/<\/?\s*user_message\s*>/gi, ""))}\n</user_message>` }
-      : m,
+      : { role: "assistant", content: neutralizeInjections(m.content) },
   );
 }
 
@@ -131,6 +133,8 @@ export async function answer(history: ChatMessage[], options: AgentOptions = {})
   const grounded = withGrounding({ ...raw, reply });
   // Retried and still no tool: the answer comes from memory, it is never shown as verified.
   const response = reminder.state.retried && raw.toolCalls.length === 0 ? { ...grounded, grounded: false } : grounded;
-  // The front sends this signature back with the reply; without it the reply is refused in the history.
-  return { ...response, signature: signReply(reply), tokens: counter.tokens };
+  // The front sends this signature back with the reply; without it the reply is refused in the history. It is bound
+  // to the question of this turn (the last user message), as checked in chatRequest.ts.
+  const question = [...history].reverse().find((m) => m.role === "user")?.content ?? "";
+  return { ...response, signature: signReply(question, reply), tokens: counter.tokens };
 }

@@ -1,4 +1,4 @@
-import { Hono } from "hono";
+import { Hono, type MiddlewareHandler } from "hono";
 import { bodyLimit } from "hono/body-limit";
 import { getConnInfo } from "hono/bun";
 import { cors } from "hono/cors";
@@ -6,7 +6,7 @@ import { logger } from "hono/logger";
 import { streamSSE } from "hono/streaming";
 import { answer } from "./answer";
 import { ChatRequestSchema } from "./chatRequest";
-import { config } from "./config";
+import { config, requireHistorySecret } from "./config";
 import { ollamaHealth } from "./ollama";
 import { createRateLimiter } from "./rateLimit";
 import { tools } from "./tools";
@@ -18,6 +18,8 @@ app.use("/api/*", cors({ origin: ["http://localhost:5173"] }));
 
 export const MAX_BODY_BYTES = 32 * 1024;
 export const RATE_LIMIT = { requests: 20, windowMs: 60_000 };
+/** The only error text the client gets; the details stay in the server logs. */
+export const SERVICE_UNAVAILABLE = "Service momentanément indisponible";
 export const rateLimiter = createRateLimiter(RATE_LIMIT.requests, RATE_LIMIT.windowMs);
 
 /** Client IP from the Bun server; "unknown" when there is none (app.request in the tests). */
@@ -29,11 +31,14 @@ function clientIp(c: Parameters<typeof getConnInfo>[0]): string {
   }
 }
 
-// Rate limit per IP (in memory), then JSON only, then body size: checked before reading the body or calling the model.
-app.use("/api/*", async (c, next) => {
+// Rate limit per IP (in memory) on the chat routes only (the ones that call the model; /api/health is polled by the
+// front), then JSON only, then body size: checked before reading the body or calling the model.
+const limitRate: MiddlewareHandler = async (c, next) => {
   if (!rateLimiter.allow(clientIp(c))) return c.json({ error: "Too many requests: 20 per minute maximum" }, 429);
   await next();
-});
+};
+app.use("/api/chat", limitRate);
+app.use("/api/chat/stream", limitRate);
 app.use("/api/*", async (c, next) => {
   if (c.req.method === "POST" && !/^application\/json(\s*;|$)/i.test(c.req.header("Content-Type") ?? "")) {
     return c.json({ error: "Content-Type must be application/json" }, 415);
@@ -53,7 +58,8 @@ app.post("/api/chat", async (c) => {
   try {
     return c.json(await answer(parsed.data.messages));
   } catch (err) {
-    return c.json({ error: (err as Error).message }, 502);
+    console.error("[/api/chat]", err);
+    return c.json({ error: SERVICE_UNAVAILABLE }, 502);
   }
 });
 
@@ -68,10 +74,14 @@ app.post("/api/chat/stream", async (c) => {
       const response = await answer(parsed.data.messages, { onEvent: (e) => void send(e) });
       await send({ type: "done", response });
     } catch (err) {
-      await send({ type: "error", message: (err as Error).message });
+      console.error("[/api/chat/stream]", err);
+      await send({ type: "error", message: SERVICE_UNAVAILABLE });
     }
   });
 });
+
+// Only when the server is started (bun src/index.ts), not when the tests import the app.
+if (import.meta.main) requireHistorySecret();
 
 console.log(`API on http://localhost:${config.port} — model ${config.model} via ${config.ollamaUrl}`);
 

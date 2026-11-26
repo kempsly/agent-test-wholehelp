@@ -17,3 +17,25 @@ export const config = {
   /** Key of the HMAC that signs the assistant replies kept by the front (no default: required). */
   historySecret: process.env.HISTORY_SECRET ?? "",
 };
+
+/** The value .env.example used to give: public, so never accepted as a key. */
+export const OLD_EXAMPLE_SECRET = "exemple-de-dev-a-remplacer-par-openssl-rand-hex-32";
+export const MIN_SECRET_LENGTH = 32;
+
+/** Why the HMAC key cannot be used, or null if it can. */
+export function historySecretProblem(secret: string): string | null {
+  const hint = "Generate one with: openssl rand -hex 32, then set HISTORY_SECRET in .env.";
+  if (!secret) return `HISTORY_SECRET is missing. ${hint}`;
+  if (secret === OLD_EXAMPLE_SECRET) return `HISTORY_SECRET is the public example value. ${hint}`;
+  if (secret.length < MIN_SECRET_LENGTH) return `HISTORY_SECRET is shorter than ${MIN_SECRET_LENGTH} characters. ${hint}`;
+  return null;
+}
+
+/** Called once when the server starts: stops it with a clear message if the key cannot be used. */
+export function requireHistorySecret(secret: string = config.historySecret): void {
+  const problem = historySecretProblem(secret);
+  if (problem) {
+    console.error(`Server not started: ${problem}`);
+    process.exit(1);
+  }
+}

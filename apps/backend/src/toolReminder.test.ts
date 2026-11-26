@@ -4,7 +4,6 @@ import { afterEach, describe, expect, test } from "bun:test";
 import { recentHistory, type ChatMessage } from "@app/shared";
 import { answer } from "./answer";
 import { config } from "./config";
-import { signReply } from "./history";
 import type { ChatFn, ChatResult, OllamaMessage } from "./ollama";
 import { TOOL_REMINDER, contextPokemon, needsTool } from "./toolReminder";
 
@@ -15,7 +14,8 @@ afterEach(() => {
 });
 
 const user = (content: string): ChatMessage => ({ role: "user", content });
-const assistant = (content: string): ChatMessage => ({ role: "assistant", content, signature: signReply(content) });
+/** answer() does not check signatures (the route schema does, see chatRequest.test.ts): none here. */
+const assistant = (content: string): ChatMessage => ({ role: "assistant", content });
 
 /** A conversation of n exchanges, then a new question. */
 function conversation(n: number): ChatMessage[] {

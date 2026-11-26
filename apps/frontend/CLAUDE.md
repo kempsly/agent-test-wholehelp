@@ -3,12 +3,19 @@
 ## Structure
 
 - src/App.tsx : interface de chat. Titre et questions suggérées dans les constantes TITLE et SUGGESTIONS.
-- src/api.ts : appels à l'API (streaming SSE et health).
-- src/styles.css : styles.
+- src/api.ts : appels à l'API (streaming SSE, health, et routes de combat si le bonus est fait).
+- src/styles.css : styles sobres.
+
+## Modifications autorisées
+
+- TITLE et SUGGESTIONS.
+- Badge « vérifié » / « à vérifier » sur chaque réponse (champ grounded renvoyé par l'API).
+- Bonus combat : un panneau de combat (deux Pokémon, barres de PV, bouton Attaquer, journal, vainqueur),
+  dans un composant séparé (src/BattlePanel.tsx).
+- Rien d'autre sans demande explicite.
 
 ## Règles
 
-- Garder l'interface de chat existante ; ne modifier que ce qui est demandé.
-- Toujours afficher les appels d'outils (nom, arguments, résultat) : c'est ce qui montre le fonctionnement de l'agent.
-- Pas de nouvelle librairie UI. Style sobre dans styles.css.
-- Les types viennent de @app/shared ; ne pas les redéfinir.
+- Toujours afficher les appels d'outils (nom, arguments, résultat, durée) : ils prouvent la fiabilité.
+- Afficher le texte de l'agent comme du texte simple, jamais comme du HTML (pas de dangerouslySetInnerHTML).
+- Pas de nouvelle librairie UI. Les types viennent de packages/shared, ne pas les redéfinir.

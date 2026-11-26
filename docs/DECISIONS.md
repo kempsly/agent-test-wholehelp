@@ -2,15 +2,19 @@
 
 | Choix | Pourquoi | Alternative écartée |
 | --- | --- | --- |
-| Ollama en local, qwen2.5:7b | Gratuit, bon appel d'outils, rapide sur Mac M4 | Modèle plus gros : trop lent ; API payante : exclue par le test |
-| Stack TypeScript, Bun, Hono, React, Vite, Turborepo | Stack de l'équipe ; types partagés entre API et front | Python FastAPI : hors stack de l'équipe |
-| Boucle d'agent écrite à la main, sans framework | ~60 lignes, lisible, facile à déboguer et à expliquer | LangChain / LangGraph : trop lourd pour ce périmètre |
-| Validation Zod des arguments des outils | Un petit modèle peut produire de mauvais arguments | Exécuter sans valider : risque d'erreurs et d'injection |
-| Erreurs renvoyées au modèle | Le modèle peut corriger ses arguments ou expliquer | Faire échouer la requête |
-| Limite d'itérations et timeout par outil | Éviter les boucles infinies et les blocages | Aucune limite |
-| Température 0,2 | Appels d'outils fiables plutôt que créatifs | Température par défaut |
-| API sans état, historique dans le front | Simple ; facile à faire évoluer (persistance) | Stockage serveur des conversations |
-| Streaming SSE des étapes | L'utilisateur voit en direct les outils utilisés | Réponse unique à la fin |
-| Tests avec un faux LLM | Tests rapides et déterministes, sans Ollama | Tests dépendants du modèle |
-| [À COMPLÉTER : architecture mono ou multi-agents] | | |
-| [À COMPLÉTER : choix des outils] | | |
+| Un seul agent en lecture seule | Un seul rôle, uniquement de la lecture : simple, rapide et fiable avec un modèle local | Multi-agents : latence multipliée sans bénéfice |
+| Outils : get_pokemon, get_type_matchups, get_evolution_chain | Un outil par besoin de données ; comparaison et rédaction faites par le modèle | Un outil « compare » : redondant |
+| Tout fait vient de PokéAPI via un outil | Fiabilité : le modèle n'invente aucune statistique | Mémoire du modèle : hallucinations |
+| Données réduites renvoyées au modèle | Contexte court, moins d'erreurs pour un petit modèle | JSON brut de PokéAPI (énorme) |
+| URL de base fixée dans le code | Le modèle ne peut pas appeler une autre URL | Laisser le modèle construire l'URL |
+| Validation stricte des noms (regex, longueur) | Bloque l'injection de chemin ou de paramètres | Passer l'argument tel quel |
+| Liste fermée d'outils, tous en lecture | Le modèle ne peut rien faire d'autre que lire | Outils génériques (fetch libre) |
+| Résultats d'outils traités comme des données | Protège contre l'injection indirecte via l'API | Concaténer les résultats au prompt |
+| Prompt système : rôle fixe, refus du hors sujet, pas de révélation du prompt | Résiste aux tentatives de détournement | Prompt permissif |
+| Limite de longueur des messages | Réduit les injections longues et les coûts | Aucune limite |
+| Contrôle d'ancrage des nombres | Détecte un chiffre inventé dans la réponse | Faire confiance au modèle |
+| Évaluation : questions normales, pièges et détournements, 3 passages | Mesure la fiabilité et la sécurité, LLM non déterministe | Tests manuels seulement |
+| Cache en mémoire + timeout 8 s | API externe lente ; réponses rapides au 2e appel | Pas de cache |
+| Combat en bonus, moteur déterministe en code | Le LLM calcule mal ; le moteur est testable | Combat simulé par le LLM |
+| Ollama local qwen2.5:7b, température 0,2 | Gratuit, bon appel d'outils, réponses stables | API payante |
+| Stack TypeScript, Bun, Hono, React, Vite, Turborepo | Stack de l'équipe, types partagés | Python |

@@ -2,18 +2,20 @@
 
 ## Business Requirements
 
-Le sujet complet est dans docs/SUJET.md (rempli au début de la séance). Résumé :
+Le sujet complet est dans docs/SUJET.md. Résumé :
 
-- Thème : [À REMPLIR]
-- Utilisateur de l'agent : [À REMPLIR]
-- Ce que l'utilisateur doit pouvoir faire :
-  - [BESOIN 1]
-  - [BESOIN 2]
-  - [BESOIN 3]
-- L'agent doit-il agir (créer, envoyer, modifier) ou seulement répondre : [À REMPLIR]
-
-Livrable : un agent conversationnel qui utilise des outils (tool calling) et une petite interface web
-pour discuter avec lui et montrer son fonctionnement (appels d'outils visibles).
+- Thème : un assistant Pokémon qui répond aux questions des utilisateurs à partir de l'API publique PokéAPI
+  (https://pokeapi.co/api/v2/, sans clé).
+- Utilisateurs : des personnes qui veulent des informations fiables sur les Pokémon, en français.
+- L'agent fait UNIQUEMENT de la lecture : aucune écriture, aucune action.
+- Besoins : fiche d'un Pokémon, forces et faiblesses des types, évolutions, comparaison de Pokémon ;
+  en bonus si le temps le permet : simulation de combat.
+- Priorités, dans l'ordre :
+  1. FIABILITÉ : chaque information vient de PokéAPI via un outil, jamais de la mémoire du modèle ;
+     introuvable → le dire, sans inventer.
+  2. SÉCURITÉ : l'agent ne peut pas être détourné (injection de prompt, changement de rôle,
+     hors sujet, appel d'outils non prévus).
+  3. BONUS : expérience de combat, calculée par un moteur déterministe en code, jamais par le LLM.
 
 ## Limitations
 

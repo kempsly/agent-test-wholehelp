@@ -31,3 +31,4 @@
 | Combat : Map en mémoire avec expiration de 30 min | Seul état côté serveur ; le reste de l'API reste sans état | Renvoyer tout l'état à chaque appel |
 | Tests *.test.ts à côté du code ; agent.test.ts réservé à la boucle | Tests proches du code testé | Tout dans agent.test.ts |
 | Prompt système en 3 sections (rôle, fiabilité, sécurité), sans date ni donnée utilisateur | Prompt fixe et court pour un 7B ; vérification de french_name et recopie des multiplicateurs imposées | Prompt long ou construit dynamiquement |
+| Format de réponse en texte simple, "Libellé : valeur", ordre fixe pour la fiche | Rendu lisible sans Markdown (le front affiche du texte simple) | Markdown libre |
